@@ -661,7 +661,7 @@ export default function RegistrationForm() {
                             <tr class="border-b border-black">
                               <td
                                 class="font-semibold p-1 border-r border-black"
-                                colSpan={2}
+                                colSpan={3}
                               >
                                 Sub Total
                               </td>
