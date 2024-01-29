@@ -37,6 +37,7 @@ export default function RegistrationForm() {
   const [showCourses, setShowCourses] = createSignal(false);
 
   const [regStatus, setRegStatus] = createSignal("");
+  const [undertakingStatus, setUndertakingStatus] = createSignal("");
   const [regComment, setRegComment] = createSignal("");
   const [showNotification, setShowNotification] = createSignal(false);
   const [pickedCourses, setPickedCourses] = createStore([]);
@@ -150,6 +151,7 @@ export default function RegistrationForm() {
               setAdminCharges(JSON.parse(registration.seminary_charges));
               setStudentReg(registration);
               setRegStatus(registration.registration_status);
+              setUndertakingStatus(registration.undertaking);
               setRegComment(registration.comment);
               setPeriod(data2.response);
               setUser(data0.response);
@@ -171,6 +173,7 @@ export default function RegistrationForm() {
         user,
         pickedCourses,
         regStatus,
+        undertakingStatus,
         regComment,
       };
     } else {
@@ -1892,7 +1895,7 @@ export default function RegistrationForm() {
                                 class="w-full"
                               >
                                 <thead>
-                                  <tr class="bg-blue-950 border-b border-black text-white">
+                                  <tr class="bg-white border-b border-black text-blue-900">
                                     <th class="p-1 text-left">
                                       :: SUBMIT & PRINT
                                     </th>
@@ -1912,13 +1915,15 @@ export default function RegistrationForm() {
                                       <td class="p-4">
                                         <Show
                                           when={
+                                            registrationData().undertakingStatus() ===
+                                              "yes" ||
                                             parseInt(portalWallet()) >=
-                                            parseInt(
-                                              registrationData().adminCharges[
-                                                "total"
-                                              ][0]
-                                            ) +
-                                              parseInt(totalProgFee())
+                                              parseInt(
+                                                registrationData().adminCharges[
+                                                  "total"
+                                                ][0]
+                                              ) +
+                                                parseInt(totalProgFee())
                                           }
                                           fallback={
                                             <span class="block bg-yellow-100 rounded-md border border-yellow-200  p-1 space-y-0.5">

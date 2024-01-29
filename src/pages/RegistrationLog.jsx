@@ -329,14 +329,14 @@ export default function RegistrationLog() {
           method: "PATCH",
           body: JSON.stringify({
             period_id: speriodId(),
-            undertaking: formData().undertaking,
+            undertaking: "yes",
           }),
         }
       );
 
       const result = await response.json();
 
-      setIsProcessing(false);
+      // setIsProcessing(false);
       setShowSuccess(true);
     } catch (error) {
       console.error(error);
@@ -392,18 +392,18 @@ export default function RegistrationLog() {
                 >
                   <Success />
                   <p class="text-center mt-4">
-                    Action was carried out successfully.{" "}
+                    Action was carried out successfully.
+                  </p>
+                  <p class="text-center">
                     <span
                       onClick={() =>
                         (window.location.href =
                           "/admin/registration-log/" + params.periodId)
                       }
-                      class="text-red-600 font-semibold cursor-pointer hover:opacity-60 underline text-decoration-black"
+                      class="blue-btn p-3 text-red-600 font-semibold cursor-pointer hover:opacity-60"
                     >
-                      <br></br>
-                      Click here
-                    </span>{" "}
-                    to return to log.
+                      Return to Log
+                    </span>
                   </p>
                 </Show>
               </div>
