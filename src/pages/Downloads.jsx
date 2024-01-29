@@ -214,7 +214,7 @@ export default function Downloads() {
                           <a
                             class="hover:text-red-600"
                             target="_blank"
-                            href="https://docs.google.com/document/d/1OUtwYj34plCv3ga_ll1wuomd6vibXab6kokGbpS6tVo/edit?usp=sharing"
+                            href="https://docs.google.com/document/d/1yPPJuSVDsjVkqieVvnz24FW7recSItVO/edit?usp=sharing&ouid=113601222245522063508&rtpof=true&sd=true"
                           >
                             TENTATIVE CLASS SCHEDULE - SECOND SEMESTER (JANUARY
                             – MAY) 2024
