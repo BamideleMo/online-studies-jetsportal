@@ -12,7 +12,7 @@ import { createSignal, createEffect } from "solid-js";
 
 const schema = z.object({
   username: z.string().email("*Invalid"),
-  password: z.string().min(8, "*Invalid"),
+  password: z.string().min(4, "*Invalid"),
 });
 
 const VITE_API_URL = import.meta.env["VITE_API_URL"];
