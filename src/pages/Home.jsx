@@ -67,7 +67,9 @@ export default function Home() {
                 <ChevronRight />
               </A>
             </div>
-            <div class="w-full h-40 bg rounded-lg sm:hidden">&nbsp;</div>
+            <div class="w-full bg rounded-lg sm:hidden">
+              <div class="h-40">&nbsp;</div>
+            </div>
           </div>
         </div>
       </div>

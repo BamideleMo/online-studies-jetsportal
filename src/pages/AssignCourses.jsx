@@ -95,7 +95,6 @@ export default function AssignCourses() {
             var allFaculty = data3.response.filter(
               (faculty) => faculty.user_role == "Faculty"
             );
-            console.log(allFaculty);
             for (let i = 0; i < allFaculty.length; i++) {
               var fac = {
                 value: allFaculty[i].custom_id,
@@ -154,6 +153,31 @@ export default function AssignCourses() {
   const submit = async (event) => {
     event.preventDefault();
     setIsProcessing(true);
+    console.log(formData().faculty,code(),params.periodId)
+    try {
+      const res = await fetch(VITE_API_URL + "/api/create-assigned-course", {
+        mode: "cors",
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("jetsUser")).token
+          }`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          courses: JSON.stringify(arr),
+          custom_id: formData().faculty,
+          period_id: params.periodId,
+        }),
+      });
+      const result = await res.json();
+      setSemester(result.response.semester);
+      setSession(result.response.session);
+    } catch (error) {
+      console.error(error);
+    }
+    setIsProcessing(false);
   };
 
   const [resources] = createResource(fetchResources);

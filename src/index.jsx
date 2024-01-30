@@ -48,6 +48,8 @@ import AssignCourses from "./pages/AssignCourses";
 //
 import FacultyLogin from "./pages/LoginFaculty";
 import ProfileFaculty from "./pages/ProfileFaculty";
+import AssignedCoursesPeriod from "./pages/AssignedCoursesPeriod";
+import AssignedCourses from "./pages/AssignedCourses";
 
 const root = document.getElementById("root");
 
@@ -184,6 +186,14 @@ render(
       <Route path="/faculty/login" component={FacultyLogin} />
       <Route path="/faculty/change-password" component={ChangePassword} />
       <Route path="/faculty/profile" component={ProfileFaculty} />
+      <Route
+        path="/faculty/assigned-courses-period"
+        component={AssignedCoursesPeriod}
+      />
+      <Route
+        path="/faculty/assigned-courses/:periodId"
+        component={AssignedCourses}
+      />
     </Router>
   ),
   root

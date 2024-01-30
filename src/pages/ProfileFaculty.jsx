@@ -8,43 +8,34 @@ import Loading from "../components/Loading";
 export default function ProfileFaculty() {
   const VITE_API_URL = import.meta.env["VITE_API_URL"];
   const [loading, setLoading] = createSignal(true);
-  const [user, setUser] = createSignal();
+  const [user, setUser] = createSignal("");
 
   createEffect(async () => {
     const navigate = useNavigate();
     if (localStorage.getItem("jetsUser")) {
-      fetch(
-        VITE_API_URL +
-          "/api/user/" +
-          JSON.parse(localStorage.getItem("jetsUser")).custom_id,
-        {
-          mode: "cors",
-          headers: {
-            Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("jetsUser")).token
-            }`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          method: "GET",
-        }
-      )
-        .then((response) => {
-          return response.json();
-        })
-        .then((data1) => {
-          if (data1.response === "Expired token") {
-            localStorage.removeItem("jetsUser");
-            navigate("/", { replace: true });
+      try {
+        const res = await fetch(
+          VITE_API_URL +
+            "/api/user/" +
+            JSON.parse(localStorage.getItem("jetsUser")).custom_id,
+          {
+            mode: "cors",
+            headers: {
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("jetsUser")).token
+              }`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            method: "GET",
           }
-          setUser(data1.response);
-        })
-        .then((response) => {
-          return response.json();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+        );
+        const result = await res.json();
+        console.log(result.response);
+        setUser(result.response);
+      } catch (error) {
+        console.error(error);
+      }
     } else {
       navigate("/", { replace: true });
     }
@@ -70,7 +61,7 @@ export default function ProfileFaculty() {
       />
       <div class="text-sm">
         <Header />
-        <Show when={!loading()} fallback={<Loading />}>
+        <Show when={user() !== ""} fallback={<Loading />}>
           <div class="mt-8 mb-20 w-11/12 mx-auto space-y-4">
             <h2 class="text-lg font-semibold text-center border-b border-red-600">
               Faculty Profile
@@ -80,51 +71,44 @@ export default function ProfileFaculty() {
               <p>Below is your profile as seen by students.</p>
             </div>
             <div class="border border-gray-600 shadow-md rounded p-1 lg:p-4">
-              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
-                <div class="col-span-2 sm:col-span-1 sm:row-span-3 text-center space-y-2">
-                  <div class="block mx-auto max-w-36 max-h-36 overflow-hidden rounded">
+              <div class="flex space-x-4">
+                <div class="w-28 text-center">
+                  {user().passport_url ? (
                     <img
                       src={getOptPassport(user().passport_url)}
-                      class="mx-auto w-full"
+                      class="mx-auto w-11/12"
                     />
+                  ) : (
+                    <img src="https:link-to-dummy" class="w-11/12 mx-auto" />
+                  )}
+                  <br />[
+                  <A href="#" class="text-xs text-red-600">
+                    Change Passport
+                  </A>
+                  ]
+                </div>
+                <div class="space-y-2 py-6">
+                  <div>
+                    <b>Name:</b> [
+                    <span class="text-xs text-red-600">Edit Name</span>
+                    ]
+                    <br />
+                    <span class="flex">
+                      {user().title ? (
+                        <span class="mr-1">{user().title}</span>
+                      ) : (
+                        ""
+                      )}
+                      <span class="uppercase">{user().surname}</span>
+                      <span class="capitalize mx-1">{user().first_name}</span>
+                      <span class="capitalize">{user().other_names}</span>
+                    </span>
                   </div>
                   <div>
-                    [
-                    <A href="#" class="text-sm text-red-600">
-                      Change Passport
-                    </A>
-                    ]
+                    <b>Email Address:</b>
+                    <br />
+                    {user().username}
                   </div>
-                </div>
-                <div>
-                  <b>Phone Number:</b>
-                  <br />
-                  {user().phone_number}
-                </div>
-                <div>
-                  <b>Surname:</b>
-                  <br />
-                  <span class="uppercase">{user().surname}</span>
-                </div>
-                <div>
-                  <b>First name:</b>
-                  <br />
-                  {user().first_name}
-                </div>
-                <div>
-                  <b>Other names:</b>
-                  <br />
-                  {user().other_names}
-                </div>
-                <div>
-                  <b>Gender:</b>
-                  <br />
-                  {user().gender}
-                </div>
-                <div>
-                  <b>Email:</b>
-                  <br />
-                  {student().email.toLowerCase()}
                 </div>
               </div>
             </div>

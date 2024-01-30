@@ -64,9 +64,7 @@ export default function LoginFaculty() {
 
   createEffect(() => {
     if (localStorage.getItem("jetsUser")) {
-      if (
-        JSON.parse(localStorage.getItem("jetsUser")).user_role === "faculty"
-      ) {
+      if (JSON.parse(localStorage.getItem("jetsUser")).role === "faculty") {
         navigate("/faculty/profile", { replace: true });
       } else {
         navigate("/student/downloads", { replace: true });

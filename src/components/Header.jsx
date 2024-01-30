@@ -6,6 +6,7 @@ import logo from "../assets/logo.png";
 import NotLoggedIn from "./menu-items/NotLoggedIn";
 import Student from "./menu-items/Student";
 import Admin from "./menu-items/Admin";
+import Faculty from "./menu-items/Faculty";
 
 export default function Header() {
   const [showMenu, setShowMenu] = createSignal(false);

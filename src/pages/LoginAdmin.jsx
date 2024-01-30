@@ -64,7 +64,7 @@ export default function LoginAdmin() {
 
   createEffect(() => {
     if (localStorage.getItem("jetsUser")) {
-      if (JSON.parse(localStorage.getItem("jetsUser")).user_role === "admin") {
+      if (JSON.parse(localStorage.getItem("jetsUser")).role === "admin") {
         navigate("/admin/dashboard", { replace: true });
       } else {
         navigate("/student/downloads", { replace: true });

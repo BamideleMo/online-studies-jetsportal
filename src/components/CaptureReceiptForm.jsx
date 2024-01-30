@@ -48,7 +48,6 @@ export default function CaptureReceiptForm(props) {
           JSON.parse(result.response[i].log)[j].receipt_number ===
           formData().receipt_number
         ) {
-          console.log(JSON.parse(result.response[i].log)[j]);
           setDuplicateReceipt(true);
           setDuplicatedReceipt(
             JSON.parse(result.response[i].log)[j].receipt_number
