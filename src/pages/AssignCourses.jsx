@@ -12,11 +12,12 @@ import Success from "../components/icons/Success";
 import { createSignal, createResource } from "solid-js";
 import Loading from "../components/Loading";
 import { createStore } from "solid-js/store";
+import Failure from "../components/icons/Failure";
 
 const VITE_API_URL = import.meta.env["VITE_API_URL"];
 
 const schema = z.object({
-  faculty: z.string().min(1, "*Required"),
+  faculty_id: z.string().min(1, "*Required"),
 });
 
 export default function AssignCourses() {
@@ -32,14 +33,17 @@ export default function AssignCourses() {
   const [code, setCode] = createSignal("");
   const [title, setTitle] = createSignal("");
   const [courses, setCourses] = createStore([]);
+  const [coursesToAssign, setCoursesToAssign] = createStore([]);
   const [displayFaculty, setDisplayFaculty] = createStore([]);
   const [showModal, setShowModal] = createSignal(false);
   const [showSuccess, setShowSuccess] = createSignal(false);
+  const [duplicateAssignment, setDuplicateAssignment] = createSignal(false);
+
+  const navigate = useNavigate();
 
   const facultyArray = [];
+  const AssignedCoursesArray = [];
   const fetchResources = async () => {
-    const navigate = useNavigate();
-
     if (
       localStorage.getItem("jetsUser") &&
       JSON.parse(localStorage.getItem("jetsUser")).role === "admin"
@@ -88,28 +92,72 @@ export default function AssignCourses() {
           },
           method: "GET",
         }).then((response) => response.json());
+        const request3 = fetch(
+          VITE_API_URL + "/api/view-assigned-courses/" + params.periodId,
+          {
+            mode: "cors",
+            headers: {
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("jetsUser")).token
+              }`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            method: "GET",
+          }
+        ).then((response) => response.json());
 
-        Promise.all([request1, request2])
-          .then(([data1, data3]) => {
-            setCourses(data1.response);
-            var allFaculty = data3.response.filter(
-              (faculty) => faculty.user_role == "Faculty"
+        Promise.all([request1, request2, request3])
+          .then(([data1, data2, data3]) => {
+            console.log(data1.response);
+            var allFaculty = data2.response.filter(
+              (faculty) =>
+                faculty.user_role == "faculty" && faculty.status == "active"
             );
             for (let i = 0; i < allFaculty.length; i++) {
               var fac = {
                 value: allFaculty[i].custom_id,
                 label:
-                  allFaculty[i].title +
-                  " " +
                   allFaculty[i].surname +
                   " " +
                   allFaculty[i].first_name +
                   " " +
-                  allFaculty[i].other_names,
+                  allFaculty[i].other_names +
+                  " (" +
+                  allFaculty[i].title +
+                  ")",
               };
               facultyArray.push(fac);
             }
             setDisplayFaculty(facultyArray);
+
+            for (let i = 0; i < data3.response.length; i++) {
+              for (
+                let k = 0;
+                k < JSON.parse(data3.response[i].courses).length;
+                k++
+              ) {
+                var course_info = data1.response.filter(
+                  (course) =>
+                    course.code == JSON.parse(data3.response[i].courses)[k]
+                );
+                var faculty_info = allFaculty.filter(
+                  (fac) => fac.custom_id == data3.response[i].custom_id
+                );
+                var assigned_courses = {
+                  code: course_info[0].code,
+                  title: course_info[0].title,
+                  hours: course_info[0].hours,
+                  faculty_title: faculty_info[0].title,
+                  faculty_surname: faculty_info[0].surname,
+                  faculty_first_name: faculty_info[0].first_name,
+                  faculty_other_names: faculty_info[0].other_names,
+                  faculty_email: faculty_info[0].username,
+                };
+                AssignedCoursesArray.push(assigned_courses);
+              }
+            }
+            setCourses(AssignedCoursesArray);
           })
           .catch((error) => {
             console.error(error);
@@ -144,18 +192,24 @@ export default function AssignCourses() {
     }
   };
 
-  const doShowModal = (code, title) => {
-    setCode(code);
-    setTitle(title);
+  const doShowModal = () => {
     setShowModal(true);
   };
 
+  const unassign = (code) => {
+    console.log(code);
+  };
+
+  const arr = [];
   const submit = async (event) => {
     event.preventDefault();
     setIsProcessing(true);
-    console.log(formData().faculty,code(),params.periodId)
-    try {
-      const res = await fetch(VITE_API_URL + "/api/create-assigned-course", {
+    console.log(formData().faculty_id, code(), params.periodId);
+
+    //check if already assigned
+    const response = await fetch(
+      VITE_API_URL + "/api/view-assigned-courses/" + params.periodId,
+      {
         mode: "cors",
         headers: {
           Authorization: `Bearer ${
@@ -164,20 +218,61 @@ export default function AssignCourses() {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        method: "POST",
+        method: "GET",
+      }
+    );
+    const result = await response.json();
+
+    for (let i = 0; i < result.response.length; i++) {
+      for (let j = 0; j < JSON.parse(result.response[i].courses).length; j++) {
+        if (JSON.parse(result.response[i].courses)[j] === code()) {
+          setDuplicateAssignment(true);
+          return;
+        }
+      }
+
+      if (result.response[i].custom_id === formData().faculty_id) {
+        console.log(JSON.parse(result.response[i].courses));
+        for (
+          let j = 0;
+          j < JSON.parse(result.response[i].courses).length;
+          j++
+        ) {
+          console.log(JSON.parse(result.response[i].courses)[j]);
+          arr.push(JSON.parse(result.response[i].courses)[j]);
+        }
+        arr.push(code());
+        var patch_post = "PATCH";
+        var which_url = "edit-assigned-course/" + formData().faculty_id;
+      } else {
+        arr.push(code());
+        var patch_post = "POST";
+        var which_url = "create-assigned-course";
+      }
+    }
+    try {
+      const res = await fetch(VITE_API_URL + "/api/" + which_url, {
+        mode: "cors",
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("jetsUser")).token
+          }`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        method: patch_post,
         body: JSON.stringify({
           courses: JSON.stringify(arr),
-          custom_id: formData().faculty,
+          custom_id: formData().faculty_id,
           period_id: params.periodId,
         }),
       });
       const result = await res.json();
-      setSemester(result.response.semester);
-      setSession(result.response.session);
+      setShowSuccess(true);
+      setIsProcessing(false);
     } catch (error) {
       console.error(error);
     }
-    setIsProcessing(false);
   };
 
   const [resources] = createResource(fetchResources);
@@ -200,81 +295,102 @@ export default function AssignCourses() {
               <Show
                 when={showSuccess()}
                 fallback={
-                  <div class="my-2 border-t border-b py-4 border-black">
-                    <form
-                      autocomplete="off"
-                      onSubmit={submit}
-                      class="space-y-4"
-                    >
-                      <div class="flex justify-between space-x-4">
-                        <div>
-                          <b>Couse Code:</b>
-                          <br />
-                          {code()}
-                        </div>
-                        <div>
-                          <b>Couse Title:</b>
-                          <br />
-                          {title()}
-                        </div>
-                      </div>
-                      <div>
-                        <Select
-                          label="Faculty:"
-                          name="faculty"
-                          placeholder="Select"
-                          required={true}
-                          options={displayFaculty}
-                          formHandler={formHandler}
-                        />
-                      </div>
-                      <Show when={message() !== ""}>
-                        <div class="bg-purple-200 text-purple-900 p-3 text-center animate-pulse border-l-2 border-black">
-                          {message()}
-                        </div>
-                      </Show>
-                      <div class="text-right space-x-3">
-                        <Show
-                          when={formHandler.isFormInvalid()}
-                          fallback={
-                            <>
-                              <Show
-                                when={isProcessing()}
-                                fallback={
-                                  <button
-                                    type="submit"
-                                    class="red-btn p-3 hover:opacity-60"
+                  <Show
+                    when={duplicateAssignment()}
+                    fallback={
+                      <div class="my-2 border-t border-b py-4 border-black">
+                        <form
+                          autocomplete="off"
+                          onSubmit={submit}
+                          class="space-y-4"
+                        >
+                          <div class="flex justify-between space-x-4">
+                            <div>
+                              <b>Couse Code:</b>
+                              <br />
+                              {code()}
+                            </div>
+                            <div>
+                              <b>Couse Title:</b>
+                              <br />
+                              {title()}
+                            </div>
+                          </div>
+                          <div>
+                            <Select
+                              label="Faculty:"
+                              name="faculty_id"
+                              placeholder="Select"
+                              required={true}
+                              options={displayFaculty}
+                              formHandler={formHandler}
+                            />
+                          </div>
+                          <Show when={message() !== ""}>
+                            <div class="bg-purple-200 text-purple-900 p-3 text-center animate-pulse border-l-2 border-black">
+                              {message()}
+                            </div>
+                          </Show>
+                          <div class="text-right space-x-3">
+                            <Show
+                              when={formHandler.isFormInvalid()}
+                              fallback={
+                                <>
+                                  <Show
+                                    when={isProcessing()}
+                                    fallback={
+                                      <button
+                                        type="submit"
+                                        class="red-btn p-3 hover:opacity-60"
+                                      >
+                                        Submit
+                                      </button>
+                                    }
                                   >
-                                    Submit
-                                  </button>
-                                }
+                                    <button
+                                      disabled
+                                      class="gray-btn cursor-wait p-3"
+                                    >
+                                      Processing.. .
+                                    </button>
+                                  </Show>
+                                </>
+                              }
+                            >
+                              <button
+                                disabled
+                                class="gray2-btn p-3 cursor-not-allowed"
                               >
-                                <button
-                                  disabled
-                                  class="gray-btn cursor-wait p-3"
-                                >
-                                  Processing.. .
-                                </button>
-                              </Show>
-                            </>
-                          }
-                        >
-                          <button
-                            disabled
-                            class="gray2-btn p-3 cursor-not-allowed"
-                          >
-                            Submit
-                          </button>
-                        </Show>
-                        <button
-                          onClick={() => setShowModal(false)}
-                          class="gray-btn text-white p-3 hover:opacity-60"
-                        >
-                          Close
-                        </button>
+                                Submit
+                              </button>
+                            </Show>
+                            <button
+                              onClick={() => setShowModal(false)}
+                              class="gray-btn text-white p-3 hover:opacity-60"
+                            >
+                              Close
+                            </button>
+                          </div>
+                        </form>
                       </div>
-                    </form>
-                  </div>
+                    }
+                  >
+                    <div class="my-2 border-t border-b py-4 border-black text-center">
+                      <Failure />
+                      <p>Unable to assign course. Duplicate assignment!</p>
+                    </div>
+                    <div class="text-right space-x-3">
+                      <button
+                        onClick={() =>
+                          (window.location.href =
+                            "/admin/assign-courses/" + params.periodId)
+                        }
+                        class="blue-btn text-white p-3 hover:opacity-60"
+                      >
+                        Ok. Continue
+                      </button>
+                    </div>
+                  </Show>
                 }
               >
                 <div class="my-2 border-t border-b py-4 border-black text-center">
@@ -313,6 +429,15 @@ export default function AssignCourses() {
             </p>
           </div>
           <div class="border border-gray-600 shadow-md rounded p-2 lg:p-4">
+            <div>
+              +
+              <span
+                onClick={() => setShowModal(true)}
+                class="border-b border-red-600 font-semibold hover:opacity-60 cursor-pointer"
+              >
+                Assign Course
+              </span>
+            </div>
             <table
               cellPadding={0}
               cellSpacing={0}
@@ -324,8 +449,8 @@ export default function AssignCourses() {
                   <td class="p-4 border-r border-black">Code</td>
                   <td class="p-4 border-r border-black">Title</td>
                   <td class="p-4 border-r border-black">CH</td>
-                  <td class="p-4 border-r border-black">Action</td>
-                  <td class="p-4">Assigned To</td>
+                  <td class="p-4 border-r border-black">Assigned To</td>
+                  <td class="p-4">Action</td>
                 </tr>
               </thead>
               <tbody>
@@ -348,17 +473,28 @@ export default function AssignCourses() {
                             <td class="p-4 border-r border-black">
                               {course.hours}
                             </td>
-                            <td class="p-4 border-r border-black">
-                              <button
-                                onClick={() =>
-                                  doShowModal(course.code, course.title)
-                                }
-                                class="green-btn p-3 border border-black text-center hover:opacity-60"
-                              >
-                                Assign
-                              </button>
+                            <td class="p-4 border-r border-black space-x-1">
+                              <span>{course.faculty_title}</span>
+                              <span class="uppercase font-semibold">
+                                {course.faculty_surname}
+                              </span>
+                              <span>{course.faculty_first_name}</span>
+                              <span>{course.faculty_other_names}</span>
                             </td>
-                            <td class="p-4">No one yet</td>
+                            <td class="p-4 space-x-1">
+                              <button
+                                onClick={() => unassign(course.code)}
+                                class="red-btn p-3 border border-black text-center hover:opacity-60"
+                              >
+                                Unassign
+                              </button>
+                              <A
+                                href="/"
+                                class="inline-block green-btn p-3 border border-black text-center hover:opacity-60"
+                              >
+                                Class List
+                              </A>
+                            </td>
                           </tr>
                         )}
                       </For>

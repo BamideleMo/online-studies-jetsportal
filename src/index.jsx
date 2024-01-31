@@ -45,6 +45,7 @@ import EnrollmentStatisticsPeriod from "./pages/EnrollmentStatisticsPeriod";
 import EnrollmentStatistics from "./pages/EnrollmentStatistics";
 import AssignCoursesPeriod from "./pages/AssignCoursesPeriod";
 import AssignCourses from "./pages/AssignCourses";
+import ManageFaculty from "./pages/ManageFaculty";
 //
 import FacultyLogin from "./pages/LoginFaculty";
 import ProfileFaculty from "./pages/ProfileFaculty";
@@ -180,6 +181,7 @@ render(
         component={AssignCoursesPeriod}
       />
       <Route path="/admin/assign-courses/:periodId" component={AssignCourses} />
+      <Route path="/admin/manage-faculty" component={ManageFaculty} />
 
       {/*  */}
 

@@ -49,6 +49,8 @@ export default function CreateStudentProfile() {
           gender: formData().gender,
           username: formData().username.toUpperCase(),
           phone_number: formData().phone_number,
+          user_role: "student",
+          status: "change password",
         }),
       });
       const result = await response.json();

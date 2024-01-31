@@ -26,40 +26,6 @@ export default function Admin() {
           </A>
         </li>
       </Show>
-      {/* <Show
-        when={
-          JSON.parse(localStorage.getItem("jetsUser")).surname === "ict" ||
-          JSON.parse(localStorage.getItem("jetsUser")).surname === "bursar" ||
-          JSON.parse(localStorage.getItem("jetsUser")).surname === "assistant bursar"
-        }
-      >
-        <li class="border-b border-black py-3">
-          <A
-            href="/admin/all-portal-wallets"
-            class="flex justify-between hover:text-black"
-          >
-            <span>All Portal Wallet Bals.</span>
-            <ChevronRight />
-          </A>
-        </li>
-      </Show>
-      <Show
-        when={
-          JSON.parse(localStorage.getItem("jetsUser")).surname === "ict" ||
-          JSON.parse(localStorage.getItem("jetsUser")).surname === "bursar" ||
-          JSON.parse(localStorage.getItem("jetsUser")).surname === "assistant bursar"
-        }
-      >
-        <li class="border-b border-black py-3">
-          <A
-            href="/admin/all-accommodation-wallets"
-            class="flex justify-between hover:text-black"
-          >
-            <span>All Accommodation Wallet Bals.</span>
-            <ChevronRight />
-          </A>
-        </li>
-      </Show> */}
       <Show
         when={
           JSON.parse(localStorage.getItem("jetsUser")).surname === "ict" ||
@@ -175,6 +141,15 @@ export default function Admin() {
             class="flex justify-between hover:text-black"
           >
             <span>Manage Courses</span>
+            <ChevronRight />
+          </A>
+        </li>
+        <li class="border-b border-black py-3">
+          <A
+            href="/admin/manage-faculty"
+            class="flex justify-between hover:text-black"
+          >
+            <span>Manage Faculty</span>
             <ChevronRight />
           </A>
         </li>
