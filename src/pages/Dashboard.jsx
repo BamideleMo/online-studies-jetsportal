@@ -80,7 +80,7 @@ export default function AdminDashboard() {
               (user) => user.user_role == "student" && user.gender != null
             );
             var faculty = allUsers.filter(
-              (user) => user.user_role == "faculty"
+              (user) => user.user_role == "faculty" && user.status == "active"
             );
             var female_students = active_students.filter(
               (female) => female.gender == "Female"
@@ -301,7 +301,7 @@ export default function AdminDashboard() {
                           : stats().countFaculty()}
                       </h1>
                       <h2 class="pt-1.5 sm:p-0">
-                        <A href="#">Faculty</A>
+                        <A href="#">Active Faculty</A>
                       </h2>
                     </div>
                   </div>
