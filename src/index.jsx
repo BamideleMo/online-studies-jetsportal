@@ -51,6 +51,8 @@ import FacultyLogin from "./pages/LoginFaculty";
 import ProfileFaculty from "./pages/ProfileFaculty";
 import AssignedCoursesPeriod from "./pages/AssignedCoursesPeriod";
 import AssignedCourses from "./pages/AssignedCourses";
+import ClassList from "./pages/ClassList";
+import PrintClassList from "./pages/PrintClassList";
 
 const root = document.getElementById("root");
 
@@ -195,6 +197,14 @@ render(
       <Route
         path="/faculty/assigned-courses/:periodId"
         component={AssignedCourses}
+      />
+      <Route
+        path="/faculty/class-list/:periodId/:facultyId"
+        component={ClassList}
+      />
+      <Route
+        path="/print-class-list/:periodId"
+        component={PrintClassList}
       />
     </Router>
   ),

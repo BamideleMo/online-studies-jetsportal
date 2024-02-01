@@ -494,7 +494,7 @@ export default function SemesterRegistration() {
               register for.
             </p>
           </div>
-          <div class="border border-gray-600 shadow-md rounded p-2 lg:p-4">
+          <div class="border border-gray-600 shadow-md rounded p-2 lg:p-4 overflow-x-auto">
             <table
               cellPadding={0}
               cellSpacing={0}

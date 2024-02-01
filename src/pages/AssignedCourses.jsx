@@ -36,7 +36,7 @@ export default function AssignCourses() {
   const [showModal, setShowModal] = createSignal(false);
   const [showSuccess, setShowSuccess] = createSignal(false);
 
-  const facultyArray = [];
+  const myCoursesArray = [];
   const fetchResources = async () => {
     const navigate = useNavigate();
 
@@ -66,18 +66,25 @@ export default function AssignCourses() {
         navigate("/");
       } else {
         await fetchPeriod();
-        const request1 = fetch(VITE_API_URL + "/api/view-courses", {
-          mode: "cors",
-          headers: {
-            Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("jetsUser")).token
-            }`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          method: "GET",
-        }).then((response) => response.json());
-        const request2 = fetch(VITE_API_URL + "/api/view-users", {
+        const request1 = fetch(
+          VITE_API_URL +
+            "/api/assigned-course/" +
+            JSON.parse(localStorage.getItem("jetsUser")).custom_id +
+            "?period_id=" +
+            params.periodId,
+          {
+            mode: "cors",
+            headers: {
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("jetsUser")).token
+              }`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            method: "GET",
+          }
+        ).then((response) => response.json());
+        const request2 = fetch(VITE_API_URL + "/api/view-courses", {
           mode: "cors",
           headers: {
             Authorization: `Bearer ${
@@ -90,27 +97,25 @@ export default function AssignCourses() {
         }).then((response) => response.json());
 
         Promise.all([request1, request2])
-          .then(([data1, data3]) => {
-            setCourses(data1.response);
-            var allFaculty = data3.response.filter(
-              (faculty) => faculty.user_role == "Faculty"
-            );
-            console.log(allFaculty);
-            for (let i = 0; i < allFaculty.length; i++) {
-              var fac = {
-                value: allFaculty[i].custom_id,
-                label:
-                  allFaculty[i].title +
-                  " " +
-                  allFaculty[i].surname +
-                  " " +
-                  allFaculty[i].first_name +
-                  " " +
-                  allFaculty[i].other_names,
+          .then(([data1, data2]) => {
+            for (
+              let i = 0;
+              i < JSON.parse(data1.response[0].courses).length;
+              i++
+            ) {
+              var course_info = data2.response.filter(
+                (course) =>
+                  course.code == JSON.parse(data1.response[0].courses)[i]
+              );
+
+              var courses = {
+                code: course_info[0].code,
+                title: course_info[0].title,
+                hours: course_info[0].hours,
               };
-              facultyArray.push(fac);
+              myCoursesArray.push(courses);
             }
-            setDisplayFaculty(facultyArray);
+            setCourses(myCoursesArray);
           })
           .catch((error) => {
             console.error(error);
@@ -143,12 +148,6 @@ export default function AssignCourses() {
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const doShowModal = (code, title) => {
-    setCode(code);
-    setTitle(title);
-    setShowModal(true);
   };
 
   const submit = async (event) => {
@@ -195,46 +194,51 @@ export default function AssignCourses() {
                   <td class="p-4 border-r border-black">Code</td>
                   <td class="p-4 border-r border-black">Title</td>
                   <td class="p-4 border-r border-black">CH</td>
-                  <td class="p-4">Proceed</td>
+                  <td class="p-4">Class List</td>
                 </tr>
               </thead>
               <tbody>
                 <Show
                   when={resources.loading}
                   fallback={
-                    // <Show when={resources().courses.length > 0}>
-                    //   <For each={resources().courses}>
-                    //     {(course, i) => (
-                    //       <tr class="even:bg-gray-200 odd:bg-white even:border-y border-black">
-                    //         <td class="p-4 border-r border-black font-semibold">
-                    //           {i() + 1}.
-                    //         </td>
-                    //         <td class="p-4 border-r border-black uppercase">
-                    //           {course.code}
-                    //         </td>
-                    //         <td class="p-4 border-r border-black">
-                    //           {course.title}
-                    //         </td>
-                    //         <td class="p-4 border-r border-black">
-                    //           {course.hours}
-                    //         </td>
-                    //         <td class="p-4">
-                    //           <A
-                    //             href={"/faculty/class-list?code=" + course.code}
-                    //             class="green-btn p-3 border border-black text-center hover:opacity-60"
-                    //           >
-                    //             Proceed
-                    //           </A>
-                    //         </td>
-                    //       </tr>
-                    //     )}
-                    //   </For>
-                    // </Show>
-                    <tr>
-                    <td colSpan={5} class="p-1 text-center">
-                      No Course(s) assigned yet.
-                    </td>
-                  </tr>
+                    <Show when={resources().courses.length > 0}>
+                      <For each={resources().courses}>
+                        {(course, i) => (
+                          <tr class="even:bg-gray-200 odd:bg-white even:border-y border-black">
+                            <td class="p-4 border-r border-black font-semibold">
+                              {i() + 1}.
+                            </td>
+                            <td class="p-4 border-r border-black uppercase">
+                              {course.code}
+                            </td>
+                            <td class="p-4 border-r border-black">
+                              {course.title}
+                            </td>
+                            <td class="p-4 border-r border-black">
+                              {course.hours}
+                            </td>
+                            <td class="p-4">
+                              <A
+                                href={
+                                  "/faculty/class-list/" +
+                                  params.periodId +
+                                  "/" +
+                                  JSON.parse(localStorage.getItem("jetsUser"))
+                                    .custom_id +
+                                  "?code=" +
+                                  course.code +
+                                  "&title=" +
+                                  course.title
+                                }
+                                class="green-btn p-3 border border-black text-center hover:opacity-60"
+                              >
+                                Class List
+                              </A>
+                            </td>
+                          </tr>
+                        )}
+                      </For>
+                    </Show>
                   }
                 >
                   <tr>

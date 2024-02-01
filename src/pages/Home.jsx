@@ -12,6 +12,9 @@ export default function Home() {
     if (localStorage.getItem("jetsUser")) {
       if (JSON.parse(localStorage.getItem("jetsUser")).role === "admin") {
         navigate("/admin/dashboard", { replace: true });
+      }
+      else if (JSON.parse(localStorage.getItem("jetsUser")).role === "faculty") {
+        navigate("/faculty/profile", { replace: true });
       } else {
         navigate("/student/downloads", { replace: true });
       }

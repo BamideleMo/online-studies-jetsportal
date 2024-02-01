@@ -135,6 +135,7 @@ export default function ManageFaculty() {
         },
         method: "POST",
         body: JSON.stringify({
+          title: formData().title,
           surname: formData().surname.toUpperCase(),
           first_name: formData().first_name,
           other_names: formData().other_names,

@@ -18,6 +18,7 @@ const VITE_API_URL = import.meta.env["VITE_API_URL"];
 
 const schema = z.object({
   faculty_id: z.string().min(1, "*Required"),
+  course_code: z.string().min(1, "*Required"),
 });
 
 export default function AssignCourses() {
@@ -30,19 +31,19 @@ export default function AssignCourses() {
   const [semester, setSemester] = createSignal("");
   const [session, setSession] = createSignal("");
   const [message, setMessage] = createSignal("");
-  const [code, setCode] = createSignal("");
-  const [title, setTitle] = createSignal("");
   const [courses, setCourses] = createStore([]);
-  const [coursesToAssign, setCoursesToAssign] = createStore([]);
   const [displayFaculty, setDisplayFaculty] = createStore([]);
+  const [displayCourses, setDisplayCourses] = createStore([]);
   const [showModal, setShowModal] = createSignal(false);
   const [showSuccess, setShowSuccess] = createSignal(false);
+  const [success, setSuccess] = createSignal(false);
   const [duplicateAssignment, setDuplicateAssignment] = createSignal(false);
 
   const navigate = useNavigate();
 
   const facultyArray = [];
   const AssignedCoursesArray = [];
+  const coursesArray = [];
   const fetchResources = async () => {
     if (
       localStorage.getItem("jetsUser") &&
@@ -109,7 +110,15 @@ export default function AssignCourses() {
 
         Promise.all([request1, request2, request3])
           .then(([data1, data2, data3]) => {
-            console.log(data1.response);
+            for (let i = 0; i < data1.response.length; i++) {
+              var courses = {
+                value: data1.response[i].code,
+                label: data1.response[i].title + " - " + data1.response[i].code,
+              };
+              coursesArray.push(courses);
+            }
+            setDisplayCourses(coursesArray);
+
             var allFaculty = data2.response.filter(
               (faculty) =>
                 faculty.user_role == "faculty" && faculty.status == "active"
@@ -148,6 +157,7 @@ export default function AssignCourses() {
                   code: course_info[0].code,
                   title: course_info[0].title,
                   hours: course_info[0].hours,
+                  faculty_id: faculty_info[0].custom_id,
                   faculty_title: faculty_info[0].title,
                   faculty_surname: faculty_info[0].surname,
                   faculty_first_name: faculty_info[0].first_name,
@@ -192,19 +202,64 @@ export default function AssignCourses() {
     }
   };
 
-  const doShowModal = () => {
-    setShowModal(true);
-  };
+  const unassign = async (code, id) => {
+    isProcessing(true);
+    const response = await fetch(
+      VITE_API_URL +
+        "/api/assigned-course/" +
+        id +
+        "?period_id=" +
+        params.periodId,
+      {
+        mode: "cors",
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("jetsUser")).token
+          }`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        method: "GET",
+      }
+    );
+    const result = await response.json();
 
-  const unassign = (code) => {
-    console.log(code);
+    var courses = JSON.parse(result.response[0].courses);
+    const index = courses.indexOf(code);
+    const removed = courses.splice(index, 1);
+
+    try {
+      const res = await fetch(
+        VITE_API_URL + "/api/edit-assigned-course/" + id,
+        {
+          mode: "cors",
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("jetsUser")).token
+            }`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          method: "PATCH",
+          body: JSON.stringify({
+            courses: JSON.stringify(courses),
+            custom_id: formData().faculty_id,
+            period_id: params.periodId,
+          }),
+        }
+      );
+      const result = await res.json();
+      setSuccess(true);
+      setIsProcessing(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const arr = [];
   const submit = async (event) => {
     event.preventDefault();
     setIsProcessing(true);
-    console.log(formData().faculty_id, code(), params.periodId);
 
     //check if already assigned
     const response = await fetch(
@@ -222,34 +277,46 @@ export default function AssignCourses() {
       }
     );
     const result = await response.json();
-
-    for (let i = 0; i < result.response.length; i++) {
-      for (let j = 0; j < JSON.parse(result.response[i].courses).length; j++) {
-        if (JSON.parse(result.response[i].courses)[j] === code()) {
-          setDuplicateAssignment(true);
-          return;
-        }
-      }
-
-      if (result.response[i].custom_id === formData().faculty_id) {
-        console.log(JSON.parse(result.response[i].courses));
+    var theFaculty = result.response.filter(
+      (faculty) => faculty.custom_id == formData().faculty_id
+    );
+    if (result.response.length > 0) {
+      for (let i = 0; i < result.response.length; i++) {
         for (
           let j = 0;
           j < JSON.parse(result.response[i].courses).length;
           j++
         ) {
-          console.log(JSON.parse(result.response[i].courses)[j]);
-          arr.push(JSON.parse(result.response[i].courses)[j]);
+          if (
+            JSON.parse(result.response[i].courses)[j] === formData().course_code
+          ) {
+            setDuplicateAssignment(true);
+            return;
+          }
         }
-        arr.push(code());
+      }
+      if (theFaculty.length > 0) {
+        for (let j = 0; j < JSON.parse(theFaculty[0].courses).length; j++) {
+          arr.push(JSON.parse(theFaculty[0].courses)[j]);
+        }
+        arr.push(formData().course_code);
         var patch_post = "PATCH";
-        var which_url = "edit-assigned-course/" + formData().faculty_id;
+        var which_url =
+          "edit-assigned-course/" +
+          formData().faculty_id +
+          "?period_id=" +
+          params.periodId;
       } else {
-        arr.push(code());
+        arr.push(formData().course_code);
         var patch_post = "POST";
         var which_url = "create-assigned-course";
       }
+    } else {
+      arr.push(formData().course_code);
+      var patch_post = "POST";
+      var which_url = "create-assigned-course";
     }
+    console.log(patch_post, arr);
     try {
       const res = await fetch(VITE_API_URL + "/api/" + which_url, {
         mode: "cors",
@@ -286,6 +353,30 @@ export default function AssignCourses() {
       />
       <div class="text-sm">
         <Header />
+        <Show when={success()}>
+          <div class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
+            <div class="w-80 sm:w-10/12 lg:w-6/12 mx-auto bg-white rounded-md p-6">
+              <h2 class="text-center text-blue-900 font-semibold">
+                Unassigned
+              </h2>
+              <div class="my-2 border-t border-b py-4 border-black text-center">
+                <Success />
+                <p>The course was unassigned successfully!</p>
+              </div>
+              <div class="text-right space-x-3">
+                <button
+                  onClick={() =>
+                    (window.location.href =
+                      "/admin/assign-courses/" + params.periodId)
+                  }
+                  class="blue-btn text-white p-3 hover:opacity-60"
+                >
+                  Ok. Continue
+                </button>
+              </div>
+            </div>
+          </div>
+        </Show>
         <Show when={showModal()}>
           <div class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
             <div class="w-80 sm:w-10/12 lg:w-6/12 mx-auto bg-white rounded-md p-6">
@@ -304,17 +395,15 @@ export default function AssignCourses() {
                           onSubmit={submit}
                           class="space-y-4"
                         >
-                          <div class="flex justify-between space-x-4">
-                            <div>
-                              <b>Couse Code:</b>
-                              <br />
-                              {code()}
-                            </div>
-                            <div>
-                              <b>Couse Title:</b>
-                              <br />
-                              {title()}
-                            </div>
+                          <div>
+                            <Select
+                              label="Course:"
+                              name="course_code"
+                              placeholder="Select"
+                              required={true}
+                              options={displayCourses}
+                              formHandler={formHandler}
+                            />
                           </div>
                           <div>
                             <Select
@@ -483,7 +572,9 @@ export default function AssignCourses() {
                             </td>
                             <td class="p-4 space-x-1">
                               <button
-                                onClick={() => unassign(course.code)}
+                                onClick={() =>
+                                  unassign(course.code, course.faculty_id)
+                                }
                                 class="red-btn p-3 border border-black text-center hover:opacity-60"
                               >
                                 Unassign
