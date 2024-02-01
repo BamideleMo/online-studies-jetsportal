@@ -80,7 +80,7 @@ export default function AdminDashboard() {
               (user) => user.user_role == "student" && user.gender != null
             );
             var faculty = allUsers.filter(
-              (user) => user.user_role == "Faculty"
+              (user) => user.user_role == "faculty"
             );
             var female_students = active_students.filter(
               (female) => female.gender == "Female"

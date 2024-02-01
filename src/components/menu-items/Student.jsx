@@ -42,6 +42,24 @@ export default function Student() {
       </li>
       <li class="border-b border-black py-3">
         <A
+          href="/student/my-registered-courses"
+          class="flex justify-between hover:text-black"
+        >
+          <span>My Registered Courses</span>
+          <ChevronRight />
+        </A>
+      </li>
+      <li class="border-b border-black py-3">
+        <A
+          href="/student/library-resources"
+          class="flex justify-between hover:text-black"
+        >
+          <span>Library Resources</span>
+          <ChevronRight />
+        </A>
+      </li>
+      <li class="border-b border-black py-3">
+        <A
           href="/student/semester-add-drop"
           class="flex justify-between hover:text-black"
         >

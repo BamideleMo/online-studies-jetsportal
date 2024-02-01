@@ -24,6 +24,15 @@ export default function Faculty() {
       </li>
       <li class="border-b border-black py-3">
         <A
+          href="/faculty/library-resources"
+          class="flex justify-between hover:text-black"
+        >
+          <span>Library Resources</span>
+          <ChevronRight />
+        </A>
+      </li>
+      <li class="border-b border-black py-3">
+        <A
           href="/faculty/change-password"
           class="flex justify-between hover:text-black"
         >

@@ -311,6 +311,8 @@ export default function ClassList() {
             <p>
               Find below list of students registered during registration period,
               students who later added, and those who have dropped this course.
+              
+              If using a mobile device, you may have to scroll or tilt sideways.
             </p>
           </div>
           <div class="border space-y-4 border-gray-600 shadow-md rounded p-2 lg:p-4 overflow-x-auto">
@@ -477,7 +479,7 @@ export default function ClassList() {
                         >
                           <tr class="border-b border-black">
                             <td colSpan={7} class="p-4 text-center">
-                              No student has ADDED this course.
+                              No student has ADDED this course during Add/Drop.
                             </td>
                           </tr>
                         </Show>
@@ -562,7 +564,8 @@ export default function ClassList() {
                         >
                           <tr class="border-b border-black">
                             <td colSpan={7} class="p-4 text-center">
-                              No student has DROPPED this course.
+                              No student has DROPPED this course during
+                              Add/Drop.
                             </td>
                           </tr>
                         </Show>
