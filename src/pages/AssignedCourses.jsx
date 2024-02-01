@@ -201,7 +201,16 @@ export default function AssignCourses() {
                 <Show
                   when={resources.loading}
                   fallback={
-                    <Show when={resources().courses.length > 0}>
+                    <Show
+                      when={resources().courses.length > 0}
+                      fallback={
+                        <tr>
+                          <td colSpan={5} class="p-1 text-center">
+                            No course(s) assigned yet for this semester.
+                          </td>
+                        </tr>
+                      }
+                    >
                       <For each={resources().courses}>
                         {(course, i) => (
                           <tr class="even:bg-gray-200 odd:bg-white even:border-y border-black">

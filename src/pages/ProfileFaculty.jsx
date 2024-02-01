@@ -79,7 +79,10 @@ export default function ProfileFaculty() {
                       class="mx-auto w-11/12"
                     />
                   ) : (
-                    <img src="https:link-to-dummy" class="w-11/12 mx-auto" />
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/512/9131/9131529.png"
+                      class="w-11/12 mx-auto"
+                    />
                   )}
                   <br />[
                   <A href="#" class="text-xs text-red-600">
