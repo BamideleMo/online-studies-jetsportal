@@ -418,7 +418,7 @@ export default function ClassList() {
                               {list.matriculation_number}
                             </td>
                             <td class="p-4 border-r border-black">
-                              {list.email}
+                              {list.email.toLowerCase()}
                             </td>
                             <td class="p-4 border-r border-black">
                               {list.phone_number}
@@ -503,7 +503,7 @@ export default function ClassList() {
                               {list.matriculation_number}
                             </td>
                             <td class="p-4 border-r border-black">
-                              {list.email}
+                              {list.email.toLowerCase()}
                             </td>
                             <td class="p-4 border-r border-black">
                               {list.phone_number}
@@ -588,7 +588,7 @@ export default function ClassList() {
                               {list.matriculation_number}
                             </td>
                             <td class="p-4 border-r border-black">
-                              {list.email}
+                              {list.email.toLowerCase()}
                             </td>
                             <td class="p-4 border-r border-black">
                               {list.phone_number}
