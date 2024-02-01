@@ -341,7 +341,7 @@ export default function ManageFaculty() {
             <b class="block">Instruction:</b>
             <p>Create and manage faculty portal accounts.</p>
           </div>
-          <div class="border border-gray-600 shadow-md rounded p-2 lg:p-4">
+          <div class="border border-gray-600 shadow-md rounded p-2 lg:p-4 overflow-x-auto">
             <div>
               +
               <span
