@@ -580,8 +580,18 @@ export default function AssignCourses() {
                                 Unassign
                               </button>
                               <A
-                                href="/"
-                                class="inline-block green-btn p-3 border border-black text-center hover:opacity-60"
+                                href={
+                                  "/admin/class-list/" +
+                                  params.periodId +
+                                  "/" +
+                                  JSON.parse(localStorage.getItem("jetsUser"))
+                                    .custom_id +
+                                  "?code=" +
+                                  course.code +
+                                  "&title=" +
+                                  course.title
+                                }
+                                class="green-btn p-3 border border-black text-center hover:opacity-60"
                               >
                                 Class List
                               </A>

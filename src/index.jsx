@@ -184,6 +184,10 @@ render(
       />
       <Route path="/admin/assign-courses/:periodId" component={AssignCourses} />
       <Route path="/admin/manage-faculty" component={ManageFaculty} />
+      <Route
+        path="/admin/class-list/:periodId/:facultyId"
+        component={ClassList}
+      />
 
       {/*  */}
 
@@ -202,10 +206,7 @@ render(
         path="/faculty/class-list/:periodId/:facultyId"
         component={ClassList}
       />
-      <Route
-        path="/print-class-list/:periodId"
-        component={PrintClassList}
-      />
+      <Route path="/print-class-list/:periodId" component={PrintClassList} />
     </Router>
   ),
   root
