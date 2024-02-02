@@ -82,7 +82,7 @@ export default function CaptureReceiptForm(props) {
         {
           receipt_number: formData().receipt_number.toLowerCase(),
           description: formData().description,
-          amount: formData().amount,
+          amount: parseInt(formData().amount),
           date: today,
           custom_id: props.user.custom_id,
         },
@@ -94,7 +94,7 @@ export default function CaptureReceiptForm(props) {
       let loglist = {
         receipt_number: formData().receipt_number.toLowerCase(),
         description: formData().description,
-        amount: formData().amount,
+        amount: parseInt(formData().amount),
         date: today,
         custom_id: props.user.custom_id,
       };
@@ -106,7 +106,7 @@ export default function CaptureReceiptForm(props) {
         var val = {
           receipt_number: logss[key]["receipt_number"],
           description: logss[key]["description"],
-          amount: logss[key]["amount"],
+          amount: parseInt(logss[key]["amount"]),
           date: logss[key]["date"],
           custom_id: props.user.custom_id,
         };
