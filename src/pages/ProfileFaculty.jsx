@@ -71,7 +71,7 @@ export default function ProfileFaculty() {
               <p>Below is your profile as seen by students.</p>
             </div>
             <div class="border border-gray-600 shadow-md rounded p-1 lg:p-4">
-              <div class="flex space-x-4">
+              <div class="flex space-x-6">
                 <div class="w-28 text-center">
                   {user().passport_url ? (
                     <img
@@ -90,7 +90,7 @@ export default function ProfileFaculty() {
                   </A>
                   ]
                 </div>
-                <div class="space-y-2 py-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-6">
                   <div>
                     <b>Name:</b> [
                     <span class="text-xs text-red-600">Edit Name</span>

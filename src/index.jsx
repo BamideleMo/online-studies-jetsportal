@@ -53,6 +53,7 @@ import AssignedCoursesPeriod from "./pages/AssignedCoursesPeriod";
 import AssignedCourses from "./pages/AssignedCourses";
 import ClassList from "./pages/ClassList";
 import PrintClassList from "./pages/PrintClassList";
+import LibraryResources from "./pages/LibraryResources";
 
 const root = document.getElementById("root");
 
@@ -109,6 +110,7 @@ render(
         path="/student/print-add-drop-form/:periodId/:customId"
         component={PrintAddDropForm}
       />
+      <Route path="/student/library-resources" component={LibraryResources} />
       {/*  */}
 
       <Route path="/admin/login" component={AdminLogin} />
@@ -207,6 +209,7 @@ render(
         component={ClassList}
       />
       <Route path="/print-class-list/:periodId" component={PrintClassList} />
+      <Route path="/faculty/library-resources" component={LibraryResources} />
     </Router>
   ),
   root

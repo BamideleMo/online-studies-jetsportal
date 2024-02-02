@@ -3,20 +3,37 @@ import { A, useNavigate } from "@solidjs/router";
 
 import Header from "../components/Header";
 import { createSignal, createResource } from "solid-js";
+import Loading from "../components/Loading";
 
 const VITE_API_URL = import.meta.env["VITE_API_URL"];
 
-const navigate = useNavigate();
-
 export default function LibraryResources() {
-    const fetchPeriods = async () => {
-    
-      if (
-        localStorage.getItem("jetsUser") &&
-        JSON.parse(localStorage.getItem("jetsUser")).role === "admin"
-      ) {
+  const navigate = useNavigate();
+  const fetchResources = async () => {
+    if (localStorage.getItem("jetsUser")) {
+      const response = await fetch(
+        VITE_API_URL +
+          "/api/user/" +
+          JSON.parse(localStorage.getItem("jetsUser")).custom_id,
+        {
+          mode: "cors",
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("jetsUser")).token
+            }`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          method: "GET",
+        }
+      );
+      const result = await response.json();
+      if (result.response === "Expired token") {
+        localStorage.removeItem("jetsUser");
+        navigate("/", { replace: true });
+      } else {
         try {
-          const res = await fetch(VITE_API_URL + "/api/view-periods", {
+          const res = await fetch(VITE_API_URL + "/api/library-resource/1", {
             mode: "cors",
             headers: {
               Authorization: `Bearer ${
@@ -32,10 +49,11 @@ export default function LibraryResources() {
         } catch (error) {
           console.error(error);
         }
-      } else {
-        navigate("/", { replace: true });
       }
-    };
+    } else {
+      navigate("/", { replace: true });
+    }
+  };
   const [resources] = createResource(fetchResources);
 
   return (
@@ -47,78 +65,24 @@ export default function LibraryResources() {
       />
       <div class="text-sm">
         <Header />
-        <div class="mt-8 w-11/12 mx-auto space-y-4">
+        <div class="mt-8 w-11/12 mx-auto space-y-4 mb-20 library-resources">
           <h2 class="text-lg font-semibold text-center border-b border-red-600">
             Library Resources
           </h2>
           <div class="bg-yellow-100 rounded-md border border-yellow-200  p-1 space-y-0.5">
             <b class="block">Instruction:</b>
-            <p>Below are some resources provided by JETS library. If you have questions or need further help please contact a library staff.</p>
+            <p>
+              Below are some resources provided by JETS library. If you have
+              questions or need further help please contact a library staff.
+            </p>
           </div>
           <div class="border border-gray-600 shadow-md rounded p-2 lg:p-4">
-            <table
-              cellPadding={0}
-              cellSpacing={0}
-              class="w-full my-4 border border-black"
+            <Show
+              when={resources.loading}
+              fallback={<div innerHTML={resources().post}></div>}
             >
-              <thead class="bg-blue-950 text-white border-b border-black">
-                <tr>
-                  <td class="p-4 border-r border-black">#.</td>
-                  <td class="p-4 border-r border-black">Sem.</td>
-                  <td class="p-4 border-r border-black">Session</td>
-                  <td class="p-4">View</td>
-                </tr>
-              </thead>
-              <tbody>
-                <Show
-                  when={resources.loading}
-                  fallback={
-                    <Show
-                      when={resources().length > 0}
-                      fallback={
-                        <tr>
-                          <td colSpan={5} class="p-4 text-center">
-                            No record found.
-                          </td>
-                        </tr>
-                      }
-                    >
-                      <For each={resources()}>
-                        {(period, i) => (
-                          <tr class="even:bg-gray-200 odd:bg-white even:border-y border-black">
-                            <td class="p-4 border-r border-black font-semibold">
-                              {i() + 1}.
-                            </td>
-                            <td class="p-4 border-r border-black uppercase">
-                              {period.semester}
-                            </td>
-                            <td class="p-4 border-r border-black">
-                              {period.session}
-                            </td>
-                            <td class="p-4">
-                              <A
-                                href={
-                                  "/admin/registration-log/" + period.period_id
-                                }
-                                class="green-btn p-3 border border-black text-center hover:opacity-60"
-                              >
-                                Proceed
-                              </A>
-                            </td>
-                          </tr>
-                        )}
-                      </For>
-                    </Show>
-                  }
-                >
-                  <tr>
-                    <td colSpan={5} class="p-1 text-center">
-                      Fetching.. .
-                    </td>
-                  </tr>
-                </Show>
-              </tbody>
-            </table>
+              <Loading />
+            </Show>
           </div>
         </div>
       </div>

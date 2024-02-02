@@ -365,7 +365,16 @@ export default function PrintClassList() {
                               {list.matriculation_number}
                             </td>
                             <td class="p-1 border-r border-black">
-                              {list.email}
+                              <Show
+                                when={list.email}
+                                fallback={
+                                  <span class="text-red-600 text-xs">
+                                    *Contact ICT department
+                                  </span>
+                                }
+                              >
+                                {list.email.toLowerCase()}
+                              </Show>
                             </td>
                             <td class="p-1 border-r border-black">
                               {list.phone_number}

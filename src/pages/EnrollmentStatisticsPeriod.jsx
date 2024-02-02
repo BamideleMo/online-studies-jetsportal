@@ -41,7 +41,9 @@ export default function EnrollmentStatisticsPeriod() {
 
   return (
     <MetaProvider>
-      <Title>Enrollment Statistics - ECWA Theological Seminary, Jos (JETS)</Title>
+      <Title>
+        Enrollment Statistics - ECWA Theological Seminary, Jos (JETS)
+      </Title>
       <Meta
         name="description"
         content="Enrollment Statistics on ECWA Theological Seminary, Jos (JETS)"
@@ -54,9 +56,7 @@ export default function EnrollmentStatisticsPeriod() {
           </h2>
           <div class="bg-yellow-100 rounded-md border border-yellow-200  p-1 space-y-0.5">
             <b class="block">Instruction:</b>
-            <p>
-              Choose the appropriate semester(s) and session.
-            </p>
+            <p>Choose the appropriate semester(s) and session.</p>
           </div>
           <div class="border border-gray-600 shadow-md rounded p-2 lg:p-4 overflow-x-auto">
             <table
@@ -101,7 +101,8 @@ export default function EnrollmentStatisticsPeriod() {
                             <td class="p-4">
                               <A
                                 href={
-                                  "/admin/enrollment-statistics/" + period.period_id
+                                  "/admin/enrollment-statistics/" +
+                                  period.period_id
                                 }
                                 class="green-btn p-3 border border-black text-center hover:opacity-60"
                               >
