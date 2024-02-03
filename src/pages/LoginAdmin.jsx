@@ -49,8 +49,14 @@ export default function LoginAdmin() {
         setMessage(result.response);
         setIsProcessing(false);
       } else {
-        setData(result.response);
-
+        var store = {
+          custom_id: result.response.custom_id,
+          role: result.response.role,
+          surname: result.response.surname,
+          token: result.response.token,
+          expiry: now.getTime() + 10800000,
+        }
+        setData(store);
         localStorage.setItem("jetsUser", JSON.stringify(data()));
 
         navigate("/admin/dashboard", { replace: true });
