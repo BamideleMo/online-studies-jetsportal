@@ -55,7 +55,7 @@ export default function LoginAdmin() {
           surname: result.response.surname,
           token: result.response.token,
           expiry: now.getTime() + 10800000,
-        }
+        };
         setData(store);
         localStorage.setItem("jetsUser", JSON.stringify(data()));
 

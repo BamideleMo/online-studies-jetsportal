@@ -9,6 +9,14 @@ const VITE_API_URL = import.meta.env["VITE_API_URL"];
 
 const fetchPeriods = async () => {
   const navigate = useNavigate();
+  const now = new Date();
+  if (
+    localStorage.getItem("jetsUser") &&
+    now.getTime() > JSON.parse(localStorage.getItem("jetsUser")).expiry
+  ) {
+    localStorage.removeItem("jetsUser");
+    navigate("/");
+  }
 
   if (
     localStorage.getItem("jetsUser") &&
@@ -54,9 +62,7 @@ export default function AddDropLogPeriod() {
           </h2>
           <div class="bg-yellow-100 rounded-md border border-yellow-200  p-1 space-y-0.5">
             <b class="block">Instruction:</b>
-            <p>
-              Choose the appropriate semester(s) and session.
-            </p>
+            <p>Choose the appropriate semester(s) and session.</p>
           </div>
           <div class="border border-gray-600 shadow-md rounded p-2 lg:p-4">
             <table
@@ -100,9 +106,7 @@ export default function AddDropLogPeriod() {
                             </td>
                             <td class="p-4">
                               <A
-                                href={
-                                  "/admin/add-drop-log/" + period.period_id
-                                }
+                                href={"/admin/add-drop-log/" + period.period_id}
                                 class="green-btn p-3 border border-black text-center hover:opacity-60"
                               >
                                 Proceed
@@ -116,7 +120,7 @@ export default function AddDropLogPeriod() {
                 >
                   <tr>
                     <td colSpan={5} class="p-1 text-center">
-                      <Loading/>
+                      <Loading />
                     </td>
                   </tr>
                 </Show>

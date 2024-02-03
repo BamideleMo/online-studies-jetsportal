@@ -8,6 +8,14 @@ const VITE_API_URL = import.meta.env["VITE_API_URL"];
 
 const fetchPeriods = async () => {
   const navigate = useNavigate();
+  const now = new Date();
+  if (
+    localStorage.getItem("jetsUser") &&
+    now.getTime() > JSON.parse(localStorage.getItem("jetsUser")).expiry
+  ) {
+    localStorage.removeItem("jetsUser");
+    navigate("/");
+  }
 
   if (
     localStorage.getItem("jetsUser") &&
@@ -53,9 +61,7 @@ export default function RegistrationPeriod() {
           </h2>
           <div class="bg-yellow-100 rounded-md border border-yellow-200  p-1 space-y-0.5">
             <b class="block">Instruction:</b>
-            <p>
-              Choose the appropriate semester(s) and session.
-            </p>
+            <p>Choose the appropriate semester(s) and session.</p>
           </div>
           <div class="border border-gray-600 shadow-md rounded p-2 lg:p-4">
             <table

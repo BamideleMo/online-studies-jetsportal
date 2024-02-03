@@ -25,6 +25,10 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     const navigate = useNavigate();
     const now = new Date()
+    if (localStorage.getItem("jetsUser") && now.getTime() > JSON.parse(localStorage.getItem("jetsUser")).expiry){
+        localStorage.removeItem("jetsUser");
+        navigate("/");
+    }
     if (
       localStorage.getItem("jetsUser") &&
       JSON.parse(localStorage.getItem("jetsUser")).role === "admin"
@@ -46,7 +50,6 @@ export default function AdminDashboard() {
         }
       );
       const result = await response.json();
-      console.log(result.response)
       if (result.response === "Expired token") {
         localStorage.removeItem("jetsUser");
         navigate("/");

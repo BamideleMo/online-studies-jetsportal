@@ -22,6 +22,14 @@ const VITE_API_URL = import.meta.env["VITE_API_URL"];
 const [initialPeriod, setInitialPeriod] = createStore([]);
 const fetchPeriods = async () => {
   const navigate = useNavigate();
+  const now = new Date();
+  if (
+    localStorage.getItem("jetsUser") &&
+    now.getTime() > JSON.parse(localStorage.getItem("jetsUser")).expiry
+  ) {
+    localStorage.removeItem("jetsUser");
+    navigate("/");
+  }
   if (
     localStorage.getItem("jetsUser") &&
     JSON.parse(localStorage.getItem("jetsUser")).role === "admin"
