@@ -21,8 +21,9 @@ export default function Header() {
     localStorage.removeItem("jetsUser");
     navigate("/", { replace: true });
   };
-  const now = new Date();
+
   createEffect(() => {
+    var now = new Date();
     if (
       JSON.parse(localStorage.getItem("jetsUser")) &&
       !JSON.parse(localStorage.getItem("jetsUser")).expiry
