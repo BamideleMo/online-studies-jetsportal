@@ -30,6 +30,7 @@ export default function LoginStudent() {
   const submit = async (event) => {
     event.preventDefault();
     setIsProcessing(true);
+    const now = new Date();
 
     try {
       //Call API here:

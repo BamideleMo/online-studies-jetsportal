@@ -22,8 +22,8 @@ export default function Header() {
     navigate("/", { replace: true });
   };
 
+  const now = new Date();
   createEffect(() => {
-    var now = new Date();
     if (
       JSON.parse(localStorage.getItem("jetsUser")) &&
       !JSON.parse(localStorage.getItem("jetsUser")).expiry
@@ -33,7 +33,7 @@ export default function Header() {
     }
     if (
       localStorage.getItem("jetsUser") &&
-      this.now.getTime() > JSON.parse(localStorage.getItem("jetsUser")).expiry
+      now.getTime() > JSON.parse(localStorage.getItem("jetsUser")).expiry
     ) {
       localStorage.removeItem("jetsUser");
       navigate("/");

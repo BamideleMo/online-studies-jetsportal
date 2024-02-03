@@ -29,6 +29,7 @@ export default function LoginFaculty() {
   const submit = async (event) => {
     event.preventDefault();
     setIsProcessing(true);
+    const now = new Date();
 
     try {
       //Call API here:
