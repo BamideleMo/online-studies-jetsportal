@@ -2,12 +2,10 @@ import { useFormHandler } from "solid-form-handler";
 import { zodSchema } from "solid-form-handler/zod";
 import { z } from "zod";
 import { MetaProvider, Title, Meta } from "@solidjs/meta";
-import { Show, createSignal, createEffect } from "solid-js";
-import { useNavigate } from "@solidjs/router";
+import { Show, createSignal } from "solid-js";
 
 import Header from "../components/Header";
 import TextInput from "../components/TextInput";
-import ResetPasswordForm from "../components/ResetPasswordForm";
 
 const schema = z.object({
   student_id: z.string().min(1, "*Required"),

@@ -25,7 +25,6 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     const navigate = useNavigate();
     const now = new Date();
-    console.log(JSON.parse(localStorage.getItem("jetsUser")).expiry);
     if (
       localStorage.getItem("jetsUser") &&
       now.getTime() > JSON.parse(localStorage.getItem("jetsUser")).expiry

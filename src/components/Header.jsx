@@ -1,5 +1,5 @@
 import { A } from "@solidjs/router";
-import { Show, createSignal } from "solid-js";
+import { Show, createSignal, createEffect } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 import logo from "../assets/logo.png";
 
@@ -21,6 +21,15 @@ export default function Header() {
     localStorage.removeItem("jetsUser");
     navigate("/", { replace: true });
   };
+  createEffect(() => {
+    if (
+      JSON.parse(localStorage.getItem("jetsUser")) &&
+      !JSON.parse(localStorage.getItem("jetsUser")).expiry
+    ) {
+      localStorage.removeItem("jetsUser");
+      navigate("/");
+    }
+  });
 
   return (
     <>
@@ -74,7 +83,8 @@ export default function Header() {
               <Show
                 when={
                   localStorage.getItem("jetsUser") &&
-                  JSON.parse(localStorage.getItem("jetsUser")).role === "faculty"
+                  JSON.parse(localStorage.getItem("jetsUser")).role ===
+                    "faculty"
                 }
               >
                 <Faculty />
