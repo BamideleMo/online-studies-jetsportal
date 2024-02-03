@@ -22,9 +22,17 @@ export default function Header() {
     navigate("/", { replace: true });
   };
   createEffect(() => {
+    const now = new Date();
     if (
       JSON.parse(localStorage.getItem("jetsUser")) &&
       !JSON.parse(localStorage.getItem("jetsUser")).expiry
+    ) {
+      localStorage.removeItem("jetsUser");
+      navigate("/");
+    }
+    if (
+      localStorage.getItem("jetsUser") &&
+      now.getTime() > JSON.parse(localStorage.getItem("jetsUser")).expiry
     ) {
       localStorage.removeItem("jetsUser");
       navigate("/");
