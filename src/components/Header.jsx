@@ -33,7 +33,7 @@ export default function Header() {
     }
     if (
       localStorage.getItem("jetsUser") &&
-      now.getTime() > JSON.parse(localStorage.getItem("jetsUser")).expiry
+      this.now.getTime() > JSON.parse(localStorage.getItem("jetsUser")).expiry
     ) {
       localStorage.removeItem("jetsUser");
       navigate("/");
