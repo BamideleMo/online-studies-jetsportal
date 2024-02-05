@@ -415,6 +415,14 @@ export default function AssignCourses() {
                               formHandler={formHandler}
                             />
                           </div>
+                          <div class="autocomplete" style="width:300px;">
+                            <input
+                              id="myInput"
+                              type="text"
+                              name="myCountry"
+                              placeholder="Country"
+                            />
+                          </div>
                           <Show when={message() !== ""}>
                             <div class="bg-purple-200 text-purple-900 p-3 text-center animate-pulse border-l-2 border-black">
                               {message()}
@@ -570,7 +578,7 @@ export default function AssignCourses() {
                               <span>{course.faculty_first_name}</span>
                               <span>{course.faculty_other_names}</span>
                             </td>
-                            <td class="p-4 space-x-1">
+                            <td class="p-4 flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:space-x-1">
                               <button
                                 onClick={() =>
                                   unassign(course.code, course.faculty_id)

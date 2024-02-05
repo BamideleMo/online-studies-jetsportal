@@ -203,13 +203,13 @@ export default function RegistrationLog() {
                   fresh_returning: registrations[i].fresh_returning,
                   current_level: registrations[i].current_level,
                 };
+
                 PGDT_array.push(student);
               }
               if (typeof ba_student !== "undefined") {
                 const user = allUsers.find(
                   (allUser) => allUser.custom_id === ba_student.custom_id
                 );
-                console.log(user, ba_student.custom_id);
                 var student = {
                   ledger_number: ba_student.ledger_number,
                   programme: ba_student.programme,
