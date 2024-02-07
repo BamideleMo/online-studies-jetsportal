@@ -591,9 +591,6 @@ export default function AssignCourses() {
                                 href={
                                   "/admin/class-list/" +
                                   params.periodId +
-                                  "/" +
-                                  JSON.parse(localStorage.getItem("jetsUser"))
-                                    .custom_id +
                                   "?code=" +
                                   course.code +
                                   "&title=" +

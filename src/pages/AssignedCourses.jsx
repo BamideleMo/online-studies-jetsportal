@@ -232,8 +232,6 @@ export default function AssignCourses() {
                                   "/faculty/class-list/" +
                                   params.periodId +
                                   "/" +
-                                  JSON.parse(localStorage.getItem("jetsUser"))
-                                    .custom_id +
                                   "?code=" +
                                   course.code +
                                   "&title=" +

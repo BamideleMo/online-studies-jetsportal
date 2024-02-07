@@ -19,6 +19,7 @@ export default function ClassList() {
   const [registeredList, setRegisteredList] = createStore([]);
   const [addedList, setAddedList] = createStore([]);
   const [droppedList, setDroppedList] = createStore([]);
+  const [lecturer, setLecturer] = createSignal("");
   const [registeredListEmpty, setRegisteredListEmpty] = createSignal(false);
   const [addedListEmpty, setAddedListEmpty] = createSignal(false);
   const [droppedListEmpty, setDroppedListEmpty] = createSignal(false);
@@ -89,9 +90,23 @@ export default function ClassList() {
           },
           method: "GET",
         }).then((response) => response.json());
+        const request4 = fetch(
+          VITE_API_URL + "/api/view-assigned-courses/" + params.periodId,
+          {
+            mode: "cors",
+            headers: {
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("jetsUser")).token
+              }`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            method: "GET",
+          }
+        ).then((response) => response.json());
 
-        Promise.all([request1, request2, request3])
-          .then(([data1, data2, data3]) => {
+        Promise.all([request1, request2, request3, request4])
+          .then(([data1, data2, data3, data4]) => {
             var completed_registration = data1.response.filter(
               (registration) => registration.registration_status == "completed"
             );
@@ -200,6 +215,27 @@ export default function ClassList() {
               }
             }
 
+            for (let i = 0; i < data4.response.length; i++) {
+              for (
+                let k = 0;
+                k < JSON.parse(data4.response[i].courses).length;
+                k++
+              ) {
+                if (
+                  JSON.parse(data4.response[i].courses)[k] === searchParams.code
+                ) {
+                  console.log(
+                    JSON.parse(data4.response[i].courses)[k],
+                    data4.response[i].custom_id
+                  );
+                  const lecturer = data2.response.find(
+                    (user) => user.custom_id === data4.response[i].custom_id
+                  );
+                  setLecturer(lecturer);
+                }
+              }
+            }
+
             setRegisteredList(registeredListArray);
             setAddedList(addedListArray);
             setDroppedList(droppedListArray);
@@ -262,6 +298,17 @@ export default function ClassList() {
     setViewPassport(passport);
   };
 
+  const getOptPassport = (val) => {
+    if (val) {
+      var pass1 = val.substring(0, 49);
+      var pass2 = val.substring(48);
+      var passport = pass1 + "c_scale,w_500/f_auto" + pass2;
+      return passport;
+    } else {
+      return "wait";
+    }
+  };
+
   const [resources] = createResource(fetchResources);
 
   return (
@@ -311,7 +358,6 @@ export default function ClassList() {
             <p>
               Find below list of students registered during registration period,
               students who later added, and those who have dropped this course.
-              
               If using a mobile device, you may have to scroll or tilt sideways.
             </p>
           </div>
@@ -357,6 +403,67 @@ export default function ClassList() {
               cellSpacing={0}
               class="w-full my-4 border border-black"
             >
+              <Show
+                when={
+                  JSON.parse(localStorage.getItem("jetsUser")).role ===
+                    "student" ||
+                  JSON.parse(localStorage.getItem("jetsUser")).role === "admin"
+                }
+              >
+                <thead>
+                  <tr class="bg-gray-400 border-b border-black text-blue-900">
+                    <th class="p-1 text-left" colSpan={7}>
+                      :: LECTURER
+                    </th>
+                  </tr>
+                  <tr>
+                    <td class="p-4 text-left" colSpan={7}>
+                      <div class="flex">
+                        <div class="w-28">
+                          {lecturer().passport_url ? (
+                            <img
+                              src={getOptPassport(lecturer().passport_url)}
+                              class="mx-auto w-11/12"
+                            />
+                          ) : (
+                            <img
+                              src="https://cdn-icons-png.flaticon.com/512/9131/9131529.png"
+                              class="w-11/12 mx-auto"
+                            />
+                          )}
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-6">
+                          <div>
+                            <b>Name:</b>
+                            <br />
+                            <span class="flex">
+                              {lecturer().title ? (
+                                <span class="mr-1">{lecturer().title}</span>
+                              ) : (
+                                ""
+                              )}
+                              <span class="uppercase">
+                                {lecturer().surname}
+                              </span>
+                              <span class="capitalize mx-1">
+                                {lecturer().first_name}
+                              </span>
+                              <span class="capitalize">
+                                {lecturer().other_names}
+                              </span>
+                            </span>
+                          </div>
+                          <div>
+                            <b>Email Address:</b>
+                            <br />
+                            {lecturer().username}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </thead>
+              </Show>
               <thead class="bg-blue-950 text-white border-b border-black">
                 <tr>
                   <td class="p-4 border-r border-black">#.</td>
@@ -420,12 +527,15 @@ export default function ClassList() {
                               {list.matriculation_number}
                             </td>
                             <td class="p-4 border-r border-black">
-                              <Show when={list.email} fallback={
-                                <span class="text-red-600 text-xs">
-                                  *Contact ICT department
-                                </span>
-                              }>
-                              {list.email.toLowerCase()}
+                              <Show
+                                when={list.email}
+                                fallback={
+                                  <span class="text-red-600 text-xs">
+                                    *Contact ICT department
+                                  </span>
+                                }
+                              >
+                                {list.email.toLowerCase()}
                               </Show>
                             </td>
                             <td class="p-4 border-r border-black">

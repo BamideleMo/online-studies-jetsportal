@@ -23,6 +23,8 @@ import ConfirmDetails from "./pages/ConfirmDetails";
 import ResetPassword from "./pages/ResetPassword";
 import PrintOuts from "./pages/PrintOuts";
 import PrintRegistrationForm from "./pages/PrintRegistrationForm";
+import RegisteredCoursesPeriod from "./pages/RegisteredCoursesPeriod";
+import RegisteredCourses from "./pages/RegisteredCourses";
 //
 import AdminLogin from "./pages/LoginAdmin";
 import Dashboard from "./pages/Dashboard";
@@ -111,6 +113,15 @@ render(
         component={PrintAddDropForm}
       />
       <Route path="/student/library-resources" component={LibraryResources} />
+      <Route
+        path="/student/my-registered-courses-period"
+        component={RegisteredCoursesPeriod}
+      />
+      <Route
+        path="/student/my-registered-courses/:periodId/:customId"
+        component={RegisteredCourses}
+      />
+      <Route path="/student/class-list/:periodId" component={ClassList} />
       {/*  */}
 
       <Route path="/admin/login" component={AdminLogin} />
@@ -186,10 +197,7 @@ render(
       />
       <Route path="/admin/assign-courses/:periodId" component={AssignCourses} />
       <Route path="/admin/manage-faculty" component={ManageFaculty} />
-      <Route
-        path="/admin/class-list/:periodId/:facultyId"
-        component={ClassList}
-      />
+      <Route path="/admin/class-list/:periodId" component={ClassList} />
 
       {/*  */}
 
@@ -204,10 +212,7 @@ render(
         path="/faculty/assigned-courses/:periodId"
         component={AssignedCourses}
       />
-      <Route
-        path="/faculty/class-list/:periodId/:facultyId"
-        component={ClassList}
-      />
+      <Route path="/faculty/class-list/:periodId" component={ClassList} />
       <Route path="/print-class-list/:periodId" component={PrintClassList} />
       <Route path="/faculty/library-resources" component={LibraryResources} />
     </Router>

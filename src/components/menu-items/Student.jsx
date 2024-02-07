@@ -42,7 +42,7 @@ export default function Student() {
       </li>
       <li class="border-b border-black py-3">
         <A
-          href="/student/my-registered-courses"
+          href="/student/my-registered-courses-period"
           class="flex justify-between hover:text-black"
         >
           <span>My Registered Courses</span>
