@@ -144,7 +144,7 @@ export default function RegisteredCourses() {
                   <td class="p-4 border-r border-black">#.</td>
                   <td class="p-4 border-r border-black">Code</td>
                   <td class="p-4 border-r border-black">Title</td>
-                  <td class="p-4 border-r border-black">Hours</td>
+                  <td class="p-4 border-r border-black">Hrs</td>
                   <td class="p-4">Class List</td>
                 </tr>
               </thead>

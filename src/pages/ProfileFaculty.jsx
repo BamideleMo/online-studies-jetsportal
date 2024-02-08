@@ -90,7 +90,7 @@ export default function ProfileFaculty() {
                   </A>
                   ]
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-12">
                   <div>
                     <b>Name:</b> [
                     <span class="text-xs text-red-600">Edit Name</span>

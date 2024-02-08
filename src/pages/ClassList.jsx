@@ -20,6 +20,7 @@ export default function ClassList() {
   const [addedList, setAddedList] = createStore([]);
   const [droppedList, setDroppedList] = createStore([]);
   const [lecturer, setLecturer] = createSignal("");
+  const [lecturerEmpty, setLecturerEmpty] = createSignal("");
   const [registeredListEmpty, setRegisteredListEmpty] = createSignal(false);
   const [addedListEmpty, setAddedListEmpty] = createSignal(false);
   const [droppedListEmpty, setDroppedListEmpty] = createSignal(false);
@@ -249,6 +250,9 @@ export default function ClassList() {
             if (droppedListArray.length < 1) {
               setDroppedListEmpty(true);
             }
+            if (!lecturer()) {
+              setLecturerEmpty(true);
+            }
           })
           .catch((error) => {
             console.error(error);
@@ -418,8 +422,8 @@ export default function ClassList() {
                   </tr>
                   <tr>
                     <td class="p-4 text-left" colSpan={7}>
-                      <div class="flex">
-                        <div class="w-28">
+                      <div class="flex space-x-2 lg:space-x-4">
+                        <div class="w-20 sm:w-28">
                           {lecturer().passport_url ? (
                             <img
                               src={getOptPassport(lecturer().passport_url)}
@@ -432,32 +436,43 @@ export default function ClassList() {
                             />
                           )}
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-6">
-                          <div>
-                            <b>Name:</b>
-                            <br />
-                            <span class="flex">
-                              {lecturer().title ? (
-                                <span class="mr-1">{lecturer().title}</span>
-                              ) : (
-                                ""
-                              )}
-                              <span class="uppercase">
-                                {lecturer().surname}
-                              </span>
-                              <span class="capitalize mx-1">
-                                {lecturer().first_name}
-                              </span>
-                              <span class="capitalize">
-                                {lecturer().other_names}
-                              </span>
-                            </span>
-                          </div>
-                          <div>
-                            <b>Email Address:</b>
-                            <br />
-                            {lecturer().username}
-                          </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-6 lg:py-8">
+                          <Show
+                            when={lecturerEmpty()}
+                            fallback={
+                              <>
+                                <div>
+                                  <b>Name:</b>
+                                  <br />
+                                  <span class="flex">
+                                    {lecturer().title ? (
+                                      <span class="mr-1">
+                                        {lecturer().title}
+                                      </span>
+                                    ) : (
+                                      ""
+                                    )}
+                                    <span class="uppercase">
+                                      {lecturer().surname}
+                                    </span>
+                                    <span class="capitalize mx-1">
+                                      {lecturer().first_name}
+                                    </span>
+                                    <span class="capitalize">
+                                      {lecturer().other_names}
+                                    </span>
+                                  </span>
+                                </div>
+                                <div>
+                                  <b>Email Address:</b>
+                                  <br />
+                                  {lecturer().username}
+                                </div>
+                              </>
+                            }
+                          >
+                            <div class="pt-4">No lecturer assigned yet.</div>
+                          </Show>
                         </div>
                       </div>
                     </td>
