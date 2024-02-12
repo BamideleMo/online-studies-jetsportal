@@ -33,7 +33,7 @@ export default function Student() {
       </li>
       <li class="border-b border-black py-3">
         <A
-          href="/student/semester-registration"
+          href="/student/semester-registration-period"
           class="flex justify-between hover:text-black"
         >
           <span>Semester Registration</span>
@@ -60,7 +60,7 @@ export default function Student() {
       </li>
       <li class="border-b border-black py-3">
         <A
-          href="/student/semester-add-drop"
+          href="/student/add-drop-period"
           class="flex justify-between hover:text-black"
         >
           <span>Semester Add/Drop</span>

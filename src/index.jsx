@@ -17,7 +17,7 @@ import Passport from "./pages/Passport";
 import ProfileStudent from "./pages/ProfileStudent";
 import PortalWallet from "./pages/PortalWallet";
 import AccommodationWallet from "./pages/AccommodationWallet";
-import SemesterRegistration from "./pages/SemesterRegistration";
+import SemesterRegistrationPeriod from "./pages/SemesterRegistrationPeriod";
 import RegistrationForm from "./pages/RegistrationForm";
 import ConfirmDetails from "./pages/ConfirmDetails";
 import ResetPassword from "./pages/ResetPassword";
@@ -25,6 +25,7 @@ import PrintOuts from "./pages/PrintOuts";
 import PrintRegistrationForm from "./pages/PrintRegistrationForm";
 import RegisteredCoursesPeriod from "./pages/RegisteredCoursesPeriod";
 import RegisteredCourses from "./pages/RegisteredCourses";
+import AddDropPeriod from "./pages/AddDropPeriod";
 //
 import AdminLogin from "./pages/LoginAdmin";
 import Dashboard from "./pages/Dashboard";
@@ -89,8 +90,8 @@ render(
         component={AccommodationWallet}
       />
       <Route
-        path="/student/semester-registration"
-        component={SemesterRegistration}
+        path="/student/semester-registration-period"
+        component={SemesterRegistrationPeriod}
       />
       <Route
         path="/student/registration-form/:periodId/:customId"
@@ -122,6 +123,7 @@ render(
         component={RegisteredCourses}
       />
       <Route path="/student/class-list/:periodId" component={ClassList} />
+      <Route path="/student/add-drop-period" component={AddDropPeriod} />
       {/*  */}
 
       <Route path="/admin/login" component={AdminLogin} />

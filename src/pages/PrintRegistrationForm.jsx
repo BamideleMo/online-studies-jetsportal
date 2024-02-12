@@ -213,16 +213,18 @@ export default function PrintRegistrationForm() {
           if (result.response.hours === "P/F") {
             var course_amount = 7500;
             var course_hrs = 1;
+            var display_course_hrs = "P/F";
           } else {
             var course_amount = result2.response.amount;
             var course_hrs = result.response.hours;
+            var display_course_hrs = course_hrs;
           }
 
           var sub_amount = parseInt(course_amount) * parseInt(course_hrs);
 
           c[arr[i]] = [
             result.response.title,
-            course_hrs,
+            display_course_hrs,
             course_amount,
             sub_amount,
           ]; //create object

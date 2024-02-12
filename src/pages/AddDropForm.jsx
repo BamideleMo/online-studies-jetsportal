@@ -11,6 +11,7 @@ import { Select } from "../components/Select";
 import AddDropDeanConfirmationForm from "../components/AddDropDeanConfirmationForm";
 import SendSMSForm from "../components/SendSMSForm";
 import Loading from "../components/Loading";
+import Warning from "../components/icons/Warning";
 
 const schema = z.object({
   level: z.string().min(1, "*Required"),
@@ -177,24 +178,28 @@ export default function RegistrationForm() {
               setRegComment(registration.comment);
               setPeriod(data2.response);
               setUser(data0.response);
+
               if (registration.picked_courses) {
                 getCourseDetails(
                   JSON.parse(registration.picked_courses),
-                  "picked"
+                  "picked",
+                  JSON.parse(registration.dropped_courses)
                 );
                 setPickedCourses(JSON.parse(registration.picked_courses));
               }
               if (registration.added_courses) {
                 getCourseDetails(
                   JSON.parse(registration.added_courses),
-                  "added"
+                  "added",
+                  null
                 );
                 setAddedCourses(JSON.parse(registration.added_courses));
               }
               if (registration.dropped_courses) {
                 getCourseDetails(
                   JSON.parse(registration.picked_courses),
-                  "dropped"
+                  "dropped",
+                  null
                 );
                 setDroppedCourses(JSON.parse(registration.dropped_courses));
               }
@@ -223,7 +228,7 @@ export default function RegistrationForm() {
   const c = {};
   var total_cu = 0;
   var total_amt = 0;
-  const getCourseDetails = async (arr, which) => {
+  const getCourseDetails = async (arr, which, arr2) => {
     for (let i = 0; i < arr.length; i++) {
       try {
         const res = await fetch(VITE_API_URL + "/api/course/" + arr[i], {
@@ -269,20 +274,38 @@ export default function RegistrationForm() {
 
           if (result.response.hours === "P/F") {
             var course_amount = 7500;
-            var course_hrs = 1;
+            var course_hrs = 0;
+            var display_course_hrs = "P/F";
+
+            var sub_amount = parseInt(course_amount) * 1;
           } else {
             var course_amount = result2.response.amount;
             var course_hrs = result.response.hours;
+            var display_course_hrs = course_hrs;
+
+            var sub_amount = parseInt(course_amount) * parseInt(course_hrs);
           }
 
-          var sub_amount = parseInt(course_amount) * parseInt(course_hrs);
+          if (arr2 && arr2.includes(arr[i])) {
+            var status = "dropped";
+            if (result.response.hours === "P/F") {
+              course_amount = parseInt(course_amount) - 7500;
+              course_hrs = 1;
+            } else {
+              course_amount = parseInt(course_amount) - result2.response.amount;
+              course_hrs = parseInt(course_hrs) - result.response.hours;
+            }
+          } else {
+            var status = "";
+          }
 
           c[arr[i]] = [
             result.response.title,
-            course_hrs,
+            display_course_hrs,
             course_amount,
             sub_amount,
-          ]; //create object
+            status,
+          ];
           total_cu = total_cu + parseInt(course_hrs);
           total_amt = total_amt + parseInt(sub_amount);
         }
@@ -290,7 +313,6 @@ export default function RegistrationForm() {
         console.error(error);
       }
     }
-    console.log(arr);
 
     if (which === "picked") {
       setDetPickedCourses(c);
@@ -515,7 +537,7 @@ export default function RegistrationForm() {
       dropped_courses: JSON.stringify(new_courses),
     };
 
-    var new_cu = parseInt(dropTotalCU()) - parseInt(dropCourseCU);
+    var new_cu = parseInt(totalCU()) - parseInt(dropCourseCU);
     var new_amt =
       parseInt(portalWallet()) +
       parseInt(dropCourseAmt) * parseInt(dropCourseCU);
@@ -684,6 +706,17 @@ export default function RegistrationForm() {
       });
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const getOptPassport = (val) => {
+    if (val) {
+      var pass1 = val.substring(0, 49);
+      var pass2 = val.substring(48);
+      var passport = pass1 + "c_scale,w_500/f_auto" + pass2;
+      return passport;
+    } else {
+      return "wait";
     }
   };
 
@@ -860,22 +893,21 @@ export default function RegistrationForm() {
                 <div class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
                   <div class="w-80 sm:w-10/12 lg:w-6/12 mx-auto bg-white rounded-md p-6">
                     <h2 class="text-center text-blue-900 font-semibold">
-                      Please Confirm
+                      ARE YOU SURE you want to DROP <b>{dropCourseCode()}</b>?
                     </h2>
 
-                    <div class="my-2 border-t border-b py-4 border-black text-center space-y-4">
+                    <div class="my-2 border-t border-b py-4 border-black text-left space-y-4">
+                      <Warning />
                       <p>
-                        ARE YOU SURE you want to DROP <b>dropCourseCode</b>?
-                      </p>
-                      <p>
-                        <b>Caution:</b> Please consult your HOD or the Dean's
-                        office for academic advice before dropping this course.
-                        You will NOT be able to re-add this course again after
-                        you drop it.
+                        <b>** Note:</b>
+                        <br /> Please consult your HOD or the Dean's office for
+                        academic advice before dropping this course (
+                        <b>{dropCourseCode()}</b>). You will NOT be able to add
+                        it back after you drop it.
                       </p>
                       <div class="grid grid-cols-2 gap-4">
                         <button
-                          onClick={() => dropThisCourse()}
+                          onClick={() => dropThisCourse(dropCourseCode())}
                           class="red-btn text-white p-3 hover:opacity-60"
                         >
                           YES! Drop this course.
@@ -1024,7 +1056,9 @@ export default function RegistrationForm() {
                                 <td class="p-4" rowSpan={4}>
                                   <div class="w-40 max-h-40 overflow-hidden rounded-md">
                                     <img
-                                      src={getOptPassport(registrationData().user.passport_url)}
+                                      src={getOptPassport(
+                                        registrationData().user.passport_url
+                                      )}
                                       class="w-full"
                                     />
                                   </div>

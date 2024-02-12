@@ -8,6 +8,7 @@ import { Match, Show, Switch, createResource, createSignal } from "solid-js";
 import Header from "../components/Header";
 import { Select } from "../components/Select";
 import Loading from "../components/Loading";
+import Failure from "../components/icons/Failure";
 
 const schema = z.object({
   fresh_returning: z.string().min(1, "*Required"),
@@ -15,7 +16,7 @@ const schema = z.object({
   current_level: z.string().min(1, "*Required"),
 });
 
-export default function SemesterRegistration() {
+export default function AddDropPeriod() {
   const navigate = useNavigate();
   const VITE_API_URL = import.meta.env["VITE_API_URL"];
   const [showModal, setShowModal] = createSignal(false);
@@ -27,6 +28,7 @@ export default function SemesterRegistration() {
   const [programmeCategory, setProgrammeCategory] = createSignal("");
   const [underPost, setUnderPost] = createSignal("");
   const [department, setDepartment] = createSignal("");
+  const [notRegistered, setNotRegistered] = createSignal(false);
 
   const formHandler = useFormHandler(zodSchema(schema));
   const { formData } = formHandler;
@@ -200,7 +202,7 @@ export default function SemesterRegistration() {
       });
   };
 
-  const startContinueReg = async (period_id) => {
+  const startContinueAddDrop = async (period_id) => {
     const custom_id = JSON.parse(localStorage.getItem("jetsUser")).custom_id;
     setIsProcessing(true);
     try {
@@ -227,42 +229,15 @@ export default function SemesterRegistration() {
 
       if (result.response) {
         setIsProcessing(false);
-        navigate("/student/registration-form/" + period_id + "/" + custom_id);
-      } else {
-        const response = await fetch(
-          VITE_API_URL + "/api/student/" + custom_id,
-          {
-            mode: "cors",
-            headers: {
-              Authorization: `Bearer ${
-                JSON.parse(localStorage.getItem("jetsUser")).token
-              }`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-            method: "GET",
-          }
-        );
-        const result2 = await response.json();
-
-        if (result2.response.department === null) {
-          navigate("/student/confirm-details");
+        if (result.response.registration_status === "completed") {
+          navigate("/student/add-drop-form/" + period_id + "/" + custom_id);
         } else {
-          setAffiliationStatus(result2.response.affiliation_status);
-          setProgramme(result2.response.programme);
-          setProgrammeCategory(result2.response.programme_category);
-          if (
-            result2.response.programme_category === "Diploma Programme" ||
-            result2.response.programme_category === "Bachelor of Arts Programme"
-          ) {
-            setUnderPost("undergraduate");
-          } else {
-            setUnderPost("postgraduate");
-          }
           setIsProcessing(false);
-          setShowModal(true);
-          setPeriodId(period_id);
+          setNotRegistered(true);
         }
+      } else {
+        setIsProcessing(false);
+        setNotRegistered(true);
       }
     } catch (error) {
       console.error(error);
@@ -273,211 +248,35 @@ export default function SemesterRegistration() {
 
   return (
     <MetaProvider>
-      <Title>
-        Semester Registration - ECWA Theological Seminary, Jos (JETS)
-      </Title>
+      <Title>Add/Drop - ECWA Theological Seminary, Jos (JETS)</Title>
       <Meta
         name="description"
-        content="Semester Registration on ECWA Theological Seminary, Jos (JETS)"
+        content="Add/Drop on ECWA Theological Seminary, Jos (JETS)"
       />
       <div class="text-sm">
-        <Show when={showModal()}>
+        <Show when={notRegistered()}>
           <div class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
             <div class="w-80 sm:w-10/12 lg:w-6/12 mx-auto bg-white rounded-md p-6">
               <h2 class="text-center text-blue-900 font-semibold">
-                Start Registration
+                Not Registered!
               </h2>
 
-              <div class="my-2 border-t border-b py-4 border-black">
-                <Show when={programme() !== "" && affiliation_status() !== ""}>
-                  <form autocomplete="off" onSubmit={submit} class="space-y-4">
-                    <div>
-                      <Select
-                        label={"Are you a New/Fresh Student?"}
-                        name="fresh_returning"
-                        placeholder="Select"
-                        required={true}
-                        options={[
-                          {
-                            value: "new_student",
-                            label:
-                              "YES. I am a NEW/FRESH Student of " + programme(),
-                          },
-                          {
-                            value: "returning_student",
-                            label:
-                              "NO. I am a Returning Student of " + programme(),
-                          },
-                        ]}
-                        formHandler={formHandler}
-                      />
-                    </div>
-                    <Show when={affiliation_status() === "Yes"}>
-                      <div>
-                        <Select
-                          label={
-                            "How much do you wish to pay for affiliation this semester?"
-                          }
-                          name="affiliation_fee"
-                          placeholder="Select"
-                          required={true}
-                          options={[
-                            {
-                              value: "0",
-                              label: "0 Naira",
-                            },
-                          ]}
-                          formHandler={formHandler}
-                        />
-                      </div>
-                    </Show>
-                    <div>
-                      <Switch>
-                        <Match
-                          when={programmeCategory() === "Diploma Programme"}
-                        >
-                          <Select
-                            label="Current Level:"
-                            name="current_level"
-                            placeholder="Select"
-                            required={true}
-                            options={[
-                              {
-                                value: "1-Diploma",
-                                label: "Year 1 - Diploma",
-                              },
-                              {
-                                value: "2-Diploma",
-                                label: "Year 2 - Diploma",
-                              },
-                              {
-                                value: "3-Diploma",
-                                label: "Year 3 - Diploma",
-                              },
-                            ]}
-                            formHandler={formHandler}
-                          />
-                        </Match>
-                        <Match
-                          when={
-                            programmeCategory() === "Bachelor of Arts Programme"
-                          }
-                        >
-                          <Select
-                            label="Current Level:"
-                            name="current_level"
-                            placeholder="Select"
-                            required={true}
-                            options={[
-                              {
-                                value: "1-BA",
-                                label: "Year 1 - Bachelor of Arts",
-                              },
-                              {
-                                value: "2-BA",
-                                label: "Year 2 - Bachelor of Arts",
-                              },
-                              {
-                                value: "3-BA",
-                                label: "Year 3 - Bachelor of Arts",
-                              },
-                              {
-                                value: "4-BA",
-                                label: "Year 4 - Bachelor of Arts",
-                              },
-                            ]}
-                            formHandler={formHandler}
-                          />
-                        </Match>
-                        <Match when={programmeCategory() === "PGDT Programme"}>
-                          <Select
-                            label="Current Level:"
-                            name="current_level"
-                            placeholder="Select"
-                            required={true}
-                            options={[
-                              {
-                                value: "5",
-                                label: "PGDT",
-                              },
-                            ]}
-                            formHandler={formHandler}
-                          />
-                        </Match>
-                        <Match
-                          when={
-                            programmeCategory() === "Masters Programme" ||
-                            programmeCategory() ===
-                              "Master of Divinity Programme"
-                          }
-                        >
-                          <Select
-                            label="Current Level:"
-                            name="current_level"
-                            placeholder="Select"
-                            required={true}
-                            options={[
-                              {
-                                value: "6",
-                                label: "Year 1 - Master of Arts or MDiv",
-                              },
-                              {
-                                value: "7",
-                                label: "Year 2 - Master of Arts or MDiv",
-                              },
-                            ]}
-                            formHandler={formHandler}
-                          />
-                        </Match>
-                      </Switch>
-                    </div>
-                    <Show when={message() !== ""}>
-                      <div class="bg-purple-200 text-purple-900 p-3 text-center animate-pulse border-l-2 border-black">
-                        {message()}
-                      </div>
-                    </Show>
-                    <div class="text-right space-x-3">
-                      <Show
-                        when={formHandler.isFormInvalid()}
-                        fallback={
-                          <>
-                            <Show
-                              when={isProcessing()}
-                              fallback={
-                                <button
-                                  type="submit"
-                                  class="red-btn p-3 hover:opacity-60"
-                                >
-                                  Submit
-                                </button>
-                              }
-                            >
-                              <button
-                                disabled
-                                class="gray2-btn cursor-wait p-3"
-                              >
-                                Processing.. .
-                              </button>
-                            </Show>
-                          </>
-                        }
-                      >
-                        <button
-                          disabled
-                          class="gray-btn p-3 cursor-not-allowed"
-                        >
-                          Submit
-                        </button>
-                      </Show>
-                      <button
-                        onClick={() => setShowModal(false)}
-                        class="gray-btn text-white p-3 hover:opacity-60"
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </form>
-                </Show>
+              <div class="my-2 border-t border-b py-4 border-black text-center space-y-6">
+                <Failure />
+                <p>
+                  You are not registered for the chosen semester therefore you
+                  cannot Add/Drop courses.
+                </p>
+              </div>
+              <div class="text-right space-x-3">
+                <button
+                  onClick={() => {
+                    setNotRegistered(false);
+                  }}
+                  class="red-btn text-white p-3 hover:opacity-60"
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>
@@ -485,13 +284,13 @@ export default function SemesterRegistration() {
         <Header />
         <div class="mt-8 mb-20 w-11/12 mx-auto space-y-4">
           <h2 class="text-lg font-semibold text-center border-b border-red-600">
-            Semester Registration: Choose Period
+            Add/Drop: Choose Period
           </h2>
           <div class="bg-yellow-100 rounded-md border border-yellow-200 p-1 space-y-0.5">
             <b class="block">Instruction:</b>
             <p>
-              Choose the appropriate semester(s) and session you wish to
-              register for.
+              Choose the appropriate semester(s) and session you wish to do
+              Add/Drop.
             </p>
           </div>
           <div class="border border-gray-600 shadow-md rounded p-2 lg:p-4 overflow-x-auto">
@@ -540,18 +339,18 @@ export default function SemesterRegistration() {
                               {period.season}
                             </td>
                             <td class="p-4 border-r border-black capitalize font-semibold ">
-                              {period.registration_status}
+                              {period.add_drop_status}
                             </td>
                             <td class="p-4">
                               <Show
-                                when={period.registration_status === "closed"}
+                                when={period.add_drop_status === "closed"}
                                 fallback={
                                   <Show
                                     when={isProcessing()}
                                     fallback={
                                       <button
                                         onClick={() =>
-                                          startContinueReg(period.period_id)
+                                          startContinueAddDrop(period.period_id)
                                         }
                                         class="red-btn p-3 border border-black text-center hover:opacity-60"
                                       >
