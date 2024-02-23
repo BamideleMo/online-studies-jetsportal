@@ -125,6 +125,9 @@ export default function ManageFaculty() {
     event.preventDefault();
     setIsProcessing(true);
 
+    var email =
+      formData().first_name + "." + formData().surname + "@jets.edu.ng";
+    email = email.toLowerCase().replace(/\s/g, "");
     try {
       //Call API here:
       const response = await fetch(VITE_API_URL + "/auth/register", {
@@ -140,8 +143,7 @@ export default function ManageFaculty() {
           first_name: formData().first_name,
           other_names: formData().other_names,
           gender: formData().gender,
-          username:
-            formData().first_name + "." + formData().surname + "@jets.edu.ng",
+          username: email,
           phone_number: formData().phone_number,
           user_role: "faculty",
           status: "active",

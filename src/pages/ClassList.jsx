@@ -550,7 +550,7 @@ export default function ClassList() {
                                   </span>
                                 }
                               >
-                                {list.email.toLowerCase().trim()}
+                                {list.email.toLowerCase().replace(/\s/g, "")}
                               </Show>
                             </td>
                             <td class="p-4 border-r border-black">

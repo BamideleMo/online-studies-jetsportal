@@ -135,7 +135,7 @@ export default function CompleteProfile() {
         custom_id: JSON.parse(localStorage.getItem("jetsUser")).custom_id,
         ledger_number: formData().ledger_number.toUpperCase(),
         date_of_birth: formData().date_of_birth,
-        email: studentEmail().toLowerCase(),
+        email: studentEmail().toLowerCase().replace(/\s/g, ""),
         matriculation_number: matriculationNumber(),
         state_of_origin: formData().state_of_origin,
         country_of_origin: formData().country_of_origin,
