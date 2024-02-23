@@ -167,7 +167,6 @@ export default function RegistrationForm() {
                 setPickedCourses(JSON.parse(registration.picked_courses));
               }
               if (registration.dropped_courses) {
-                console.log(registration.dropped_courses);
                 getDroppedCourseDetails(
                   JSON.parse(registration.dropped_courses)
                 );
