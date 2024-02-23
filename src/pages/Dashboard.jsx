@@ -28,6 +28,7 @@ export default function AdminDashboard() {
       localStorage.getItem("jetsUser") &&
       JSON.parse(localStorage.getItem("jetsUser")).role === "admin"
     ) {
+      console.log(JSON.parse(localStorage.getItem("jetsUser")).token);
       const response = await fetch(
         VITE_API_URL +
           "/api/user/" +
