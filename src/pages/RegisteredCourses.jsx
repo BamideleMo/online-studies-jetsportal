@@ -39,6 +39,7 @@ export default function RegisteredCourses() {
               }`,
               "Content-Type": "application/json",
               Accept: "application/json",
+              "Cache-Control": "no-cache",
             },
             method: "GET",
           }
@@ -86,6 +87,7 @@ export default function RegisteredCourses() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       });

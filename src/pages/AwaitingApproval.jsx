@@ -60,6 +60,7 @@ export default function RegistrationLog() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }
@@ -80,6 +81,7 @@ export default function RegistrationLog() {
               }`,
               "Content-Type": "application/json",
               Accept: "application/json",
+              "Cache-Control": "no-cache",
             },
             method: "GET",
           }
@@ -93,6 +95,7 @@ export default function RegistrationLog() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }).then((response) => response.json());
@@ -105,6 +108,7 @@ export default function RegistrationLog() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }).then((response) => response.json());
@@ -174,7 +178,7 @@ export default function RegistrationLog() {
                     fresh_returning: registrations_dean[i].fresh_returning,
                     current_level: registrations_dean[i].current_level,
                   };
-                  student?MA_array.push(student):console.log('no dta');
+                  student ? MA_array.push(student) : console.log("no dta");
                 }
                 if (typeof mdiv_student !== "undefined") {
                   const user = allUsers.find(
@@ -466,6 +470,7 @@ export default function RegistrationLog() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       });
@@ -588,7 +593,8 @@ export default function RegistrationLog() {
                                     registration.custom_id
                                   }
                                   class="green-btn p-3 hover:opacity-60 inline-block"
-                                target="_blank">
+                                  target="_blank"
+                                >
                                   View Form
                                 </A>
                               </td>
@@ -680,7 +686,8 @@ export default function RegistrationLog() {
                                     registration.custom_id
                                   }
                                   class="green-btn p-3 hover:opacity-60 inline-block"
-                                target="_blank">
+                                  target="_blank"
+                                >
                                   View Form
                                 </A>
                               </td>
@@ -772,7 +779,8 @@ export default function RegistrationLog() {
                                     registration.custom_id
                                   }
                                   class="green-btn p-3 hover:opacity-60 inline-block"
-                                target="_blank">
+                                  target="_blank"
+                                >
                                   View Form
                                 </A>
                               </td>
@@ -864,7 +872,8 @@ export default function RegistrationLog() {
                                     registration.custom_id
                                   }
                                   class="green-btn p-3 hover:opacity-60 inline-block"
-                                target="_blank">
+                                  target="_blank"
+                                >
                                   View Form
                                 </A>
                               </td>
@@ -956,7 +965,8 @@ export default function RegistrationLog() {
                                     registration.custom_id
                                   }
                                   class="green-btn p-3 hover:opacity-60 inline-block"
-                                target="_blank">
+                                  target="_blank"
+                                >
                                   View Form
                                 </A>
                               </td>

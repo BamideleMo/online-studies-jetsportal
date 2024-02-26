@@ -62,6 +62,7 @@ export default function RegistrarConfirmationForm(props) {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({

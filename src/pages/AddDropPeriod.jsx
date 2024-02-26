@@ -57,6 +57,7 @@ export default function AddDropPeriod() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }
@@ -81,6 +82,7 @@ export default function AddDropPeriod() {
               }`,
               "Content-Type": "application/json",
               Accept: "application/json",
+              "Cache-Control": "no-cache",
             },
             method: "GET",
           });
@@ -110,6 +112,7 @@ export default function AddDropPeriod() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       }
@@ -127,6 +130,7 @@ export default function AddDropPeriod() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         });
@@ -166,6 +170,7 @@ export default function AddDropPeriod() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "POST",
           body: JSON.stringify({
@@ -220,6 +225,7 @@ export default function AddDropPeriod() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }

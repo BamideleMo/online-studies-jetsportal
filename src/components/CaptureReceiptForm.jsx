@@ -37,6 +37,7 @@ export default function CaptureReceiptForm(props) {
         }`,
         "Content-Type": "application/json",
         Accept: "application/json",
+        "Cache-Control": "no-cache",
       },
       method: "GET",
     });
@@ -127,6 +128,7 @@ export default function CaptureReceiptForm(props) {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({
@@ -142,6 +144,7 @@ export default function CaptureReceiptForm(props) {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: which_method,
         body: JSON.stringify({
@@ -164,16 +167,16 @@ export default function CaptureReceiptForm(props) {
     currency: "NGN",
   });
 
-  const getOptPassport = (val) =>{
-    if(val){
+  const getOptPassport = (val) => {
+    if (val) {
       var pass1 = val.substring(0, 49);
-      var pass2 = val.substring(48)
-      var passport = pass1 + "c_scale,w_500/f_auto"+pass2;
-    return passport}
-    else{
-      return "wait"
+      var pass2 = val.substring(48);
+      var passport = pass1 + "c_scale,w_500/f_auto" + pass2;
+      return passport;
+    } else {
+      return "wait";
     }
-  }
+  };
 
   return (
     <>

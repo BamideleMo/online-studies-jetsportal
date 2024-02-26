@@ -52,6 +52,7 @@ export default function ChangePassword() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({
@@ -90,6 +91,7 @@ export default function ChangePassword() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }

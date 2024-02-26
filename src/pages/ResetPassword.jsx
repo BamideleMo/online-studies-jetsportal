@@ -30,6 +30,7 @@ export default function ResetPassword() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "POST",
         body: JSON.stringify({

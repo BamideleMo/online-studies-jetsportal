@@ -41,6 +41,7 @@ const fetchCharges = async () => {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       }
@@ -58,6 +59,7 @@ const fetchCharges = async () => {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       })
@@ -158,6 +160,7 @@ export default function ManageDepartmentalCharges() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: theData,

@@ -26,6 +26,7 @@ export default function ProfileFaculty() {
               }`,
               "Content-Type": "application/json",
               Accept: "application/json",
+              "Cache-Control": "no-cache",
             },
             method: "GET",
           }

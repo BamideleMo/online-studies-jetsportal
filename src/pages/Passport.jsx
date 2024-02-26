@@ -27,6 +27,7 @@ export default function UploadPassport() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }
@@ -78,7 +79,7 @@ export default function UploadPassport() {
               </p>
             </div>
             <div class="border border-gray-600 shadow-md rounded p-1 sm:p-4">
-              <div class="w-full sm:w-80 sm:w-10/12 lg:w-6/12 mx-auto rounded-md p-2 text-center bg-gray-100 space-y-3">
+              <div class="w-full sm:w-80 lg:w-6/12 mx-auto rounded-md p-2 text-center bg-gray-100 space-y-3">
                 <div class="py-3">
                   <Show
                     when={passport()}

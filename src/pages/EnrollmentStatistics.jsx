@@ -75,6 +75,7 @@ export default function EnrollmentStatistics() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }
@@ -95,6 +96,7 @@ export default function EnrollmentStatistics() {
               }`,
               "Content-Type": "application/json",
               Accept: "application/json",
+              "Cache-Control": "no-cache",
             },
             method: "GET",
           }
@@ -108,6 +110,7 @@ export default function EnrollmentStatistics() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }).then((response) => response.json());
@@ -479,6 +482,7 @@ export default function EnrollmentStatistics() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       });
@@ -702,11 +706,20 @@ export default function EnrollmentStatistics() {
                         <td class="p-4" colSpan={7}>
                           **Total number of students who initiated registration
                           for this semester is{" "}
-                          <b><u>{stats().totalRegistrations()}</u></b> out of which only <b><u>{parseInt(stats().DipStudentsCompleted()) +
-                            parseInt(stats().BAStudentsCompleted()) +
-                            parseInt(stats().PGDTStudentsCompleted()) +
-                            parseInt(stats().MAStudentsCompleted()) +
-                            parseInt(stats().MDivStudentsCompleted())}</u></b> have completed their registrations.
+                          <b>
+                            <u>{stats().totalRegistrations()}</u>
+                          </b>{" "}
+                          out of which only{" "}
+                          <b>
+                            <u>
+                              {parseInt(stats().DipStudentsCompleted()) +
+                                parseInt(stats().BAStudentsCompleted()) +
+                                parseInt(stats().PGDTStudentsCompleted()) +
+                                parseInt(stats().MAStudentsCompleted()) +
+                                parseInt(stats().MDivStudentsCompleted())}
+                            </u>
+                          </b>{" "}
+                          have completed their registrations.
                         </td>
                       </tr>
                     </tbody>

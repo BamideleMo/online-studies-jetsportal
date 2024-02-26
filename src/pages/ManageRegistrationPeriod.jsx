@@ -42,6 +42,7 @@ const fetchPeriods = async () => {
         }`,
         "Content-Type": "application/json",
         Accept: "application/json",
+        "Cache-Control": "no-cache",
       },
       method: "GET",
     })
@@ -93,6 +94,7 @@ export default function ManageResgistrationPeriod() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "POST",
         body: JSON.stringify({
@@ -134,6 +136,7 @@ export default function ManageResgistrationPeriod() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({
@@ -170,6 +173,7 @@ export default function ManageResgistrationPeriod() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({

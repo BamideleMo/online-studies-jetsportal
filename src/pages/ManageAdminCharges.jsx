@@ -44,6 +44,7 @@ const fetchCharges = async () => {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       }
@@ -61,6 +62,7 @@ const fetchCharges = async () => {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       })
@@ -232,6 +234,7 @@ export default function ManageAdminCharges() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: theData,
@@ -264,6 +267,7 @@ export default function ManageAdminCharges() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "PATCH",
         body: JSON.stringify({

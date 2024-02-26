@@ -56,6 +56,7 @@ export default function ManageFaculty() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }
@@ -73,6 +74,7 @@ export default function ManageFaculty() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }).then((response) => response.json());
@@ -107,6 +109,7 @@ export default function ManageFaculty() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "PATCH",
         body: JSON.stringify({
@@ -135,6 +138,7 @@ export default function ManageFaculty() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "POST",
         body: JSON.stringify({

@@ -61,6 +61,7 @@ export default function AssignCourses() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }
@@ -79,6 +80,7 @@ export default function AssignCourses() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }).then((response) => response.json());
@@ -90,6 +92,7 @@ export default function AssignCourses() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }).then((response) => response.json());
@@ -103,6 +106,7 @@ export default function AssignCourses() {
               }`,
               "Content-Type": "application/json",
               Accept: "application/json",
+              "Cache-Control": "no-cache",
             },
             method: "GET",
           }
@@ -191,6 +195,7 @@ export default function AssignCourses() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       });
@@ -218,6 +223,7 @@ export default function AssignCourses() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       }
@@ -239,6 +245,7 @@ export default function AssignCourses() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({
@@ -272,6 +279,7 @@ export default function AssignCourses() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       }
@@ -326,6 +334,7 @@ export default function AssignCourses() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: patch_post,
         body: JSON.stringify({

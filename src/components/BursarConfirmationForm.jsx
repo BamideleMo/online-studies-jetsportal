@@ -52,6 +52,7 @@ export default function BursarConfirmationForm(props) {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({
@@ -69,6 +70,7 @@ export default function BursarConfirmationForm(props) {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({

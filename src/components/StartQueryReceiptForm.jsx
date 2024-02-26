@@ -38,6 +38,7 @@ export default function StartQueryReceiptForm() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       });
@@ -63,6 +64,7 @@ export default function StartQueryReceiptForm() {
                   }`,
                   "Content-Type": "application/json",
                   Accept: "application/json",
+                  "Cache-Control": "no-cache",
                 },
                 method: "GET",
               }
@@ -79,6 +81,7 @@ export default function StartQueryReceiptForm() {
                   }`,
                   "Content-Type": "application/json",
                   Accept: "application/json",
+                  "Cache-Control": "no-cache",
                 },
                 method: "GET",
               }

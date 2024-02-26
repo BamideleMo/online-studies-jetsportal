@@ -129,6 +129,7 @@ export default function CompleteProfile() {
         }`,
         "Content-Type": "application/json",
         Accept: "application/json",
+        "Cache-Control": "no-cache",
       },
       method: "POST",
       body: JSON.stringify({
@@ -165,6 +166,7 @@ export default function CompleteProfile() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "PATCH",
         body: JSON.stringify({
@@ -180,6 +182,7 @@ export default function CompleteProfile() {
         }`,
         "Content-Type": "application/json",
         Accept: "application/json",
+        "Cache-Control": "no-cache",
       },
       method: "POST",
       body: JSON.stringify({
@@ -195,6 +198,7 @@ export default function CompleteProfile() {
         }`,
         "Content-Type": "application/json",
         Accept: "application/json",
+        "Cache-Control": "no-cache",
       },
       method: "POST",
       body: JSON.stringify({
@@ -237,6 +241,7 @@ export default function CompleteProfile() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }

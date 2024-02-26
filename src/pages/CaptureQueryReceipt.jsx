@@ -33,6 +33,7 @@ const fetchStats = async () => {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
         method: "GET",
       }
@@ -68,6 +69,7 @@ export default function CaptureQueryReceipt() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
           },
           method: "GET",
         }
