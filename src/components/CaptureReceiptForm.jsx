@@ -37,7 +37,6 @@ export default function CaptureReceiptForm(props) {
         }`,
         "Content-Type": "application/json",
         Accept: "application/json",
-        "Cache-Control": "no-cache",
       },
       method: "GET",
     });
@@ -128,7 +127,6 @@ export default function CaptureReceiptForm(props) {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({
@@ -144,7 +142,6 @@ export default function CaptureReceiptForm(props) {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
-          "Cache-Control": "no-cache",
         },
         method: which_method,
         body: JSON.stringify({

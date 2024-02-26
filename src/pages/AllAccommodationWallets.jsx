@@ -24,7 +24,6 @@ const fetchWallets = async () => {
         }`,
         "Content-Type": "application/json",
         Accept: "application/json",
-        "Cache-Control": "no-cache",
       },
       method: "GET",
     });
@@ -39,7 +38,6 @@ const fetchWallets = async () => {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
-          "Cache-Control": "no-cache",
         },
         method: "GET",
       });
@@ -53,7 +51,6 @@ const fetchWallets = async () => {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "GET",
         }
@@ -109,7 +106,6 @@ export default function AllAccommodationWallets() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({

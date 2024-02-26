@@ -71,7 +71,6 @@ export default function RegistrationForm() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "GET",
         }
@@ -97,7 +96,6 @@ export default function RegistrationForm() {
                 }`,
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                "Cache-Control": "no-cache",
               },
               method: "GET",
             }
@@ -113,7 +111,6 @@ export default function RegistrationForm() {
                 }`,
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                "Cache-Control": "no-cache",
               },
               method: "GET",
             }
@@ -128,7 +125,6 @@ export default function RegistrationForm() {
                 }`,
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                "Cache-Control": "no-cache",
               },
               method: "GET",
             }
@@ -143,7 +139,6 @@ export default function RegistrationForm() {
                 }`,
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                "Cache-Control": "no-cache",
               },
               method: "GET",
             }
@@ -200,7 +195,6 @@ export default function RegistrationForm() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "GET",
         });
@@ -228,7 +222,6 @@ export default function RegistrationForm() {
                 }`,
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                "Cache-Control": "no-cache",
               },
               method: "GET",
             }
@@ -290,7 +283,6 @@ export default function RegistrationForm() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "GET",
         }
@@ -322,7 +314,6 @@ export default function RegistrationForm() {
         }`,
         "Content-Type": "application/json",
         Accept: "application/json",
-        "Cache-Control": "no-cache",
       },
       method: "GET",
     })
@@ -375,7 +366,6 @@ export default function RegistrationForm() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify(courseData),
@@ -430,7 +420,6 @@ export default function RegistrationForm() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify(courseData),
@@ -478,7 +467,6 @@ export default function RegistrationForm() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({
@@ -525,7 +513,6 @@ export default function RegistrationForm() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({
@@ -543,7 +530,6 @@ export default function RegistrationForm() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "PATCH",
           body: JSON.stringify({

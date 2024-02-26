@@ -27,7 +27,6 @@ export default function UploadPassport() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "GET",
         }

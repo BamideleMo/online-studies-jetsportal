@@ -75,7 +75,6 @@ export default function EnrollmentStatistics() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "GET",
         }
@@ -96,7 +95,6 @@ export default function EnrollmentStatistics() {
               }`,
               "Content-Type": "application/json",
               Accept: "application/json",
-              "Cache-Control": "no-cache",
             },
             method: "GET",
           }
@@ -110,7 +108,6 @@ export default function EnrollmentStatistics() {
             }`,
             "Content-Type": "application/json",
             Accept: "application/json",
-            "Cache-Control": "no-cache",
           },
           method: "GET",
         }).then((response) => response.json());
@@ -482,7 +479,6 @@ export default function EnrollmentStatistics() {
           }`,
           "Content-Type": "application/json",
           Accept: "application/json",
-          "Cache-Control": "no-cache",
         },
         method: "GET",
       });
