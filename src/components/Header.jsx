@@ -42,6 +42,16 @@ export default function Header() {
 
   return (
     <>
+      <Show when={!navigator.onLine}>
+        <div class="absolute top-0 bottom-0 left-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
+          <div class="w-80 sm:w-2/3 lg:w-1/3 mx-auto h-40 rounded-lg bg-white text-center">
+            <img src="/wireless.jpeg" class="w-20 h-20 mx-auto mt-4" />
+            <p class="text-lg text-gray-400 -mt-4 p-3 leading-none">
+              Please check your Internet Connection & REFRESH.
+            </p>
+          </div>
+        </div>
+      </Show>
       <Show when={showMenu()}>
         <div class="absolute top-0 bottom-0 left-0 bg-black bg-opacity-90 h-screen w-screen flex">
           <div class="grow">&nbsp;</div>
