@@ -55,7 +55,6 @@ export default function PrintOuts() {
                 }`,
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                "cache-control": "max-age=60",
               },
               method: "GET",
             }
