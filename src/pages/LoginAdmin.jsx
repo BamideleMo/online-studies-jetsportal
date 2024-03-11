@@ -33,17 +33,17 @@ export default function LoginAdmin() {
 
     try {
       //Call API here:
-      const response = await fetch(VITE_API_URL + "/auth/login", {
+      const response = await fetch(VITE_API_URL + "/auth/test", {
         mode: "cors",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        method: "POST",
-        body: JSON.stringify({
-          username: formData().username,
-          password: formData().password,
-        }),
+        method: "GET",
+        // body: JSON.stringify({
+        //   username: formData().username,
+        //   password: formData().password,
+        // }),
       });
       const result = await response.json();
       if (!result.success) {
