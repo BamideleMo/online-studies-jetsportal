@@ -415,14 +415,6 @@ export default function AssignCourses() {
                               formHandler={formHandler}
                             />
                           </div>
-                          <div class="autocomplete" style="width:300px;">
-                            <input
-                              id="myInput"
-                              type="text"
-                              name="myCountry"
-                              placeholder="Country"
-                            />
-                          </div>
                           <Show when={message() !== ""}>
                             <div class="bg-purple-200 text-purple-900 p-3 text-center animate-pulse border-l-2 border-black">
                               {message()}
