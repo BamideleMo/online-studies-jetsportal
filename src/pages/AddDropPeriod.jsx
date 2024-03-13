@@ -95,31 +95,13 @@ export default function AddDropPeriod() {
     }
   };
 
-  const submit = async (event) => {
-    event.preventDefault();
-
-    fetch(
-      VITE_API_URL +
-        "/api/student/" +
-        JSON.parse(localStorage.getItem("jetsUser")).custom_id,
-      {
-        mode: "cors",
-        headers: {
-          Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("jetsUser")).token
-          }`,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        method: "GET",
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then(async (data0) => {
-        setDepartment(data0.response.department);
-        return fetch(VITE_API_URL + "/api/charge/" + underPost(), {
+  const startAddDrop = async () => {
+    try {
+      const response = await fetch(
+        VITE_API_URL +
+          "/api/edit-registration/" +
+          JSON.parse(localStorage.getItem("jetsUser")).custom_id,
+        {
           mode: "cors",
           headers: {
             Authorization: `Bearer ${
@@ -128,78 +110,23 @@ export default function AddDropPeriod() {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
-          method: "GET",
-        });
-      })
-      .then((response) => {
-        return response.json();
-      })
-      .then(async (data1) => {
-        var charges = JSON.parse(data1.response[formData().fresh_returning]);
-        // var dcharge = JSON.parse(data1.response["departmental"])[department()];
-
-        if (department() === "Pastoral Studies") {
-          var dcharge = 2000;
-        } else {
-          var dcharge = 1000;
-        }
-
-        var admin_charges = Object.keys(charges);
-
-        var chargesObj = {};
-
-        var total = 0;
-        admin_charges.forEach((admin_charge) => {
-          chargesObj[admin_charge] = [charges[admin_charge]];
-          total = total + parseInt(charges[admin_charge]);
-        });
-        total = total + parseInt(dcharge);
-
-        chargesObj["Departmental Charges"] = [dcharge];
-        chargesObj["total"] = [total];
-
-        return fetch(VITE_API_URL + "/api/create-registration", {
-          mode: "cors",
-          headers: {
-            Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("jetsUser")).token
-            }`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          method: "POST",
+          method: "PATCH",
           body: JSON.stringify({
+            add_drop_status: "started",
             period_id: periodId(),
-            custom_id: JSON.parse(localStorage.getItem("jetsUser")).custom_id,
-            fresh_returning:
-              formData().fresh_returning === "new_student"
-                ? "new"
-                : "returning",
-            current_level: formData().current_level,
-            registration_status: "started",
-            seminary_charges: JSON.stringify(chargesObj),
           }),
-        });
-      })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data2) => {
-        if (data2.success) {
-          navigate(
-            "/student/registration-form/" +
-              periodId() +
-              "/" +
-              JSON.parse(localStorage.getItem("jetsUser")).custom_id
-          );
-        } else {
-          setMessage("ERROR. Contact ICT Dept.");
-          setIsProcessing(false);
         }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      );
+      const result = await response.json();
+      navigate(
+        "/student/add-drop-form/" +
+          periodId() +
+          "/" +
+          JSON.parse(localStorage.getItem("jetsUser")).custom_id
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const startContinueAddDrop = async (period_id) => {
@@ -230,7 +157,12 @@ export default function AddDropPeriod() {
       if (result.response) {
         setIsProcessing(false);
         if (result.response.registration_status === "completed") {
-          navigate("/student/add-drop-form/" + period_id + "/" + custom_id);
+          if (!result.response.add_drop_status) {
+            setShowModal(true);
+            setPeriodId(period_id);
+          } else {
+            navigate("/student/add-drop-form/" + period_id + "/" + custom_id);
+          }
         } else {
           setIsProcessing(false);
           setNotRegistered(true);
@@ -254,6 +186,48 @@ export default function AddDropPeriod() {
         content="Add/Drop on ECWA Theological Seminary, Jos (JETS)"
       />
       <div class="text-sm">
+        <Show when={showModal()}>
+          <div class="z-50 fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
+            <div class="w-80 sm:w-10/12 lg:w-6/12 mx-auto bg-white rounded-md p-6">
+              <h2 class="text-center text-blue-900 font-semibold">
+                Start Add/Drop
+              </h2>
+
+              <div class="my-2 border-t border-b py-4 border-black">
+                <div class="space-y-2">
+                  <p>
+                    Courses may be added or dropped within the first two weeks
+                    of semester without any charge to the student's account. Any
+                    changes made between the third week and mid-semester will be
+                    charged accordingly and the letter "W" (withdraw) will enter
+                    the student's record as the case may be. No refunds after
+                    mid-semester. No course can be added 2 weeks after official
+                    registration. (see calendar on last day to register). "WF"
+                    (withdraw fail) will enter the student's record for courses
+                    dropped after mid-semester. No courses from previous
+                    semester(s) can be dropped or added in the current semester.
+                    To add or drop a course fill out the appropriate section(s)
+                    on this form.
+                  </p>
+                  <p>
+                    <b>Note:</b>
+                    <br />
+                    You have not done Add/Drop until you have a print out to
+                    that effect. This is important.
+                  </p>
+                </div>
+                <div class="mt-4 text-center">
+                  <button
+                    onClick={startAddDrop}
+                    class="red-btn p-3 hover:opacity-60"
+                  >
+                    Proceed with Add/Drop
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Show>
         <Show when={notRegistered()}>
           <div class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
             <div class="w-80 sm:w-10/12 lg:w-6/12 mx-auto bg-white rounded-md p-6">

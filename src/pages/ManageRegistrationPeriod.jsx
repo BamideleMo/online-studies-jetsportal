@@ -204,7 +204,7 @@ export default function ManageResgistrationPeriod() {
       />
       <div class="text-sm">
         <Show when={showModal()}>
-          <div class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
+          <div class="z-50 fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
             <div class="w-80 sm:w-10/12 lg:w-6/12 mx-auto bg-white rounded-md p-6">
               <h2 class="text-center text-blue-900 font-semibold">
                 Create New Registration Period
@@ -340,7 +340,7 @@ export default function ManageResgistrationPeriod() {
           </div>
         </Show>
         <Show when={showSuccess2()}>
-          <div class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
+          <div class="z-50 fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
             <div class="w-80 sm:w-10/12 lg:w-6/12 mx-auto bg-white rounded-md p-6">
               <h2 class="text-center text-blue-900 font-semibold">
                 Status Changed

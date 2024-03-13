@@ -38,18 +38,23 @@ export default function RegistrationForm() {
   const [coursesLevel, setCoursesLevel] = createSignal("");
   const [showCourses, setShowCourses] = createSignal(false);
 
+  const [addDropStatus, setAddDropStatus] = createSignal("");
   const [regStatus, setRegStatus] = createSignal("");
   const [undertakingStatus, setUndertakingStatus] = createSignal("");
-  const [regComment, setRegComment] = createSignal("");
+  const [addDropComment, setAddDropComment] = createSignal("");
   const [showNotification, setShowNotification] = createSignal(false);
   const [pickedCourses, setPickedCourses] = createStore([]);
   const [detPickedCourses, setDetPickedCourses] = createStore([]);
   const [droppedCourses, setDroppedCourses] = createStore([]);
   const [detDroppedCourses, setDetDroppedCourses] = createStore([]);
+  const [addedCourses, setAddedCourses] = createStore([]);
+  const [detAddedCourses, setDetAddedCourses] = createStore([]);
   const [totalCU, setTotalCU] = createSignal(0);
   const [droppedTotalCU, setDroppedTotalCU] = createSignal(0);
+  const [addedTotalCU, setAddedTotalCU] = createSignal(0);
   const [totalProgFee, setTotalProgFee] = createSignal(0);
   const [droppedTotalProgFee, setDroppedTotalProgFee] = createSignal(0);
+  const [addedTotalProgFee, setAddedTotalProgFee] = createSignal(0);
 
   const [showSendSMS, setShowSendSMS] = createSignal(false);
   const [dropped, setDropped] = createSignal(false);
@@ -157,9 +162,10 @@ export default function RegistrationForm() {
               setStudent(data1.response);
               setAdminCharges(JSON.parse(registration.seminary_charges));
               setStudentReg(registration);
-              setRegStatus(registration.registration_status);
+              setRegStatus(registration.reg_status);
+              setAddDropStatus(registration.add_drop_status);
               setUndertakingStatus(registration.undertaking);
-              setRegComment(registration.comment);
+              setAddDropComment(registration.comment);
               setPeriod(data2.response);
               setUser(data0.response);
               if (registration.picked_courses) {
@@ -171,6 +177,10 @@ export default function RegistrationForm() {
                   JSON.parse(registration.dropped_courses)
                 );
                 setDroppedCourses(JSON.parse(registration.dropped_courses));
+              }
+              if (registration.added_courses) {
+                getAddedCourseDetails(JSON.parse(registration.added_courses));
+                setAddedCourses(JSON.parse(registration.added_courses));
               }
             })
             .catch((error) => {
@@ -185,9 +195,11 @@ export default function RegistrationForm() {
         studentReg,
         user,
         pickedCourses,
-        regStatus,
+        droppedCourses,
+        addedCourses,
+        addDropStatus,
         undertakingStatus,
-        regComment,
+        addDropComment,
       };
     } else {
       navigate("/", { replace: true });
@@ -364,6 +376,92 @@ export default function RegistrationForm() {
     }
 
     setDetDroppedCourses(c);
+  };
+
+  var c = {};
+  var added_total_cu = 0;
+  var added_total_amt = 0;
+  const getAddedCourseDetails = async (arr) => {
+    for (let i = 0; i < arr.length; i++) {
+      try {
+        const res = await fetch(VITE_API_URL + "/api/course/" + arr[i], {
+          mode: "cors",
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("jetsUser")).token
+            }`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          method: "GET",
+        });
+        const result = await res.json();
+        if (result.response) {
+          if (
+            student.programme_category === "Bachelor of Arts Programme" ||
+            student.programme_category === "Diploma Programme"
+          ) {
+            var prog_cat = "UG";
+          } else {
+            var prog_cat = "PG";
+          }
+          const res2 = await fetch(
+            VITE_API_URL +
+              "/api/course-fee/" +
+              params.periodId +
+              "?prog_category=" +
+              prog_cat,
+            {
+              mode: "cors",
+              headers: {
+                Authorization: `Bearer ${
+                  JSON.parse(localStorage.getItem("jetsUser")).token
+                }`,
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              method: "GET",
+            }
+          );
+          const result2 = await res2.json();
+
+          if (result.response.hours === "P/F") {
+            var course_amount = 7500;
+            var course_hrs = 0;
+            var display_course_hrs = "P/F";
+
+            var sub_amount = parseInt(course_amount) * 1;
+          } else {
+            var course_amount = result2.response.amount;
+            var course_hrs = result.response.hours;
+            var display_course_hrs = course_hrs;
+
+            var sub_amount = parseInt(course_amount) * parseInt(course_hrs);
+          }
+
+          c[arr[i]] = [
+            result.response.title,
+            display_course_hrs,
+            course_amount,
+            sub_amount,
+          ]; //create object
+
+          added_total_cu = added_total_cu + parseInt(course_hrs);
+          added_total_amt = added_total_amt + parseInt(sub_amount);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    setAddedTotalCU(added_total_cu);
+    if (student.special_student_category === "jets staff") {
+      setAddedTotalProgFee(parseInt(added_total_amt) / 2);
+    } else {
+      setAddedTotalProgFee(added_total_amt);
+    }
+
+    setDetAddedCourses(c);
   };
 
   const fetchRegistration = async () => {
@@ -1016,23 +1114,23 @@ export default function RegistrationForm() {
                   <div class="bg-yellow-100 rounded-md border border-yellow-200 p-1 space-y-0.5">
                     <Switch>
                       <Match
-                        when={registrationData().regStatus() === "started"}
+                        when={registrationData().addDropStatus() === "started"}
                       >
                         <b class="block">
-                          Registration Status:{" "}
+                          Add/Drop Status:{" "}
                           <u class="text-red-700 font-semibold">Started</u>
                         </b>
                         <b class="text-blue-900">Note:</b>
                         <br />
-                        You have began your registration. Please ensure to pick
-                        your appropriate courses for the semester.
+                        You have began your Add/Drop. Please ensure to drop or
+                        add only the appropriate courses for the semester.
                         <br />
-                        When satisfied with your picked courses, forward to the
-                        Registrar for approval.
+                        When satisfied with your dropped or/and added courses,
+                        forward to DPAA's office for approval.
                       </Match>
                       <Match
                         when={
-                          registrationData().regStatus() === "awaiting dean"
+                          registrationData().addDropStatus() === "awaiting dean"
                         }
                       >
                         <b class="block">
@@ -1051,7 +1149,9 @@ export default function RegistrationForm() {
                         please check/reload this page again.
                       </Match>
                       <Match
-                        when={registrationData().regStatus() === "disapproved"}
+                        when={
+                          registrationData().addDropStatus() === "disapproved"
+                        }
                       >
                         <b class="block">
                           Registration Status:{" "}
@@ -1069,7 +1169,8 @@ export default function RegistrationForm() {
                       </Match>
                       <Match
                         when={
-                          registrationData().regStatus() === "awaiting bursar"
+                          registrationData().addDropStatus() ===
+                          "awaiting bursar"
                         }
                       >
                         <b class="block">
@@ -1089,7 +1190,9 @@ export default function RegistrationForm() {
                         after 24 hours please check/reload this page again.
                       </Match>
                       <Match
-                        when={registrationData().regStatus() === "incomplete"}
+                        when={
+                          registrationData().addDropStatus() === "incomplete"
+                        }
                       >
                         <b class="block">
                           Registration Status:{" "}
@@ -1438,7 +1541,16 @@ export default function RegistrationForm() {
                               </tr>
                             </thead>
                             <tbody>
-                              <Show when={droppedCourses}>
+                              <Show
+                                fallback={
+                                  <tr class="border-r border-black">
+                                    <td colSpan={7} class="text-center p-4">
+                                      No course(s) droped.
+                                    </td>
+                                  </tr>
+                                }
+                                when={droppedCourses.length > 0}
+                              >
                                 <For each={droppedCourses}>
                                   {(course, i) => (
                                     <tr class="border-b border-black">
@@ -1570,7 +1682,7 @@ export default function RegistrationForm() {
                               <thead>
                                 <tr class="bg-white border-b border-black text-blue-900">
                                   <th class="p-1 text-left" colSpan={3}>
-                                    :: PICK COURSE(S)
+                                    :: ADD COURSE(S)
                                   </th>
                                 </tr>
                               </thead>
@@ -1735,8 +1847,9 @@ export default function RegistrationForm() {
                         <Show
                           when={
                             totalCU() > 0 &&
-                            (registrationData().regStatus() === "started" ||
-                              registrationData().regStatus() === "disapproved")
+                            (registrationData().addDropStatus() === "started" ||
+                              registrationData().addDropStatus() ===
+                                "disapproved")
                           }
                         >
                           <div class="overflow-x-auto">
@@ -1757,13 +1870,13 @@ export default function RegistrationForm() {
                                   <td class="p-3 text-sm">
                                     <span class="bg-yellow-100 rounded-md border border-yellow-200 p-1 space-y-0.5 block">
                                       <b>
-                                        Have you picked all your appropriate
-                                        courses for the semester?
+                                        Have you added or/and dropped all the
+                                        appropriate courses for the semester?
                                       </b>
                                       <br />
                                       <Show
                                         when={
-                                          registrationData().regStatus() ===
+                                          registrationData().addDropStatus() ===
                                           "disapproved"
                                         }
                                       >
@@ -1775,7 +1888,7 @@ export default function RegistrationForm() {
                                       <br />
                                       If YES please click on the red colored
                                       button labelled 'Forward for Approval'
-                                      below to forward your registration for
+                                      below to forward your Add/Drop for
                                       approval.
                                       <br />
                                       <br />
@@ -1783,10 +1896,10 @@ export default function RegistrationForm() {
                                       <br />
                                       <b>DO NOT</b> click on this button if you
                                       are unsatisfied with or unsure of the
-                                      courses you have picked.{" "}
+                                      courses you have added or/and dropped.{" "}
                                       <b>
                                         If you need help please contact the
-                                        admin office of the college.
+                                        relevant office.
                                       </b>
                                     </span>
                                   </td>
@@ -1802,7 +1915,7 @@ export default function RegistrationForm() {
                                         >
                                           <Show
                                             when={
-                                              registrationData().regStatus() ===
+                                              registrationData().addDropStatus() ===
                                               "disapproved"
                                             }
                                             fallback={<>Forward for Approval</>}
@@ -1826,7 +1939,9 @@ export default function RegistrationForm() {
                           </div>
                         </Show>
                         <Show
-                          when={registrationData().regStatus() === "incomplete"}
+                          when={
+                            registrationData().addDropStatus() === "incomplete"
+                          }
                         >
                           <div class="overflow-x-auto">
                             <table

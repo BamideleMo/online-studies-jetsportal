@@ -765,8 +765,8 @@ export default function RegistrationForm() {
                         You have began your registration. Please ensure to pick
                         your appropriate courses for the semester.
                         <br />
-                        When satisfied with your picked courses, forward to the
-                        Registrar for approval.
+                        When satisfied with your picked courses, forward to
+                        DPAA's office for approval.
                       </Match>
                       <Match
                         when={
@@ -1377,7 +1377,7 @@ export default function RegistrationForm() {
                               <thead>
                                 <tr class="bg-white border-b border-black text-blue-900">
                                   <th class="p-1 text-left" colSpan={3}>
-                                    :: PICK COURSE(S)
+                                    :: admin office of the college COURSE(S)
                                   </th>
                                 </tr>
                               </thead>
@@ -1751,7 +1751,7 @@ export default function RegistrationForm() {
                                       courses you have picked.{" "}
                                       <b>
                                         If you need help please contact the
-                                        admin office of the college.
+                                        relevant office.
                                       </b>
                                     </span>
                                   </td>
