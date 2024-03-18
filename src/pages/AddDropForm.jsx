@@ -1533,7 +1533,9 @@ export default function RegistrationForm() {
                                             when={
                                               JSON.parse(
                                                 localStorage.getItem("jetsUser")
-                                              ).surname === "student"
+                                              ).surname === "student" &&
+                                              registrationData().addDropStatus() ===
+                                                "started"
                                             }
                                           >
                                             <button
