@@ -169,6 +169,7 @@ export default function RegistrationForm() {
               setPeriod(data2.response);
               setUser(data0.response);
               if (registration.picked_courses) {
+                console.log(registration.picked_courses);
                 getCourseDetails(JSON.parse(registration.picked_courses));
                 setPickedCourses(JSON.parse(registration.picked_courses));
               }
@@ -527,17 +528,18 @@ export default function RegistrationForm() {
       });
   };
 
-  const pickThisCourse = async (courseCode) => {
+  const addThisCourse = async (courseCode) => {
     var new_courses = [];
 
-    if (pickedCourses) {
-      var coursesArray = Object.keys(pickedCourses).map(
-        (key) => pickedCourses[key]
+    if (addedCourses) {
+      var coursesArray = Object.keys(addedCourses).map(
+        (key) => addedCourses[key]
       );
       for (let index = 0; index < coursesArray.length; index++) {
+        var added = checkIfAdded(courseCode);
         var picked = checkIfPicked(courseCode);
 
-        if (picked) {
+        if (added || picked) {
           console.log("exist");
         } else {
           new_courses.push(coursesArray[index]);
@@ -549,9 +551,8 @@ export default function RegistrationForm() {
     }
     var courseData = {
       period_id: params.periodId,
-      picked_courses: JSON.stringify(new_courses),
+      added_courses: JSON.stringify(new_courses),
     };
-
     try {
       const response = await fetch(
         VITE_API_URL + "/api/edit-registration/" + params.customId,
@@ -574,8 +575,8 @@ export default function RegistrationForm() {
         setShowNotification(false);
       }, 600);
       var registration = await fetchRegistration();
-      if (registration.picked_courses) {
-        setPickedCourses(JSON.parse(registration.picked_courses));
+      if (registration.added_courses) {
+        setAddedCourses(JSON.parse(registration.added_courses));
       }
     } catch (error) {
       console.error(error);
@@ -615,38 +616,35 @@ export default function RegistrationForm() {
       dropped_courses: JSON.stringify(x),
     };
 
-    var new_cu = parseInt(totalCU()) - parseInt(warningCourseCu());
-    var new_amt = parseInt(totalProgFee()) - warningCourseAmt();
+    // var new_cu = parseInt(totalCU()) - parseInt(warningCourseCu());
+    // var new_amt = parseInt(totalProgFee()) - warningCourseAmt();
 
-    setTotalCU(new_cu);
+    // setTotalCU(new_cu);
 
-    if (student.special_student_category === "jets staff") {
-      setTotalProgFee(parseInt(new_amt) / 2);
-    } else {
-      setTotalProgFee(new_amt);
-    }
-
-    console.log(courseData, totalCU(), totalProgFee());
+    // if (student.special_student_category === "jets staff") {
+    //   setTotalProgFee(parseInt(new_amt) / 2);
+    // } else {
+    //   setTotalProgFee(new_amt);
+    // }
 
     try {
-      console.log("p");
-      const request1 = fetch(
-        VITE_API_URL + "/api/edit-portal-wallet/" + params.customId,
-        {
-          mode: "cors",
-          headers: {
-            Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("jetsUser")).token
-            }`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          method: "PATCH",
-          body: JSON.stringify({
-            amount: parseInt(portalWallet()) + parseInt(warningCourseAmt()),
-          }),
-        }
-      ).then((response) => response.json());
+      // const request1 = fetch(
+      //   VITE_API_URL + "/api/edit-portal-wallet/" + params.customId,
+      //   {
+      //     mode: "cors",
+      //     headers: {
+      //       Authorization: `Bearer ${
+      //         JSON.parse(localStorage.getItem("jetsUser")).token
+      //       }`,
+      //       "Content-Type": "application/json",
+      //       Accept: "application/json",
+      //     },
+      //     method: "PATCH",
+      //     body: JSON.stringify({
+      //       amount: parseInt(portalWallet()) + parseInt(warningCourseAmt()),
+      //     }),
+      //   }
+      // ).then((response) => response.json());
       const request2 = fetch(
         VITE_API_URL + "/api/edit-registration/" + params.customId,
         {
@@ -687,10 +685,7 @@ export default function RegistrationForm() {
       //   setTimeout(() => {
       //     setShowNotification(false);
       //   }, 600);
-      Promise.all([request1, request2]).then(([data1, data2]) => {
-        // navigate("/student/downloads", {
-        //   replace: true,
-        // });
+      Promise.all([request2]).then(([data2]) => {
         setDropped(true);
         setWarning(false);
       });
@@ -711,17 +706,42 @@ export default function RegistrationForm() {
       picked_courses: JSON.stringify(pickedCoursesArray),
     };
 
-    var new_cu = parseInt(totalCU()) - parseInt(courseCu);
-    var new_amt =
-      parseInt(totalProgFee()) - parseInt(courseAmt) * parseInt(courseCu);
+    try {
+      const response = await fetch(
+        VITE_API_URL + "/api/edit-registration/" + params.customId,
+        {
+          mode: "cors",
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("jetsUser")).token
+            }`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          method: "PATCH",
+          body: JSON.stringify(courseData),
+        }
+      );
 
-    setTotalCU(new_cu);
-
-    if (student.special_student_category === "jets staff") {
-      setTotalProgFee(parseInt(total_amt) / 2);
-    } else {
-      setTotalProgFee(total_amt);
+      const result = await response.json();
+      window.location.href =
+        "/student/add-drop-form" + params.periodId + "/" + params.customId;
+    } catch (error) {
+      console.error(error);
     }
+  };
+
+  const undropThisCourse = async (courseCode, courseCu, courseAmt) => {
+    var droppedCoursesArray = Object.keys(droppedCourses).map(
+      (key) => droppedCourses[key]
+    );
+    const index = droppedCoursesArray.indexOf(courseCode);
+    const x = droppedCoursesArray.splice(index, 1);
+
+    var courseData = {
+      period_id: params.periodId,
+      dropped_courses: JSON.stringify(droppedCoursesArray),
+    };
 
     try {
       const response = await fetch(
@@ -741,17 +761,8 @@ export default function RegistrationForm() {
       );
 
       const result = await response.json();
-
-      var registration = await fetchRegistration();
-
-      setTotalCU(parseInt(totalCU()) - parseInt(courseCu));
-
-      setPickedCourses(JSON.parse(registration.pickedCourses));
-
-      setShowNotification(true);
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 600);
+      window.location.href =
+        "/student/add-drop-form/" + params.periodId + "/" + params.customId;
     } catch (error) {
       console.error(error);
     }
@@ -762,6 +773,28 @@ export default function RegistrationForm() {
       (key) => pickedCourses[key]
     );
     if (pickedCoursesArray.includes(val)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const checkIfDropped = (val) => {
+    var droppedCoursesArray = Object.keys(droppedCourses).map(
+      (key) => droppedCourses[key]
+    );
+    if (droppedCoursesArray.includes(val)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const checkIfAdded = (val) => {
+    var addedCoursesArray = Object.keys(addedCourses).map(
+      (key) => addedCourses[key]
+    );
+    if (addedCoursesArray.includes(val)) {
       return true;
     } else {
       return false;
@@ -893,7 +926,7 @@ export default function RegistrationForm() {
         <Header />
 
         <Show when={showNotification()}>
-          <div class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
+          <div class="z-50 fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
             <p class="bg-green-300 text-green-800 drop-shadow-xl p-4 rounded w-80 mx-auto text-center">
               Action was Successful!
             </p>
@@ -920,8 +953,11 @@ export default function RegistrationForm() {
                         <b>Caution:</b>
                         <br />
                         Please seek advice from your HOD or the Dean's office
-                        before you drop this course. Note that if you proceed to
-                        drop this course you will not be able to add it again.
+                        before you drop this course.
+                        <br />
+                        Note that if you proceed to drop this course and it is
+                        approved, you will be removed from the class list and
+                        will not be able to re-add it.
                       </p>
                       <div class="text-center space-x-3">
                         <button
@@ -948,7 +984,7 @@ export default function RegistrationForm() {
                 </div>
               </Show>
               <Show when={dropped()}>
-                <div class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
+                <div class="z-50 fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
                   <div class="w-80 sm:w-10/12 lg:w-6/12 mx-auto bg-white rounded-md p-6">
                     <h2 class="text-center text-blue-900 font-semibold">
                       Dropped Course
@@ -979,7 +1015,7 @@ export default function RegistrationForm() {
                 </div>
               </Show>
               <Show when={showCourses()}>
-                <div class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
+                <div class="z-50 fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
                   <div class="w-80 sm:w-10/12 lg:w-6/12 mx-auto bg-white rounded-md p-3 h-5/6 overflow-hidden">
                     <h2 class="text-center text-blue-900 font-semibold">
                       Pick {coursesLevel()} Course(s)
@@ -1044,7 +1080,10 @@ export default function RegistrationForm() {
                                         <td class="p-1 sm:space-x-1 sm:flex">
                                           <Switch>
                                             <Match
-                                              when={checkIfPicked(course.code)}
+                                              when={
+                                                checkIfPicked(course.code) ||
+                                                checkIfAdded(course.code)
+                                              }
                                             >
                                               <button
                                                 disabled
@@ -1054,11 +1093,14 @@ export default function RegistrationForm() {
                                               </button>
                                             </Match>
                                             <Match
-                                              when={!checkIfPicked(course.code)}
+                                              when={
+                                                !checkIfPicked(course.code) ||
+                                                !checkIfAdded(course.code)
+                                              }
                                             >
                                               <button
                                                 onClick={() => {
-                                                  pickThisCourse(course.code);
+                                                  addThisCourse(course.code);
                                                 }}
                                                 class="green-btn py-1 px-2 text-white hover:opacity-60"
                                               >
@@ -1087,7 +1129,7 @@ export default function RegistrationForm() {
                       <button
                         onClick={() =>
                           (window.location.href =
-                            "/student/registration-form/" +
+                            "/student/add-drop-form/" +
                             params.periodId +
                             "/" +
                             params.customId)
@@ -1369,7 +1411,7 @@ export default function RegistrationForm() {
                             <thead>
                               <tr class="bg-white border-b border-black text-blue-900">
                                 <th class="p-1 text-left" colSpan={7}>
-                                  :: ALREADY REGISTERED COURES
+                                  :: ALREADY REGISTERED COURSES
                                 </th>
                               </tr>
                               <tr class="border-b border-black bg-gray-300">
@@ -1398,70 +1440,133 @@ export default function RegistrationForm() {
                               <Show when={pickedCourses}>
                                 <For each={pickedCourses}>
                                   {(course, i) => (
-                                    <tr class="border-b border-black">
-                                      <td class="p-4 border-r border-black font-semibold">
-                                        {i() + 1}.
-                                      </td>
-                                      <td class="p-4 border-r border-black">
-                                        <Show
-                                          when={detPickedCourses[course]}
-                                          fallback={<>Fetching.. .</>}
-                                        >
-                                          {detPickedCourses[course][0]}
-                                        </Show>
-                                      </td>
-                                      <td class="p-4 border-r border-black">
-                                        <Show
-                                          when={course}
-                                          fallback={<>Fetching.. .</>}
-                                        >
-                                          {course}
-                                        </Show>
-                                      </td>
-                                      <td class="p-4 border-r border-black">
-                                        <Show
-                                          when={detPickedCourses[course]}
-                                          fallback={<>Fetching.. .</>}
-                                        >
-                                          {detPickedCourses[course][1]}
-                                        </Show>
-                                      </td>
-                                      <td class="p-4 border-r border-black">
-                                        <Show
-                                          when={detPickedCourses[course]}
-                                          fallback={<>Fetching.. .</>}
-                                        >
-                                          {formatter.format(
-                                            detPickedCourses[course][2]
-                                          )}
-                                        </Show>
-                                      </td>
-                                      <td class="p-4 border-r border-black">
-                                        <Show
-                                          when={detPickedCourses[course]}
-                                          fallback={<>Fetching.. .</>}
-                                        >
-                                          {formatter.format(
-                                            detPickedCourses[course][3]
-                                          )}
-                                        </Show>
-                                      </td>
-                                      <td class="p-4">
-                                        <button
-                                          onClick={() => {
-                                            dropThisCourseWarning(
-                                              course,
-                                              detPickedCourses[course][0],
-                                              detPickedCourses[course][1],
+                                    <Show
+                                      fallback={
+                                        <tr class="line-through bg-purple-400 border-b border-black">
+                                          <td class="p-4 border-r border-black font-semibold">
+                                            {i() + 1}.
+                                          </td>
+                                          <td class="p-4 border-r border-black">
+                                            <Show
+                                              when={detPickedCourses[course]}
+                                              fallback={<>Fetching.. .</>}
+                                            >
+                                              {detPickedCourses[course][0]}
+                                            </Show>
+                                          </td>
+                                          <td class="p-4 border-r border-black">
+                                            <Show
+                                              when={course}
+                                              fallback={<>Fetching.. .</>}
+                                            >
+                                              {course}
+                                            </Show>
+                                          </td>
+                                          <td class="p-4 border-r border-black">
+                                            <Show
+                                              when={detPickedCourses[course]}
+                                              fallback={<>Fetching.. .</>}
+                                            >
+                                              {detPickedCourses[course][1]}
+                                            </Show>
+                                          </td>
+                                          <td class="p-4 border-r border-black">
+                                            <Show
+                                              when={detPickedCourses[course]}
+                                              fallback={<>Fetching.. .</>}
+                                            >
+                                              {formatter.format(
+                                                detPickedCourses[course][2]
+                                              )}
+                                            </Show>
+                                          </td>
+                                          <td class="p-4 border-r border-black">
+                                            <Show
+                                              when={detPickedCourses[course]}
+                                              fallback={<>Fetching.. .</>}
+                                            >
+                                              {formatter.format(
+                                                detPickedCourses[course][3]
+                                              )}
+                                            </Show>
+                                          </td>
+                                          <td class="p-4">
+                                            <button
+                                              disabled
+                                              class="gray-btn py-1 px-2 text-white"
+                                            >
+                                              To be Dropped
+                                            </button>
+                                          </td>
+                                        </tr>
+                                      }
+                                      when={!checkIfDropped(course)}
+                                    >
+                                      <tr class="border-b border-black">
+                                        <td class="p-4 border-r border-black font-semibold">
+                                          {i() + 1}.
+                                        </td>
+                                        <td class="p-4 border-r border-black">
+                                          <Show
+                                            when={detPickedCourses[course]}
+                                            fallback={<>Fetching.. .</>}
+                                          >
+                                            {detPickedCourses[course][0]}
+                                          </Show>
+                                        </td>
+                                        <td class="p-4 border-r border-black">
+                                          <Show
+                                            when={course}
+                                            fallback={<>Fetching.. .</>}
+                                          >
+                                            {course}
+                                          </Show>
+                                        </td>
+                                        <td class="p-4 border-r border-black">
+                                          <Show
+                                            when={detPickedCourses[course]}
+                                            fallback={<>Fetching.. .</>}
+                                          >
+                                            {detPickedCourses[course][1]}
+                                          </Show>
+                                        </td>
+                                        <td class="p-4 border-r border-black">
+                                          <Show
+                                            when={detPickedCourses[course]}
+                                            fallback={<>Fetching.. .</>}
+                                          >
+                                            {formatter.format(
+                                              detPickedCourses[course][2]
+                                            )}
+                                          </Show>
+                                        </td>
+                                        <td class="p-4 border-r border-black">
+                                          <Show
+                                            when={detPickedCourses[course]}
+                                            fallback={<>Fetching.. .</>}
+                                          >
+                                            {formatter.format(
                                               detPickedCourses[course][3]
-                                            );
-                                          }}
-                                          class="red-btn py-1 px-2 text-white hover:opacity-60"
-                                        >
-                                          Drop
-                                        </button>
-                                      </td>
-                                    </tr>
+                                            )}
+                                          </Show>
+                                        </td>
+                                        <td class="p-4">
+                                          <button
+                                            onClick={() => {
+                                              dropThisCourseWarning(
+                                                course,
+                                                detPickedCourses[course][0],
+                                                detPickedCourses[course][1],
+                                                detPickedCourses[course][3]
+                                              );
+                                            }}
+                                            class="red-btn py-1 px-2 text-white hover:opacity-60"
+                                          >
+                                            Drop Course
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    </Show>
                                   )}
                                 </For>
                                 <tr class="border-b border-black">
@@ -1515,7 +1620,7 @@ export default function RegistrationForm() {
                             <thead>
                               <tr class="bg-white border-b border-black text-blue-900">
                                 <th class="p-1 text-left" colSpan={7}>
-                                  :: DROPPED COURSES
+                                  :: COURSE(S) TO BE DROPPED
                                 </th>
                               </tr>
                               <tr class="border-b border-black bg-gray-300">
@@ -1543,7 +1648,7 @@ export default function RegistrationForm() {
                             <tbody>
                               <Show
                                 fallback={
-                                  <tr class="border-r border-black">
+                                  <tr class="border-b border-black">
                                     <td colSpan={7} class="text-center p-4">
                                       No course(s) droped.
                                     </td>
@@ -1604,16 +1709,15 @@ export default function RegistrationForm() {
                                       <td class="p-4">
                                         <button
                                           onClick={() => {
-                                            dropThisCourseWarning(
+                                            undropThisCourse(
                                               course,
-                                              detDroppedCourses[course][0],
-                                              detDroppedCourses[course][1],
-                                              detDroppedCourses[course][3]
+                                              detPickedCourses[course][1],
+                                              detPickedCourses[course][2]
                                             );
                                           }}
                                           class="red-btn py-1 px-2 text-white hover:opacity-60"
                                         >
-                                          Drop
+                                          -
                                         </button>
                                       </td>
                                     </tr>
@@ -1660,6 +1764,162 @@ export default function RegistrationForm() {
                                     </Show>
                                     {formatter.format(
                                       parseInt(droppedTotalProgFee())
+                                    )}
+                                  </td>
+                                </tr>
+                              </Show>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="overflow-x-auto">
+                          <table cellPadding={0} cellSpacing={0} class="w-full">
+                            <thead>
+                              <tr class="bg-white border-b border-black text-blue-900">
+                                <th class="p-1 text-left" colSpan={7}>
+                                  :: ADDED COURSES
+                                </th>
+                              </tr>
+                              <tr class="border-b border-black bg-gray-300">
+                                <th class="p-4 text-left border-r border-black">
+                                  Sn.
+                                </th>
+                                <th class="p-4 text-left border-r border-black">
+                                  Title
+                                </th>
+                                <th class="p-4 text-left border-r border-black">
+                                  Code
+                                </th>
+                                <th class="p-4 text-left border-r border-black">
+                                  CH
+                                </th>
+                                <th class="p-4 text-left border-r border-black">
+                                  Unit Cost
+                                </th>
+                                <th class="p-4 text-left border-r border-black">
+                                  Amount
+                                </th>
+                                <th class="p-4 text-left">?</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <Show
+                                fallback={
+                                  <tr class="border-b border-black">
+                                    <td colSpan={7} class="text-center p-4">
+                                      No course(s) added.
+                                    </td>
+                                  </tr>
+                                }
+                                when={addedCourses.length > 0}
+                              >
+                                <For each={addedCourses}>
+                                  {(course, i) => (
+                                    <tr class="border-b border-black">
+                                      <td class="p-4 border-r border-black font-semibold">
+                                        {i() + 1}.
+                                      </td>
+                                      <td class="p-4 border-r border-black">
+                                        <Show
+                                          when={detAddedCourses[course]}
+                                          fallback={<>Fetching.. .</>}
+                                        >
+                                          {detAddedCourses[course][0]}
+                                        </Show>
+                                      </td>
+                                      <td class="p-4 border-r border-black">
+                                        <Show
+                                          when={course}
+                                          fallback={<>Fetching.. .</>}
+                                        >
+                                          {course}
+                                        </Show>
+                                      </td>
+                                      <td class="p-4 border-r border-black">
+                                        <Show
+                                          when={detAddedCourses[course]}
+                                          fallback={<>Fetching.. .</>}
+                                        >
+                                          {detAddedCourses[course][1]}
+                                        </Show>
+                                      </td>
+                                      <td class="p-4 border-r border-black">
+                                        <Show
+                                          when={detAddedCourses[course]}
+                                          fallback={<>Fetching.. .</>}
+                                        >
+                                          {formatter.format(
+                                            detAddedCourses[course][2]
+                                          )}
+                                        </Show>
+                                      </td>
+                                      <td class="p-4 border-r border-black">
+                                        <Show
+                                          when={detAddedCourses[course]}
+                                          fallback={<>Fetching.. .</>}
+                                        >
+                                          {formatter.format(
+                                            detAddedCourses[course][3]
+                                          )}
+                                        </Show>
+                                      </td>
+                                      <td class="p-4">
+                                        <button
+                                          onClick={() => {
+                                            unpickThisCourse(
+                                              course,
+                                              detAddedCourses[course][1],
+                                              detAddedCourses[course][2]
+                                            );
+                                          }}
+                                          class="red-btn py-1 px-2 text-white hover:opacity-60"
+                                        >
+                                          -
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  )}
+                                </For>
+                                <tr class="border-b border-black">
+                                  <td
+                                    class="font-semibold p-4 border-r border-black"
+                                    colSpan={3}
+                                  >
+                                    Sub Total{" "}
+                                    <Show
+                                      when={
+                                        registrationData().student
+                                          .special_student_category ===
+                                        "jets staff"
+                                      }
+                                    >
+                                      (JETS Staff)
+                                    </Show>
+                                  </td>
+                                  <td class="font-semibold p-4 border-r border-black">
+                                    {addedTotalCU()}
+                                  </td>
+                                  <td class="p-4 border-r border-black">
+                                    &nbsp;
+                                  </td>
+                                  <td class="font-semibold p-4">
+                                    <Show
+                                      when={
+                                        registrationData().student
+                                          .special_student_category ===
+                                        "jets staff"
+                                      }
+                                    >
+                                      <>
+                                        <span class="line-through">
+                                          {formatter.format(
+                                            parseInt(addedTotalProgFee()) * 2
+                                          )}
+                                        </span>
+                                        <br />
+                                      </>
+                                    </Show>
+                                    {formatter.format(
+                                      parseInt(addedTotalProgFee())
                                     )}
                                   </td>
                                 </tr>
@@ -1846,7 +2106,7 @@ export default function RegistrationForm() {
                         </Show>
                         <Show
                           when={
-                            totalCU() > 0 &&
+                            (addedTotalCU() > 0 || droppedTotalCU() > 0) &&
                             (registrationData().addDropStatus() === "started" ||
                               registrationData().addDropStatus() ===
                                 "disapproved")
@@ -2229,7 +2489,7 @@ export default function RegistrationForm() {
             </>
           }
         >
-          <div class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
+          <div class="z-50 fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
             <div class="w-80 sm:w-10/12 lg:w-6/12 mx-auto bg-white rounded-md p-6">
               <h2 class="text-center text-blue-900 font-semibold">
                 Incomplete Registration

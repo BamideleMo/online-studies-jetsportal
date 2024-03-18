@@ -477,7 +477,6 @@ export default function RegistrationForm() {
       );
 
       const result = await response.json();
-      console.log(result.response);
       window.location.href =
         "/student/registration-form/" + params.periodId + "/" + params.customId;
     } catch (error) {

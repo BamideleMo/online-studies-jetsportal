@@ -203,6 +203,15 @@ export default function Admin() {
         </li>
         <li class="border-b border-black py-3">
           <A
+            href="/admin/new-students-log-period"
+            class="flex justify-between hover:text-black"
+          >
+            <span>New Students Log</span>
+            <ChevronRight />
+          </A>
+        </li>
+        <li class="border-b border-black py-3">
+          <A
             href="/admin/change-password"
             class="flex justify-between hover:text-black"
           >

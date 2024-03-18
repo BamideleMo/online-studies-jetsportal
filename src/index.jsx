@@ -49,6 +49,7 @@ import EnrollmentStatistics from "./pages/EnrollmentStatistics";
 import AssignCoursesPeriod from "./pages/AssignCoursesPeriod";
 import AssignCourses from "./pages/AssignCourses";
 import ManageFaculty from "./pages/ManageFaculty";
+import NewStudentsLogPeriod from "./pages/NewStudentsLogPeriod";
 //
 import FacultyLogin from "./pages/LoginFaculty";
 import ProfileFaculty from "./pages/ProfileFaculty";
@@ -200,6 +201,10 @@ render(
       <Route path="/admin/assign-courses/:periodId" component={AssignCourses} />
       <Route path="/admin/manage-faculty" component={ManageFaculty} />
       <Route path="/admin/class-list/:periodId" component={ClassList} />
+      <Route
+        path="/admin/new-students-log-period"
+        component={NewStudentsLogPeriod}
+      />
 
       {/*  */}
 
