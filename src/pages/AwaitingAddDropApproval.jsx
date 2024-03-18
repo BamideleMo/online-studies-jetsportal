@@ -15,7 +15,7 @@ const schema = z.object({
   undertaking: z.string().min(1, "*Required"),
 });
 
-export default function AwaitingApproval() {
+export default function AwaitingAddDropApproval() {
   const params = useParams();
 
   const [undertakingPop, setUndertakingPop] = createSignal(false);
@@ -127,9 +127,10 @@ export default function AwaitingApproval() {
             ) {
               var registrations_dean = all_registrations.filter(
                 (registration) =>
-                  registration.registration_status == "awaiting dean"
+                  registration.add_drop_status == "awaiting dean"
               );
               for (let i = 0; i < registrations_dean.length; i++) {
+                console.log(registrations_dean[i].custom_id);
                 const ma_student = allStudents.find(
                   (allStudent) =>
                     allStudent.custom_id === registrations_dean[i].custom_id &&
@@ -170,6 +171,7 @@ export default function AwaitingApproval() {
                     student_id: user.username,
                     custom_id: ma_student.custom_id,
                     status: registrations_dean[i].registration_status,
+                    add_drop_status: registrations_dean[i].add_drop_status,
                     undertaking: registrations_dean[i].undertaking,
                     fresh_returning: registrations_dean[i].fresh_returning,
                     current_level: registrations_dean[i].current_level,
@@ -189,6 +191,7 @@ export default function AwaitingApproval() {
                     student_id: user.username,
                     custom_id: mdiv_student.custom_id,
                     status: registrations_dean[i].registration_status,
+                    add_drop_status: registrations_dean[i].add_drop_status,
                     undertaking: registrations_dean[i].undertaking,
                     fresh_returning: registrations_dean[i].fresh_returning,
                     current_level: registrations_dean[i].current_level,
@@ -208,6 +211,7 @@ export default function AwaitingApproval() {
                     student_id: user.username,
                     custom_id: pgdt_student.custom_id,
                     status: registrations_dean[i].registration_status,
+                    add_drop_status: registrations_dean[i].add_drop_status,
                     undertaking: registrations_dean[i].undertaking,
                     fresh_returning: registrations_dean[i].fresh_returning,
                     current_level: registrations_dean[i].current_level,
@@ -227,6 +231,7 @@ export default function AwaitingApproval() {
                     student_id: user.username,
                     custom_id: ba_student.custom_id,
                     status: registrations_dean[i].registration_status,
+                    add_drop_status: registrations_dean[i].add_drop_status,
                     undertaking: registrations_dean[i].undertaking,
                     fresh_returning: registrations_dean[i].fresh_returning,
                     current_level: registrations_dean[i].current_level,
@@ -246,6 +251,7 @@ export default function AwaitingApproval() {
                     student_id: user.username,
                     custom_id: dip_student.custom_id,
                     status: registrations_dean[i].registration_status,
+                    add_drop_status: registrations_dean[i].add_drop_status,
                     undertaking: registrations_dean[i].undertaking,
                     fresh_returning: registrations_dean[i].fresh_returning,
                     current_level: registrations_dean[i].current_level,
@@ -273,169 +279,6 @@ export default function AwaitingApproval() {
                 setBAStudentsEmpty(true);
               }
               if (Dip_array.length < 1) {
-                setDipStudentsEmpty(true);
-              }
-            }
-            if (
-              JSON.parse(localStorage.getItem("jetsUser")).surname ===
-                "bursar" ||
-              JSON.parse(localStorage.getItem("jetsUser")).surname === "ict"
-            ) {
-              var registrations_bursar = all_registrations.filter(
-                (registration) =>
-                  registration.registration_status == "awaiting bursar"
-              );
-
-              for (let i = 0; i < registrations_bursar.length; i++) {
-                const ma_student = allStudents.find(
-                  (allStudent) =>
-                    allStudent.custom_id ===
-                      registrations_bursar[i].custom_id &&
-                    allStudent.programme_category === "Masters Programme"
-                );
-                const mdiv_student = allStudents.find(
-                  (allStudent) =>
-                    allStudent.custom_id ===
-                      registrations_bursar[i].custom_id &&
-                    allStudent.programme_category ===
-                      "Master of Divinity Programme"
-                );
-                const pgdt_student = allStudents.find(
-                  (allStudent) =>
-                    allStudent.custom_id ===
-                      registrations_bursar[i].custom_id &&
-                    allStudent.programme_category === "PGDT Programme"
-                );
-                const ba_student = allStudents.find(
-                  (allStudent) =>
-                    allStudent.custom_id ===
-                      registrations_bursar[i].custom_id &&
-                    allStudent.programme_category ===
-                      "Bachelor of Arts Programme"
-                );
-                const dip_student = allStudents.find(
-                  (allStudent) =>
-                    allStudent.custom_id ===
-                      registrations_bursar[i].custom_id &&
-                    allStudent.programme_category === "Diploma Programme"
-                );
-                if (typeof ma_student !== "undefined") {
-                  const user = allUsers.find(
-                    (allUser) => allUser.custom_id === ma_student.custom_id
-                  );
-                  var student = {
-                    ledger_number: ma_student.ledger_number,
-                    programme: ma_student.programme,
-                    surname: user.surname,
-                    first_name: user.first_name,
-                    other_names: user.other_names,
-                    student_id: user.username,
-                    custom_id: ma_student.custom_id,
-                    status: registrations_bursar[i].registration_status,
-                    undertaking: registrations_bursar[i].undertaking,
-                    fresh_returning: registrations_bursar[i].fresh_returning,
-                    current_level: registrations_bursar[i].current_level,
-                  };
-                  MA_array.push(student);
-                }
-                if (typeof mdiv_student !== "undefined") {
-                  const user = allUsers.find(
-                    (allUser) => allUser.custom_id === mdiv_student.custom_id
-                  );
-                  var student = {
-                    ledger_number: mdiv_student.ledger_number,
-                    programme: mdiv_student.programme,
-                    surname: user.surname,
-                    first_name: user.first_name,
-                    other_names: user.other_names,
-                    student_id: user.username,
-                    custom_id: mdiv_student.custom_id,
-                    status: registrations_bursar[i].registration_status,
-                    undertaking: registrations_bursar[i].undertaking,
-                    fresh_returning: registrations_bursar[i].fresh_returning,
-                    current_level: registrations_bursar[i].current_level,
-                  };
-                  MDiv_array.push(student);
-                }
-                if (typeof pgdt_student !== "undefined") {
-                  const user = allUsers.find(
-                    (allUser) => allUser.custom_id === pgdt_student.custom_id
-                  );
-                  var student = {
-                    ledger_number: pgdt_student.ledger_number,
-                    programme: pgdt_student.programme,
-                    surname: user.surname,
-                    first_name: user.first_name,
-                    other_names: user.other_names,
-                    student_id: user.username,
-                    custom_id: pgdt_student.custom_id,
-                    status: registrations_bursar[i].registration_status,
-                    undertaking: registrations_bursar[i].undertaking,
-                    fresh_returning: registrations_bursar[i].fresh_returning,
-                    current_level: registrations_bursar[i].current_level,
-                  };
-                  PGDT_array.push(student);
-                }
-                if (typeof ba_student !== "undefined") {
-                  const user = allUsers.find(
-                    (allUser) => allUser.custom_id === ba_student.custom_id
-                  );
-                  console.log(user, ba_student.custom_id);
-                  var student = {
-                    ledger_number: ba_student.ledger_number,
-                    programme: ba_student.programme,
-                    surname: user.surname,
-                    first_name: user.first_name,
-                    other_names: user.other_names,
-                    student_id: user.username,
-                    custom_id: ba_student.custom_id,
-                    status: registrations_bursar[i].registration_status,
-                    undertaking: registrations_bursar[i].undertaking,
-                    fresh_returning: registrations_bursar[i].fresh_returning,
-                    current_level: registrations_bursar[i].current_level,
-                  };
-                  BA_array.push(student);
-                }
-                if (typeof dip_student !== "undefined") {
-                  const user = allUsers.find(
-                    (allUser) => allUser.custom_id === dip_student.custom_id
-                  );
-                  var student = {
-                    ledger_number: dip_student.ledger_number,
-                    programme: dip_student.programme,
-                    surname: user.surname,
-                    first_name: user.first_name,
-                    other_names: user.other_names,
-                    student_id: user.username,
-                    custom_id: dip_student.custom_id,
-                    status: registrations_bursar[i].registration_status,
-                    undertaking: registrations_bursar[i].undertaking,
-                    fresh_returning: registrations_bursar[i].fresh_returning,
-                    current_level: registrations_bursar[i].current_level,
-                  };
-                  Dip_array.push(student);
-                }
-              }
-
-              setMAStudents(MA_array);
-              setMDivStudents(MDiv_array);
-              setPGDTStudents(PGDT_array);
-              setBAStudents(BA_array);
-              setDipStudents(Dip_array);
-
-              if (MA_array.length < 1) {
-                setMAStudentsEmpty(true);
-              }
-              if (MDiv_array.length < 1) {
-                setMDivStudentsEmpty(true);
-              }
-              if (PGDT_array.length < 1) {
-                setPGDTStudentsEmpty(true);
-              }
-              if (BA_array.length < 0) {
-                setBAStudentsEmpty(true);
-              }
-              if (Dip_array.length < 0) {
                 setDipStudentsEmpty(true);
               }
             }
@@ -481,16 +324,18 @@ export default function AwaitingApproval() {
 
   return (
     <MetaProvider>
-      <Title>Awaiting Approval - ECWA Theological Seminary, Jos (JETS)</Title>
+      <Title>
+        Awaiting Add/Drop Approval - ECWA Theological Seminary, Jos (JETS)
+      </Title>
       <Meta
         name="description"
-        content="Awaiting Approval on ECWA Theological Seminary, Jos (JETS)"
+        content="Awaiting Add/Drop Approval on ECWA Theological Seminary, Jos (JETS)"
       />
       <div class="text-sm">
         <Header />
         <div class="mt-8 w-11/12 mx-auto space-y-4">
           <h2 class="text-lg font-semibold text-center border-b border-red-600">
-            Awaiting Approval{" "}
+            Awaiting Add/Drop Approval{" "}
             <Show when={session() !== "" && semester() !== ""}>
               <span class="block font-normal capitalize">
                 {semester()} Semester - {session()} Session
@@ -499,7 +344,7 @@ export default function AwaitingApproval() {
           </h2>
           <div class="bg-yellow-100 rounded-md border border-yellow-200  p-1 space-y-0.5">
             <b class="block">Instruction:</b>
-            <p>Here's a list of all students awaiting approval.</p>
+            <p>Here's a list of all students Awaiting Add/Drop Approval.</p>
           </div>
           <div class="border border-gray-600 shadow-md rounded p-1 lg:p-4 overflow-y-scroll">
             <Show
@@ -582,7 +427,7 @@ export default function AwaitingApproval() {
                               <td class="p-4">
                                 <A
                                   href={
-                                    "/admin/registration-form/" +
+                                    "/admin/add-drop-form/" +
                                     params.periodId +
                                     "/" +
                                     registration.custom_id
@@ -675,7 +520,7 @@ export default function AwaitingApproval() {
                               <td class="p-4">
                                 <A
                                   href={
-                                    "/admin/registration-form/" +
+                                    "/admin/add-drop-form/" +
                                     params.periodId +
                                     "/" +
                                     registration.custom_id
@@ -768,7 +613,7 @@ export default function AwaitingApproval() {
                               <td class="p-4">
                                 <A
                                   href={
-                                    "/admin/registration-form/" +
+                                    "/admin/add-drop-form/" +
                                     params.periodId +
                                     "/" +
                                     registration.custom_id
@@ -861,7 +706,7 @@ export default function AwaitingApproval() {
                               <td class="p-4">
                                 <A
                                   href={
-                                    "/admin/registration-form/" +
+                                    "/admin/add-drop-form/" +
                                     params.periodId +
                                     "/" +
                                     registration.custom_id
@@ -954,7 +799,7 @@ export default function AwaitingApproval() {
                               <td class="p-4">
                                 <A
                                   href={
-                                    "/admin/registration-form/" +
+                                    "/admin/add-drop-form/" +
                                     params.periodId +
                                     "/" +
                                     registration.custom_id

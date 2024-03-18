@@ -38,7 +38,23 @@ export default function Admin() {
             href="/admin/awaiting-approval-period"
             class="flex justify-between hover:text-black"
           >
-            <span>Awaiting Approval</span>
+            <span>Awaiting Registration Approval</span>
+            <ChevronRight />
+          </A>
+        </li>
+      </Show>
+      <Show
+        when={
+          JSON.parse(localStorage.getItem("jetsUser")).surname === "ict" ||
+          JSON.parse(localStorage.getItem("jetsUser")).surname === "dean"
+        }
+      >
+        <li class="border-b border-black py-3">
+          <A
+            href="/admin/awaiting-add-drop-approval-period"
+            class="flex justify-between hover:text-black"
+          >
+            <span>Awaiting Add/Drop Approval</span>
             <ChevronRight />
           </A>
         </li>

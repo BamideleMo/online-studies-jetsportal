@@ -37,6 +37,8 @@ import ManageAdminCharges from "./pages/ManageAdminCharges";
 import ManageDepartmentalCharges from "./pages/ManageDepartmentalCharges";
 import AwaitingApprovalPeriod from "./pages/AwaitingApprovalPeriod";
 import AwaitingApproval from "./pages/AwaitingApproval";
+import AwaitingAddDropApprovalPeriod from "./pages/AwaitingAddDropApprovalPeriod";
+import AwaitingAddDropApproval from "./pages/AwaitingAddDropApproval";
 import RegistrationLogPeriod from "./pages/RegistrationLogPeriod";
 import RegistrationLog from "./pages/RegistrationLog";
 import AddDropLogPeriod from "./pages/AddDropLogPeriod";
@@ -155,6 +157,14 @@ render(
       <Route
         path="/admin/awaiting-approval/:periodId"
         component={AwaitingApproval}
+      />
+      <Route
+        path="/admin/awaiting-add-drop-approval-period"
+        component={AwaitingAddDropApprovalPeriod}
+      />
+      <Route
+        path="/admin/awaiting-add-drop-approval/:periodId"
+        component={AwaitingAddDropApproval}
       />
       <Route
         path="/admin/registration-form/:periodId/:customId"

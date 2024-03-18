@@ -281,7 +281,7 @@ export default function RegistrationLog() {
                                 <span class="uppercase">
                                   {registration.fresh_returning}
                                 </span>{" "}
-                                Student )
+                                Student)
                               </td>
                             </tr>
                           )}
