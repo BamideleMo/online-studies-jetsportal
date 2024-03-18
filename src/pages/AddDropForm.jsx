@@ -1176,14 +1176,14 @@ export default function RegistrationForm() {
                         }
                       >
                         <b class="block">
-                          Registration Status:{" "}
+                          Add/Drop Status:{" "}
                           <u class="text-red-700 font-semibold">
                             Awaiting DPAA's Office
                           </u>
                         </b>
                         <b class="text-blue-900">Note:</b>
                         <br />
-                        Your registration is at the Dean's Office and awaiting
+                        Your add/drop is at the Dean's Office and awaiting
                         approval. This should normally take 24 hours or less.
                         <br />
                         When approved or disapproved, you'll be notified via
@@ -1196,12 +1196,12 @@ export default function RegistrationForm() {
                         }
                       >
                         <b class="block">
-                          Registration Status:{" "}
+                          Add/Drop Status:{" "}
                           <u class="text-red-700 font-semibold">Disapproved</u>
                         </b>
                         <b class="text-blue-900">Note:</b>
                         <br />
-                        Your registration was Disapproved.
+                        Your add/drop was Disapproved.
                         <br />
                         <b class="text-blue-900">Reason(s):</b>
                         <br />
@@ -1211,40 +1211,18 @@ export default function RegistrationForm() {
                       </Match>
                       <Match
                         when={
-                          registrationData().addDropStatus() ===
-                          "awaiting bursar"
-                        }
-                      >
-                        <b class="block">
-                          Registration Status:{" "}
-                          <u class="text-red-700 font-semibold">
-                            Awaiting Bursary
-                          </u>
-                        </b>
-                        <b class="text-blue-900">Note:</b>
-                        <br />
-                        Your registration was approved by DPAA's office and
-                        forwarded to the Bursary.
-                        <br />
-                        The Bursary will input your current ledger balance (this
-                        should take 24 hours or less) after which you'll be
-                        notified via SMS. However, if you don't get notified
-                        after 24 hours please check/reload this page again.
-                      </Match>
-                      <Match
-                        when={
                           registrationData().addDropStatus() === "incomplete"
                         }
                       >
                         <b class="block">
-                          Registration Status:{" "}
+                          Add/Drop Status:{" "}
                           <u class="text-red-700 font-semibold">
-                            Incomplete Registration
+                            Incomplete Add/Drop
                           </u>
                         </b>
                         <b class="text-blue-900">Note:</b>
                         <br />
-                        Your registration has been approved BUT it is INCOMPLETE
+                        Your Add/Drop has been approved BUT it is INCOMPLETE
                         because you are yet to submit and print this Add/Drop
                         Form. Scroll to the bottom of this page to do that now.
                       </Match>

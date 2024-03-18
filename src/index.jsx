@@ -50,6 +50,7 @@ import AssignCoursesPeriod from "./pages/AssignCoursesPeriod";
 import AssignCourses from "./pages/AssignCourses";
 import ManageFaculty from "./pages/ManageFaculty";
 import NewStudentsLogPeriod from "./pages/NewStudentsLogPeriod";
+import NewStudentsLog from "./pages/NewStudentsLog";
 //
 import FacultyLogin from "./pages/LoginFaculty";
 import ProfileFaculty from "./pages/ProfileFaculty";
@@ -204,6 +205,10 @@ render(
       <Route
         path="/admin/new-students-log-period"
         component={NewStudentsLogPeriod}
+      />
+      <Route
+        path="/admin/new-students-log/:periodId/:customId"
+        component={NewStudentsLog}
       />
 
       {/*  */}

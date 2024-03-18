@@ -104,7 +104,7 @@ export default function RegisteredCoursesPeriod() {
                             <td class="p-4">
                               <A
                                 href={
-                                  "/admin/new-students/" +
+                                  "/admin/new-students-log/" +
                                   period.period_id +
                                   "/" +
                                   JSON.parse(localStorage.getItem("jetsUser"))
