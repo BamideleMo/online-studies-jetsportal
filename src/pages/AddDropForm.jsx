@@ -1533,7 +1533,7 @@ export default function RegistrationForm() {
                                             when={
                                               JSON.parse(
                                                 localStorage.getItem("jetsUser")
-                                              ).surname !== "admin" &&
+                                              ).role === "student" &&
                                               registrationData().addDropStatus() ===
                                                 "started"
                                             }
