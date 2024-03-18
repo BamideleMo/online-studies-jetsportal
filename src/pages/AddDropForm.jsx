@@ -1533,7 +1533,7 @@ export default function RegistrationForm() {
                                             when={
                                               JSON.parse(
                                                 localStorage.getItem("jetsUser")
-                                              ).surname === "student" &&
+                                              ).surname !== "admin" &&
                                               registrationData().addDropStatus() ===
                                                 "started"
                                             }
@@ -2194,7 +2194,7 @@ export default function RegistrationForm() {
                             </table>
                           </div>
                         </Show>
-                        {/* <Show
+                        <Show
                           when={
                             registrationData().addDropStatus() === "incomplete"
                           }
@@ -2224,35 +2224,11 @@ export default function RegistrationForm() {
                                           )}
                                         </b>
                                       </span>
-                                      <span>
-                                        Seminary Charges:{" "}
-                                        <b>
-                                          {formatter.format(
-                                            parseInt(
-                                              registrationData().adminCharges[
-                                                "total"
-                                              ][0]
-                                            )
-                                          )}
-                                        </b>
-                                      </span>
-                                      <span>
-                                        Program Fees:{" "}
-                                        <b>
-                                          {formatter.format(
-                                            parseInt(totalProgFee())
-                                          )}
-                                        </b>
-                                      </span>
                                       <span class="">
                                         Total Charges:{" "}
                                         <b>
                                           {formatter.format(
-                                            parseInt(
-                                              registrationData().adminCharges[
-                                                "total"
-                                              ][0]
-                                            ) + parseInt(totalProgFee())
+                                            parseInt(totalProgFee())
                                           )}
                                         </b>
                                       </span>
@@ -2387,7 +2363,7 @@ export default function RegistrationForm() {
                               </table>
                             </div>
                           </Show>
-                        </Show> */}
+                        </Show>
                         <Show
                           when={
                             JSON.parse(localStorage.getItem("jetsUser"))

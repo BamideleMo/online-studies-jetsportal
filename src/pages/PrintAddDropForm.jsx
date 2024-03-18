@@ -803,7 +803,7 @@ export default function RegistrationForm() {
                             <td class="p-1">
                               <span class="flex justify-between">
                                 <span>
-                                  Opening Bal.:{" "}
+                                  Portal Wallet Before Add/Drop:{" "}
                                   <b>
                                     {formatter.format(
                                       parseInt(openingBalance())
@@ -820,7 +820,7 @@ export default function RegistrationForm() {
                                   </b>
                                 </span>
                                 <span>
-                                  Closing Bal.:{" "}
+                                  Portal Wallet After Add/Drop:{" "}
                                   <b>
                                     {formatter.format(
                                       parseInt(closingBalance())
