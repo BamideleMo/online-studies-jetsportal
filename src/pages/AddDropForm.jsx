@@ -818,7 +818,7 @@ export default function RegistrationForm() {
           method: "PATCH",
           body: JSON.stringify({
             period_id: params.periodId,
-            registration_status: "awaiting dean",
+            add_drop_status: "awaiting dean",
           }),
         }
       );
@@ -826,7 +826,7 @@ export default function RegistrationForm() {
       const result = await response.json();
       console.log(result.response);
       window.location.href =
-        "/student/registration-form/" + params.periodId + "/" + params.customId;
+        "/student/add-drop-form/" + params.periodId + "/" + params.customId;
     } catch (error) {
       console.error(error);
     }
