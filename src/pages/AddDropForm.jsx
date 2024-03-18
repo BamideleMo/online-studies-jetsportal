@@ -2194,7 +2194,7 @@ export default function RegistrationForm() {
                             </table>
                           </div>
                         </Show>
-                        <Show
+                        {/* <Show
                           when={
                             registrationData().addDropStatus() === "incomplete"
                           }
@@ -2387,7 +2387,7 @@ export default function RegistrationForm() {
                               </table>
                             </div>
                           </Show>
-                        </Show>
+                        </Show> */}
                         <Show
                           when={
                             JSON.parse(localStorage.getItem("jetsUser"))
