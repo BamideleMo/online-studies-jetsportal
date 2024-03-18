@@ -41,15 +41,39 @@ export default function RegistrarConfirmationForm(props) {
   const submit = async (event) => {
     event.preventDefault();
     setIsProcessing(true);
-    if (formData().approval === "disapprove") {
-      var regStatus = "disapproved";
-      var msg =
-        "Dean's office disapproved your registration. Login to the portal, effect corrections and reforward.";
+    if (props.which_form === "registration") {
+      if (formData().approval === "disapprove") {
+        var regStatus = "disapproved";
+        var msg =
+          "Dean's office disapproved your registration. Login to the portal, effect corrections and reforward.";
+      }
+      if (formData().approval === "approve") {
+        var regStatus = "awaiting bursar";
+        var msg =
+          "Dean's office approved your registration and forwarded to Bursary. Now awaiting Bursary approval.";
+      }
+      const formData = {
+        period_id: props.periodId,
+        registration_status: regStatus,
+        comment: formData().comment,
+      };
     }
-    if (formData().approval === "approve") {
-      var regStatus = "awaiting bursar";
-      var msg =
-        "Dean's office approved your registration and forwarded to Bursary. Now awaiting Bursary approval.";
+    if (props.which_form === "add_drop") {
+      if (formData().approval === "disapprove") {
+        var addDropStatus = "disapproved";
+        var msg =
+          "Dean's office disapproved your registration. Login to the portal, effect corrections and reforward.";
+      }
+      if (formData().approval === "approve") {
+        var addDropStatus = "awaiting bursar";
+        var msg =
+          "Dean's office approved your registration and forwarded to Bursary. Now awaiting Bursary approval.";
+      }
+      const formData = {
+        period_id: props.periodId,
+        add_drop_status: addDropStatus,
+        comment: formData().comment,
+      };
     }
     try {
       const request1 = fetch(
@@ -64,11 +88,7 @@ export default function RegistrarConfirmationForm(props) {
             Accept: "application/json",
           },
           method: "PATCH",
-          body: JSON.stringify({
-            period_id: props.periodId,
-            registration_status: regStatus,
-            comment: formData().comment,
-          }),
+          body: JSON.stringify(formData),
         }
       ).then((response) => response.json());
 
@@ -88,9 +108,16 @@ export default function RegistrarConfirmationForm(props) {
         //   type: "plain",
         //   channel: "generic",
         // });
-        navigate("/admin/awaiting-approval/" + props.periodId, {
-          replace: true,
-        });
+        if (props.which_form === "registration") {
+          navigate("/admin/awaiting-approval/" + props.periodId, {
+            replace: true,
+          });
+        }
+        if (props.which_form === "add_drop") {
+          navigate("/admin/awaiting-add-drop-approval/" + props.periodId, {
+            replace: true,
+          });
+        }
       });
     } catch (error) {
       console.error(error);

@@ -2036,6 +2036,7 @@ export default function RegistrationForm() {
                                         phone={
                                           registrationData().user.phone_number
                                         }
+                                        whichForm="registration"
                                       />
                                     </Show>
                                     <Show

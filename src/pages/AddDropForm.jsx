@@ -2425,25 +2425,7 @@ export default function RegistrationForm() {
                                         phone={
                                           registrationData().user.phone_number
                                         }
-                                      />
-                                    </Show>
-                                    <Show
-                                      when={
-                                        JSON.parse(
-                                          localStorage.getItem("jetsUser")
-                                        ).surname === "ict" ||
-                                        JSON.parse(
-                                          localStorage.getItem("jetsUser")
-                                        ).surname === "bursar"
-                                      }
-                                    >
-                                      <BursarConfirmationForm
-                                        customId={params.customId}
-                                        periodId={params.periodId}
-                                        phone={
-                                          registrationData().user.phone_number
-                                        }
-                                        currentBal={portalWallet()}
+                                        whichForm="add_drop"
                                       />
                                     </Show>
                                   </td>
