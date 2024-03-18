@@ -1529,19 +1529,27 @@ export default function RegistrationForm() {
                                           </Show>
                                         </td>
                                         <td class="p-4">
-                                          <button
-                                            onClick={() => {
-                                              dropThisCourseWarning(
-                                                course,
-                                                detPickedCourses[course][0],
-                                                detPickedCourses[course][1],
-                                                detPickedCourses[course][3]
-                                              );
-                                            }}
-                                            class="red-btn py-1 px-2 text-white hover:opacity-60"
+                                          <Show
+                                            when={
+                                              JSON.parse(
+                                                localStorage.getItem("jetsUser")
+                                              ).surname === "student"
+                                            }
                                           >
-                                            Drop Course
-                                          </button>
+                                            <button
+                                              onClick={() => {
+                                                dropThisCourseWarning(
+                                                  course,
+                                                  detPickedCourses[course][0],
+                                                  detPickedCourses[course][1],
+                                                  detPickedCourses[course][3]
+                                                );
+                                              }}
+                                              class="red-btn py-1 px-2 text-white hover:opacity-60"
+                                            >
+                                              Drop Course
+                                            </button>
+                                          </Show>
                                         </td>
                                       </tr>
                                     </Show>
@@ -1685,18 +1693,26 @@ export default function RegistrationForm() {
                                         </Show>
                                       </td>
                                       <td class="p-4">
-                                        <button
-                                          onClick={() => {
-                                            undropThisCourse(
-                                              course,
-                                              detPickedCourses[course][1],
-                                              detPickedCourses[course][2]
-                                            );
-                                          }}
-                                          class="red-btn py-1 px-2 text-white hover:opacity-60"
+                                        <Show
+                                          where={
+                                            JSON.parse(
+                                              localStorage.getItem("jetsUser")
+                                            ).surname === "student"
+                                          }
                                         >
-                                          -
-                                        </button>
+                                          <button
+                                            onClick={() => {
+                                              undropThisCourse(
+                                                course,
+                                                detPickedCourses[course][1],
+                                                detPickedCourses[course][2]
+                                              );
+                                            }}
+                                            class="red-btn py-1 px-2 text-white hover:opacity-60"
+                                          >
+                                            -
+                                          </button>
+                                        </Show>
                                       </td>
                                     </tr>
                                   )}

@@ -62,12 +62,12 @@ export default function RegistrarConfirmationForm(props) {
       if (formData().approval === "disapprove") {
         var addDropStatus = "disapproved";
         var msg =
-          "Dean's office disapproved your registration. Login to the portal, effect corrections and reforward.";
+          "Dean's office disapproved your add/drop. Login to the portal, effect corrections and reforward.";
       }
       if (formData().approval === "approve") {
-        var addDropStatus = "awaiting bursar";
+        var addDropStatus = "incomplete";
         var msg =
-          "Dean's office approved your registration and forwarded to Bursary. Now awaiting Bursary approval.";
+          "Dean's office approved your add/drop and forwarded to Bursary. Now awaiting Bursary approval.";
       }
       const formData = {
         period_id: props.periodId,
