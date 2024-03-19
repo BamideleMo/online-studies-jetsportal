@@ -1772,7 +1772,7 @@ export default function RegistrationForm() {
                             <thead>
                               <tr class="bg-white border-b border-black text-blue-900">
                                 <th class="p-1 text-left" colSpan={7}>
-                                  :: ADDED COURSES
+                                  :: ADDED COURSE(S)
                                 </th>
                               </tr>
                               <tr class="border-b border-black bg-gray-300">
@@ -1859,18 +1859,26 @@ export default function RegistrationForm() {
                                         </Show>
                                       </td>
                                       <td class="p-4">
-                                        <button
-                                          onClick={() => {
-                                            unpickThisCourse(
-                                              course,
-                                              detAddedCourses[course][1],
-                                              detAddedCourses[course][2]
-                                            );
-                                          }}
-                                          class="red-btn py-1 px-2 text-white hover:opacity-60"
+                                        <Show
+                                          when={
+                                            JSON.parse(
+                                              localStorage.getItem("jetsUser")
+                                            ).role === "student"
+                                          }
                                         >
-                                          -
-                                        </button>
+                                          <button
+                                            onClick={() => {
+                                              unpickThisCourse(
+                                                course,
+                                                detAddedCourses[course][1],
+                                                detAddedCourses[course][2]
+                                              );
+                                            }}
+                                            class="red-btn py-1 px-2 text-white hover:opacity-60"
+                                          >
+                                            -
+                                          </button>
+                                        </Show>
                                       </td>
                                     </tr>
                                   )}
