@@ -109,12 +109,12 @@ export default function RegistrarConfirmationForm(props) {
         //   type: "plain",
         //   channel: "generic",
         // });
-        if (props.which_form === "registration") {
+        if (props.whichForm === "registration") {
           navigate("/admin/awaiting-approval/" + props.periodId, {
             replace: true,
           });
         }
-        if (props.which_form === "add_drop") {
+        if (props.whichForm === "add_drop") {
           navigate("/admin/awaiting-add-drop-approval/" + props.periodId, {
             replace: true,
           });
