@@ -41,7 +41,7 @@ export default function RegistrarConfirmationForm(props) {
   const submit = async (event) => {
     event.preventDefault();
     setIsProcessing(true);
-    if (props.which_form === "registration") {
+    if (props.whichForm === "registration") {
       if (formData().approval === "disapprove") {
         var regStatus = "disapproved";
         var msg =
@@ -58,7 +58,7 @@ export default function RegistrarConfirmationForm(props) {
         comment: formData().comment,
       };
     }
-    if (props.which_form === "add_drop") {
+    if (props.whichForm === "add_drop") {
       if (formData().approval === "disapprove") {
         var addDropStatus = "disapproved";
         var msg =
@@ -69,12 +69,13 @@ export default function RegistrarConfirmationForm(props) {
         var msg =
           "Dean's office approved your add/drop and forwarded to Bursary. Now awaiting Bursary approval.";
       }
-      const formData = {
+      var theForm = {
         period_id: props.periodId,
         add_drop_status: addDropStatus,
         comment: formData().comment,
       };
     }
+
     try {
       const request1 = fetch(
         VITE_API_URL + "/api/edit-registration/" + props.customId,
