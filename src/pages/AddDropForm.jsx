@@ -2246,23 +2246,12 @@ export default function RegistrationForm() {
                                         <Show
                                           when={
                                             parseInt(portalWallet()) >=
-                                            parseInt(
-                                              registrationData().adminCharges[
-                                                "total"
-                                              ][0]
-                                            ) +
-                                              parseInt(addedTotalProgFee())
+                                            parseInt(addedTotalProgFee())
                                           }
                                           fallback={
                                             <b>
                                               {formatter.format(
-                                                parseInt(
-                                                  registrationData()
-                                                    .adminCharges["total"][0]
-                                                ) +
-                                                  parseInt(
-                                                    addedTotalProgFee()
-                                                  ) -
+                                                parseInt(addedTotalProgFee()) -
                                                   parseInt(portalWallet())
                                               )}
                                             </b>
@@ -2304,7 +2293,59 @@ export default function RegistrationForm() {
                                       }
                                     >
                                       <td class="p-4">
-                                        {portalWallet()} +{addedTotalProgFee()}
+                                        <Show
+                                          when={
+                                            // registrationData().undertakingStatus() ===
+                                            //   "yes" ||
+                                            parseInt(portalWallet()) >=
+                                            parseInt(addedTotalProgFee())
+                                          }
+                                          fallback={
+                                            <span class="block bg-yellow-100 rounded-md border border-yellow-200  p-1 space-y-0.5">
+                                              You can't complete (submit and
+                                              print) your registration because
+                                              your portal wallet is
+                                              insufficient. Please proceed to
+                                              make payment and return to this
+                                              page. For details on how to make
+                                              payment check the{" "}
+                                              <A
+                                                class="underline hover:opacity-60"
+                                                href="/student/portal-wallet"
+                                              >
+                                                Portal Wallet page
+                                              </A>
+                                              .
+                                            </span>
+                                          }
+                                        >
+                                          <span class="block bg-yellow-100 rounded-md border border-yellow-200  p-1 space-y-0.5">
+                                            Click on the button below to
+                                            complete (submit and print) your
+                                            registration.
+                                            <br />
+                                            <Show
+                                              when={isProcessing()}
+                                              fallback={
+                                                <button
+                                                  onClick={() =>
+                                                    completeRegistration()
+                                                  }
+                                                  class="green-btn p-3 text-center hover:opacity-60"
+                                                >
+                                                  Submit & Print My Registration
+                                                </button>
+                                              }
+                                            >
+                                              <button
+                                                disabled
+                                                class="gray2-btn cursor-wait p-3 text-center"
+                                              >
+                                                Processing.. .
+                                              </button>
+                                            </Show>
+                                          </span>
+                                        </Show>
                                       </td>
                                     </Show>
                                   </tr>
