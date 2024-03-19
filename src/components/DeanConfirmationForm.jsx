@@ -89,7 +89,7 @@ export default function RegistrarConfirmationForm(props) {
             Accept: "application/json",
           },
           method: "PATCH",
-          body: JSON.stringify(formData),
+          body: JSON.stringify(theForm),
         }
       ).then((response) => response.json());
 
