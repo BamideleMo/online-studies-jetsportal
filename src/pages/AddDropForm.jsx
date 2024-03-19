@@ -1934,7 +1934,8 @@ export default function RegistrationForm() {
                         <Show
                           when={
                             JSON.parse(localStorage.getItem("jetsUser"))
-                              .role === "student"
+                              .role === "student" &&
+                            registrationData().addDropStatus() === "started"
                           }
                         >
                           <div class="overflow-x-auto">
@@ -2236,7 +2237,7 @@ export default function RegistrationForm() {
                                         Total Charges:{" "}
                                         <b>
                                           {formatter.format(
-                                            parseInt(totalProgFee())
+                                            parseInt(addedTotalProgFee())
                                           )}
                                         </b>
                                       </span>
@@ -2250,7 +2251,7 @@ export default function RegistrationForm() {
                                                 "total"
                                               ][0]
                                             ) +
-                                              parseInt(totalProgFee())
+                                              parseInt(addedTotalProgFee())
                                           }
                                           fallback={
                                             <b>
@@ -2259,7 +2260,9 @@ export default function RegistrationForm() {
                                                   registrationData()
                                                     .adminCharges["total"][0]
                                                 ) +
-                                                  parseInt(totalProgFee()) -
+                                                  parseInt(
+                                                    addedTotalProgFee()
+                                                  ) -
                                                   parseInt(portalWallet())
                                               )}
                                             </b>
@@ -2274,6 +2277,41 @@ export default function RegistrationForm() {
                               </tbody>
                             </table>
                           </div>
+                          <Show
+                            when={
+                              JSON.parse(localStorage.getItem("jetsUser"))
+                                .role === "student"
+                            }
+                          >
+                            <div class="overflow-x-auto">
+                              <table
+                                cellPadding={0}
+                                cellSpacing={0}
+                                class="w-full"
+                              >
+                                <thead>
+                                  <tr class="bg-white border-b border-black text-blue-900">
+                                    <th class="p-1 text-left">
+                                      :: SUBMIT & PRINT
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr class="border-b border-black">
+                                    <Show
+                                      when={
+                                        portalWallet() && addedTotalProgFee()
+                                      }
+                                    >
+                                      <td class="p-4">
+                                        {portalWallet()} +{addedTotalProgFee()}
+                                      </td>
+                                    </Show>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </Show>
                         </Show>
                         <Show
                           when={
