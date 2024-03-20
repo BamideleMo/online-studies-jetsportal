@@ -698,16 +698,16 @@ export default function RegistrationForm() {
     }
   };
 
-  const unpickThisCourse = async (courseCode, courseCu, courseAmt) => {
-    var pickedCoursesArray = Object.keys(pickedCourses).map(
-      (key) => pickedCourses[key]
+  const unaddThisCourse = async (courseCode, courseCu, courseAmt) => {
+    var addedCoursesArray = Object.keys(addedCourses).map(
+      (key) => addedCourses[key]
     );
-    const index = pickedCoursesArray.indexOf(courseCode);
-    const x = pickedCoursesArray.splice(index, 1);
+    const index = addedCoursesArray.indexOf(courseCode);
+    const x = addedCoursesArray.splice(index, 1);
 
     var courseData = {
       period_id: params.periodId,
-      picked_courses: JSON.stringify(pickedCoursesArray),
+      added_courses: JSON.stringify(addedCoursesArray),
     };
 
     try {
@@ -729,7 +729,7 @@ export default function RegistrationForm() {
 
       const result = await response.json();
       window.location.href =
-        "/student/add-drop-form" + params.periodId + "/" + params.customId;
+        "/student/add-drop-form/" + params.periodId + "/" + params.customId;
     } catch (error) {
       console.error(error);
     }
@@ -1976,7 +1976,7 @@ export default function RegistrationForm() {
                                               >
                                                 <button
                                                   onClick={() => {
-                                                    unpickThisCourse(
+                                                    unaddThisCourse(
                                                       course,
                                                       detAddedCourses[
                                                         course
