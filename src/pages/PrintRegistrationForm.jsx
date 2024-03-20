@@ -301,19 +301,19 @@ export default function PrintRegistrationForm() {
   };
 
   const printNow = async () => {
-    if (JSON.parse(localStorage.getItem("jetsUser")).role === "bursar") {
+    if (JSON.parse(localStorage.getItem("jetsUser")).surname === "bursar") {
       var theData = {
         period_id: params.periodId,
         registration_print_bursar: "yes",
       };
     }
-    if (JSON.parse(localStorage.getItem("jetsUser")).role === "dean") {
+    if (JSON.parse(localStorage.getItem("jetsUser")).surname === "dean") {
       var theData = {
         period_id: params.periodId,
         registration_print_dean: "yes",
       };
     }
-    if (JSON.parse(localStorage.getItem("jetsUser")).role === "registrar") {
+    if (JSON.parse(localStorage.getItem("jetsUser")).surname === "registrar") {
       var theData = {
         period_id: params.periodId,
         registration_print_registrar: "yes",

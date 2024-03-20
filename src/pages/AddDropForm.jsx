@@ -2432,7 +2432,8 @@ export default function RegistrationForm() {
                                           <Show
                                             when={
                                               portalWallet() &&
-                                              addedTotalProgFee()
+                                              addedTotalProgFee() &&
+                                              droppedTotalProgFee()
                                             }
                                           >
                                             <td class="p-4">
@@ -2440,7 +2441,10 @@ export default function RegistrationForm() {
                                                 when={
                                                   // registrationData().undertakingStatus() ===
                                                   //   "yes" ||
-                                                  parseInt(portalWallet()) >=
+                                                  parseInt(portalWallet()) +
+                                                    parseInt(
+                                                      droppedTotalProgFee()
+                                                    ) >=
                                                   parseInt(addedTotalProgFee())
                                                 }
                                                 fallback={

@@ -164,6 +164,8 @@ export default function RegistrationLog() {
                   undertaking: registrations[i].undertaking,
                   fresh_returning: registrations[i].fresh_returning,
                   current_level: registrations[i].current_level,
+                  registration_print_bursar:
+                    registrations[i].registration_print_bursar,
                 };
                 MA_array.push(student);
               }
@@ -183,6 +185,8 @@ export default function RegistrationLog() {
                   undertaking: registrations[i].undertaking,
                   fresh_returning: registrations[i].fresh_returning,
                   current_level: registrations[i].current_level,
+                  registration_print_bursar:
+                    registrations[i].registration_print_bursar,
                 };
                 MDiv_array.push(student);
               }
@@ -202,6 +206,8 @@ export default function RegistrationLog() {
                   undertaking: registrations[i].undertaking,
                   fresh_returning: registrations[i].fresh_returning,
                   current_level: registrations[i].current_level,
+                  registration_print_bursar:
+                    registrations[i].registration_print_bursar,
                 };
 
                 PGDT_array.push(student);
@@ -222,6 +228,8 @@ export default function RegistrationLog() {
                   undertaking: registrations[i].undertaking,
                   fresh_returning: registrations[i].fresh_returning,
                   current_level: registrations[i].current_level,
+                  registration_print_bursar:
+                    registrations[i].registration_print_bursar,
                 };
                 BA_array.push(student);
               }
@@ -241,6 +249,8 @@ export default function RegistrationLog() {
                   undertaking: registrations[i].undertaking,
                   fresh_returning: registrations[i].fresh_returning,
                   current_level: registrations[i].current_level,
+                  registration_print_bursar:
+                    registrations[i].registration_print_bursar,
                 };
                 Dip_array.push(student);
               }
@@ -944,6 +954,9 @@ export default function RegistrationLog() {
                             <tr class="even:bg-gray-200 odd:bg-white border-b border-black">
                               <td class="p-4 font-semibold border-r border-black">
                                 {i() + 1}.
+                                {console.log(
+                                  registration.registration_print_bursar
+                                )}
                               </td>
                               <td class="p-4 border-r border-black space-x-1">
                                 <b class="uppercase">{registration.surname}</b>
