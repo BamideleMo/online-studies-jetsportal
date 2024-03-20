@@ -1729,7 +1729,7 @@ export default function RegistrationForm() {
                                             colSpan={7}
                                             class="text-center p-4"
                                           >
-                                            No course(s) droped.
+                                            No course(s) dropped.
                                           </td>
                                         </tr>
                                       }
@@ -2242,10 +2242,11 @@ export default function RegistrationForm() {
                                   </table>
                                 </div>
                               </Show>
+
                               <Show
                                 when={
-                                  (addedTotalCU() > 0 ||
-                                    droppedTotalCU() > 0) &&
+                                  (addedTotalProgFee() > 0 ||
+                                    droppedTotalProgFee() > 0) &&
                                   (registrationData().addDropStatus() ===
                                     "started" ||
                                     registrationData().addDropStatus() ===
