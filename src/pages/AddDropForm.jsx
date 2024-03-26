@@ -838,7 +838,11 @@ export default function RegistrationForm() {
 
   const completeAddDrop = async () => {
     setIsProcessing(true);
-    var new_bal = parseInt(portalWallet()) - parseInt(totalProgFee());
+    var new_bal =
+      parseInt(portalWallet()) +
+      parseInt(droppedTotalProgFee()) -
+      parseInt(addedTotalProgFee());
+    // var new_bal = parseInt(portalWallet()) - parseInt(totalProgFee());
 
     var now = new Date();
     var year = now.getFullYear();
@@ -2432,9 +2436,9 @@ export default function RegistrationForm() {
                                         <tr class="border-b border-black">
                                           <Show
                                             when={
-                                              portalWallet() &&
-                                              addedTotalProgFee() &&
-                                              droppedTotalProgFee()
+                                              portalWallet() >= 0 &&
+                                              addedTotalProgFee() >= 0 &&
+                                              droppedTotalProgFee() >= 0
                                             }
                                           >
                                             <td class="p-4">
@@ -2471,7 +2475,7 @@ export default function RegistrationForm() {
                                                 <span class="block bg-yellow-100 rounded-md border border-yellow-200  p-1 space-y-0.5">
                                                   Click on the button below to
                                                   complete (submit and print)
-                                                  your registration.
+                                                  your add/drop.
                                                   <br />
                                                   <Show
                                                     when={isProcessing()}
@@ -2483,7 +2487,7 @@ export default function RegistrationForm() {
                                                         class="green-btn p-3 text-center hover:opacity-60"
                                                       >
                                                         Submit & Print My
-                                                        Registration
+                                                        Add/Drop
                                                       </button>
                                                     }
                                                   >
