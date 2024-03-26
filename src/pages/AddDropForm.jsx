@@ -1614,8 +1614,10 @@ export default function RegistrationForm() {
                                                         "jetsUser"
                                                       )
                                                     ).role === "student" &&
-                                                    registrationData().addDropStatus() ===
-                                                      "started"
+                                                    (registrationData().addDropStatus() ===
+                                                      "started" ||
+                                                      registrationData().addDropStatus() ===
+                                                        "disapproved")
                                                   }
                                                 >
                                                   <button
