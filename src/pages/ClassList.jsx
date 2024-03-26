@@ -129,6 +129,7 @@ export default function ClassList() {
                     (student) =>
                       student.custom_id === completed_registration[i].custom_id
                   );
+                  console.log(completed_registration[i].custom_id);
                   var registered_list = {
                     code: the_course[0],
                     custom_id: completed_registration[i].custom_id,

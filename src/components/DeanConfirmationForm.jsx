@@ -42,6 +42,7 @@ export default function RegistrarConfirmationForm(props) {
     event.preventDefault();
     setIsProcessing(true);
     if (props.whichForm === "registration") {
+      console.log("registration");
       if (formData().approval === "disapprove") {
         var regStatus = "disapproved";
         var msg =
@@ -52,7 +53,7 @@ export default function RegistrarConfirmationForm(props) {
         var msg =
           "Dean's office approved your registration and forwarded to Bursary. Now awaiting Bursary approval.";
       }
-      const formData = {
+      var theForm = {
         period_id: props.periodId,
         registration_status: regStatus,
         comment: formData().comment,
