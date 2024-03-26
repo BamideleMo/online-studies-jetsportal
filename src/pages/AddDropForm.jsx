@@ -1239,7 +1239,7 @@ export default function RegistrationForm() {
                               <b class="text-blue-900">Reason(s):</b>
                               <br />
                               <p class="bg-black border-l-8 border-red-600 text-white rounded p-2">
-                                {registrationData().regComment()}
+                                {registrationData().addDropStatus()}
                               </p>
                             </Match>
                             <Match

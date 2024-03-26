@@ -362,6 +362,8 @@ export default function ManageFaculty() {
                 <tr>
                   <td class="p-4 border-r border-black">#.</td>
                   <td class="p-4 border-r border-black">Name</td>
+                  <td class="p-4 border-r border-black">Email</td>
+                  <td class="p-4 border-r border-black">Phone</td>
                   <td class="p-4 border-r border-black">Status</td>
                   <td class="p-4">Change Status</td>
                 </tr>
@@ -384,6 +386,12 @@ export default function ManageFaculty() {
                               </span>
                               <span class="capitalize">
                                 {facultyMember.first_name}
+                              </span>
+                              <span class="capitalize">
+                                {facultyMember.email}
+                              </span>
+                              <span class="capitalize">
+                                {facultyMember.phone_number}
                               </span>
                               <span class="capitalize">
                                 {facultyMember.other_names}
@@ -424,7 +432,7 @@ export default function ManageFaculty() {
                   }
                 >
                   <tr>
-                    <td colSpan={4} class="p-1 text-center">
+                    <td colSpan={6} class="p-1 text-center">
                       <Loading />
                     </td>
                   </tr>
