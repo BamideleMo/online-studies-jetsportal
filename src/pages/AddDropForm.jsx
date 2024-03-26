@@ -607,48 +607,31 @@ export default function RegistrationForm() {
 
   const dropThisCourse = async () => {
     console.log(warningCourseCode(), warningCourseCu(), warningCourseAmt());
-    var droppedCoursesArray = Object.keys(droppedCourses).map(
-      (key) => droppedCourses[key]
-    );
-    const index = droppedCoursesArray.indexOf(warningCourseCode());
-    const x = droppedCoursesArray.splice(index, 1);
+    var new_dropped_courses = [];
+    if (droppedCourses) {
+      var droppedCoursesArray = Object.keys(droppedCourses).map(
+        (key) => droppedCourses[key]
+      );
+      for (let index = 0; index < droppedCoursesArray.length; index++) {
+        var dropped = checkIfDropped(warningCourseCode());
 
-    x.push(warningCourseCode());
+        if (dropped) {
+          console.log("exist");
+        } else {
+          new_dropped_courses.push(droppedCoursesArray[index]);
+        }
+      }
+      new_dropped_courses.push(warningCourseCode());
+    } else {
+      new_dropped_courses.push(warningCourseCode());
+    }
 
     var courseData = {
       period_id: params.periodId,
-      dropped_courses: JSON.stringify(x),
+      dropped_courses: JSON.stringify(new_dropped_courses),
     };
 
-    // var new_cu = parseInt(totalCU()) - parseInt(warningCourseCu());
-    // var new_amt = parseInt(totalProgFee()) - warningCourseAmt();
-
-    // setTotalCU(new_cu);
-
-    // if (student.special_student_category === "jets staff") {
-    //   setTotalProgFee(parseInt(new_amt) / 2);
-    // } else {
-    //   setTotalProgFee(new_amt);
-    // }
-
     try {
-      // const request1 = fetch(
-      //   VITE_API_URL + "/api/edit-portal-wallet/" + params.customId,
-      //   {
-      //     mode: "cors",
-      //     headers: {
-      //       Authorization: `Bearer ${
-      //         JSON.parse(localStorage.getItem("jetsUser")).token
-      //       }`,
-      //       "Content-Type": "application/json",
-      //       Accept: "application/json",
-      //     },
-      //     method: "PATCH",
-      //     body: JSON.stringify({
-      //       amount: parseInt(portalWallet()) + parseInt(warningCourseAmt()),
-      //     }),
-      //   }
-      // ).then((response) => response.json());
       const request2 = fetch(
         VITE_API_URL + "/api/edit-registration/" + params.customId,
         {
@@ -664,7 +647,7 @@ export default function RegistrationForm() {
           body: JSON.stringify(courseData),
         }
       ).then((response) => response.json());
-
+      // xxxx
       //   const response = await fetch(
       //     VITE_API_URL + "/api/edit-registration/" + params.customId,
       //     {
@@ -689,6 +672,7 @@ export default function RegistrationForm() {
       //   setTimeout(() => {
       //     setShowNotification(false);
       //   }, 600);
+      // xxxx
       Promise.all([request2]).then(([data2]) => {
         setDropped(true);
         setWarning(false);
