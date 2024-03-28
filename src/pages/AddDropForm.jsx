@@ -2422,9 +2422,9 @@ export default function RegistrationForm() {
                                         <tr class="border-b border-black">
                                           <Show
                                             when={
-                                              portalWallet() >= 0 &&
-                                              addedTotalProgFee() >= 0 &&
-                                              droppedTotalProgFee() >= 0
+                                              portalWallet() !== null &&
+                                              addedTotalProgFee() !== null &&
+                                              droppedTotalProgFee() !== null
                                             }
                                           >
                                             <td class="p-4">

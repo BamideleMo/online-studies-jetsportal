@@ -115,6 +115,7 @@ export default function CaptureReceiptForm(props) {
 
       arr.unshift(loglist);
     }
+    console.log(new_amount, which_method, which_wallet);
 
     try {
       const request1 = fetch(
@@ -128,7 +129,7 @@ export default function CaptureReceiptForm(props) {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
-          method: "PATCH",
+          method: which_method,
           body: JSON.stringify({
             amount: new_amount,
           }),

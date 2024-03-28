@@ -316,7 +316,7 @@ export default function PrintRegistrationForm() {
     if (JSON.parse(localStorage.getItem("jetsUser")).surname === "registrar") {
       var theData = {
         period_id: params.periodId,
-        registration_print_registrar: "yes",
+        registration_print_registry: "yes",
       };
     }
 
