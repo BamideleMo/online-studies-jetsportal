@@ -61,7 +61,7 @@ export default function LoginStudent() {
         setData(store);
         localStorage.setItem("jetsUser", JSON.stringify(data()));
 
-        navigate("/student/downloads", { replace: true });
+        navigate("/student/downloads");
       }
     } catch (error) {
       console.error(error);

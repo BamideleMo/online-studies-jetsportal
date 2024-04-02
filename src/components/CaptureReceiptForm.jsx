@@ -129,7 +129,7 @@ export default function CaptureReceiptForm(props) {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
-          method: which_method,
+          method: "PATCH",
           body: JSON.stringify({
             amount: new_amount,
           }),
