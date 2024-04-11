@@ -1213,7 +1213,7 @@ export default function RegistrationForm() {
                               <b class="block">
                                 Add/Drop Status:{" "}
                                 <u class="text-red-700 font-semibold">
-                                  Disapproved
+                                  {registrationData().addDropComment()}
                                 </u>
                               </b>
                               <b class="text-blue-900">Note:</b>

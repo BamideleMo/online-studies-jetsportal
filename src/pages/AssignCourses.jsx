@@ -378,10 +378,10 @@ export default function AssignCourses() {
           </div>
         </Show>
         <Show when={showModal()}>
-          <div class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
+          <div class="fixed z-50 top-0 left-0 right-0 bottom-0 bg-black bg-opacity-90 h-screen w-screen flex items-center">
             <div class="w-80 sm:w-10/12 lg:w-6/12 mx-auto bg-white rounded-md p-6">
               <h2 class="text-center text-blue-900 font-semibold">
-                Assign Course to Lecturer
+                Assign Course to Lecturer{console.log(displayCourses)}
               </h2>
               <Show
                 when={showSuccess()}
