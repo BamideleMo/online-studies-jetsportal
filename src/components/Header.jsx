@@ -53,7 +53,7 @@ export default function Header() {
         </div>
       </Show> */}
       <Show when={showMenu()}>
-        <div class="fixed top-0 bottom-0 left-0 bg-black bg-opacity-90 h-screen w-screen flex">
+        <div class="fixed z-50 top-0 bottom-0 left-0 bg-black bg-opacity-90 h-screen w-screen flex">
           <div class="grow">&nbsp;</div>
           <div class="w-80 sm:w-2/3 lg:w-1/3 bg-white">
             <div class="shadow-md py-3">

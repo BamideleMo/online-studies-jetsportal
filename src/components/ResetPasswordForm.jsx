@@ -7,7 +7,7 @@ import { useNavigate } from "@solidjs/router";
 import TextInput from "./TextInput";
 
 const schema = z.object({
-  student_id: z.string().length(5, "*Required"),
+  student_id: z.string().min(24, "*Invalid").email("*Invalid"),
   phone_number: z.string().length(10, "*Required"),
 });
 
@@ -62,7 +62,7 @@ export default function ResetPasswordForm(props) {
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-8">
               <div>
                 <TextInput
-                  label="Student Id:"
+                  label="JETS Online Student Email:"
                   name="student_id"
                   required={true}
                   formHandler={formHandler}

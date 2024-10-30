@@ -12,7 +12,7 @@ import ResetPasswordForm from "../components/ResetPasswordForm";
 import { createSignal, createEffect } from "solid-js";
 
 const schema = z.object({
-  username: z.string().length(5, "*Invalid"),
+  username: z.string().min(24, "*Invalid").email("*Invalid"),
   password: z.string().min(8, "*Invalid"),
 });
 
@@ -82,13 +82,14 @@ export default function LoginStudent() {
 
   return (
     <MetaProvider>
-      <Title>Student Access - ECWA Theological Seminary, Jos (JETS)</Title>
+      <Title>
+        Online Students Access - ECWA Theological Seminary, Jos (JETS)
+      </Title>
       <Meta
         name="description"
         content="Login to access the Portal of ECWA Theological Seminary, Jos (JETS)"
       />
       <div class="sm:grid sm:grid-cols-2 lg:grid-cols-3 text-sm">
-        <div class="hidden sm:block bg lg:col-span-2 bg-blue-900">&nbsp;</div>
         <div class="h-screen">
           <Header />
           <Show when={showResetForm()}>
@@ -105,20 +106,24 @@ export default function LoginStudent() {
           </Show>
           <div class="mt-8 w-11/12 mx-auto space-y-4">
             <h2 class="text-lg font-semibold text-center border-b border-red-600">
-              Student Access
+              Online Students Access
             </h2>
             <div class="bg-yellow-100 rounded-md border border-yellow-200 p-1 space-y-0.5">
               <b class="block">Instruction:</b>
-              <p>Enter your Student ID and Password to continue.</p>
+              <p>
+                Enter your JETS Online Students Email address and Password to
+                continue.
+              </p>
             </div>
             <div class="pt-4">
               <form autocomplete="off" onSubmit={submit} class="space-y-4">
                 <div>
                   <TextInput
-                    label="Student ID:"
+                    label="JETS Online Student Email:"
                     name="username"
                     required={true}
                     type="text"
+                    placeholder="e.g.: moses.66666@online.jets.edu.ng"
                     formHandler={formHandler}
                   />
                 </div>
@@ -188,6 +193,7 @@ export default function LoginStudent() {
             </div>
           </div>
         </div>
+        <div class="hidden sm:block bg lg:col-span-2 bg-blue-900">&nbsp;</div>
       </div>
     </MetaProvider>
   );

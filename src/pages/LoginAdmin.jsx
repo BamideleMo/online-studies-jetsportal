@@ -87,7 +87,6 @@ export default function LoginAdmin() {
         content="Login to access the Portal of ECWA Theological Seminary, Jos (JETS)"
       />
       <div class="sm:grid sm:grid-cols-2 lg:grid-cols-3 text-sm">
-        <div class="hidden sm:block bg lg:col-span-2 bg-blue-900">&nbsp;</div>
         <div class="h-screen">
           <Header />
           <div class="mt-8 w-11/12 mx-auto space-y-4">
@@ -159,17 +158,11 @@ export default function LoginAdmin() {
                     </button>
                   </Show>
                 </div>
-                <div class="text-center">
-                  Forgot Password?{" "}
-                  <A href="/" class="text-red-600">
-                    Reset it
-                  </A>
-                  .
-                </div>
               </form>
             </div>
           </div>
         </div>
+        <div class="hidden sm:block bg lg:col-span-2 bg-blue-900">&nbsp;</div>
       </div>
     </MetaProvider>
   );

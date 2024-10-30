@@ -14,7 +14,7 @@ const schema = z.object({
   first_name: z.string().min(1, "*Required"),
   other_names: z.string().optional(),
   gender: z.string().min(1, { message: "*Required" }),
-  username: z.string().length(5, "*Invalid").toUpperCase(),
+  username: z.string().min(24, "*Invalid").email("*Invalid"),
   phone_number: z.string().length(11, { message: "*Invalid" }),
 });
 
@@ -75,7 +75,6 @@ export default function CreateStudentProfile() {
         content="Create student profile on ECWA College of Education, Jos (ECoEJ)"
       />
       <div class="sm:grid sm:grid-cols-2 lg:grid-cols-3 text-sm">
-        <div class="hidden sm:block bg lg:col-span-2 bg-blue-900">&nbsp;</div>
         <div class="sm:h-screen">
           <Header />
           <div class="mt-8 mb-20 lg:mb-0 w-11/12 mx-auto space-y-4">
@@ -143,7 +142,7 @@ export default function CreateStudentProfile() {
                 </div>
                 <div>
                   <TextInput
-                    label="Student ID:"
+                    label="JETS Online Student Email::"
                     name="username"
                     required={true}
                     type="text"
@@ -196,6 +195,7 @@ export default function CreateStudentProfile() {
             </div>
           </div>
         </div>
+        <div class="hidden sm:block bg lg:col-span-2 bg-blue-900">&nbsp;</div>
       </div>
     </MetaProvider>
   );

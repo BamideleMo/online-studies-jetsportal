@@ -6,7 +6,7 @@ export default function NotLoggedIn() {
     <ul class="w-11/12 mx-auto mt-2 text-blue-800">
       <li class="border-b border-black py-3">
         <A href="/student/login" class="flex justify-between hover:text-black">
-          <span>Student Access</span>
+          <span>Online Student Access</span>
           <ChevronRight />
         </A>
       </li>
@@ -15,13 +15,13 @@ export default function NotLoggedIn() {
           href="/student/create-profile"
           class="flex justify-between hover:text-black"
         >
-          <span>Create Student Profile</span>
+          <span>Create Online Student Profile</span>
           <ChevronRight />
         </A>
       </li>
       <li class="border-b border-black py-3">
         <A href="/faculty/login" class="flex justify-between hover:text-black">
-          <span>Faculty Access</span>
+          <span>Facilitators Access</span>
           <ChevronRight />
         </A>
       </li>
