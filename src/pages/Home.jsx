@@ -81,9 +81,7 @@ export default function Home() {
           </div>
         </div>
         <div class="hidden bg sm:block lg:col-span-2 lg:grid lg:grid-cols-3">
-          <div>s</div>
-          <div>s</div>
-          <div>s</div>
+          &nbsp;
         </div>
       </div>
     </MetaProvider>
